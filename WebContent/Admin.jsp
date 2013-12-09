@@ -32,6 +32,11 @@
 						pattern="###,###,###" />
 					KB
 				</p>
+				<p>管理 tag</p>
+				<c:forEach var="tag" items="${tags}">
+					<div>${tag.tagname}: ${tag.tagtitle} (${tag.descript })</div>
+				</c:forEach>
+				<p></p>
 				<form id="form2" name="form2" method="post" action="UpfileToBlob">
 					處理到 upfileid= <input type="text" name="lastupfileid" value="0" />
 					為止！ <input type="submit" value="將 upfiles 轉到 Blob " />

@@ -10,7 +10,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>${initParam.TITLE}</title>
 <link href="style.css" rel="stylesheet" type="text/css" />
-</head>
 <script type="text/javascript" src="./jscripts/jquery-1.2.6.min.js"></script>
 <script language="javascript">
 	jQuery(document).ready(function() {
@@ -20,6 +19,7 @@
 		});
 	});
 </script>
+</head>
 <jsp:useBean id="now" class="java.util.Date" />
 <jsp:useBean id="userBean" class="jiangsir.zerobb.Beans.UserBean" />
 <body>
