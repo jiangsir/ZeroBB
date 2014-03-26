@@ -17,9 +17,10 @@ import jiangsir.zerobb.DAOs.LogDAO;
 import jiangsir.zerobb.DAOs.UpfileDAO;
 import jiangsir.zerobb.DAOs.UserDAO;
 import jiangsir.zerobb.Exceptions.DataException;
+import jiangsir.zerobb.Scopes.SessionScope;
+import jiangsir.zerobb.Tables.CurrentUser;
 import jiangsir.zerobb.Tables.Log;
 import jiangsir.zerobb.Tables.Upfile;
-import jiangsir.zerobb.Tools.AlertDispatcher;
 import jiangsir.zerobb.Tools.ENV;
 
 @WebServlet(urlPatterns = { "/Download" }, name = "Download.do")
@@ -56,16 +57,11 @@ public class Download extends HttpServlet {
 		this.response = response;
 		int upfileid = Integer.parseInt(request.getParameter("upfileid"));
 		HttpSession session = (HttpSession) request.getSession(false);
-		String session_account = (String) session
-				.getAttribute("session_account");
-		try {
-			new UpfileDAO().getArticle(new UserDAO().getUser(session_account),
-					upfileid);
-		} catch (DataException e) {
-			e.printStackTrace();
-			new AlertDispatcher(request, response).forward(new AlertBean(e));
-			return;
-		}
+		// String session_account = (String) session
+		// .getAttribute("session_account");
+		CurrentUser currentUser = new SessionScope(session).getCurrentUser();
+		new UpfileDAO().getArticle(
+				new UserDAO().getUserById(currentUser.getId()), upfileid);
 		// if (upfileid <= Upfile.OLD_UPFILDID) {
 		// this.doOldDownload(upfileid);
 		// } else if (upfileid <= Upfile.FILE_UPFILDID) {
@@ -126,9 +122,10 @@ public class Download extends HttpServlet {
 			// request.getRequestDispatcher("Message.jsp").forward(request,
 			// response);
 			// return;
-			new AlertDispatcher(request, response).forward(new AlertBean(
-					"您不能下載這個附件！"));
-			return;
+			// new AlertDispatcher(request, response).forward(new AlertBean(
+			// "您不能下載這個附件！"));
+			// return;
+			throw new DataException("您不能下載這個附件！");
 		}
 		Upfile upfile = new UpfileDAO().getUpfile(upfileid);
 		String filepath = upfile.getFilepath();
@@ -153,9 +150,9 @@ public class Download extends HttpServlet {
 			// response);
 			// e.printStackTrace();
 			// return;
-			new AlertDispatcher(request, response).forward(new AlertBean(e));
-			return;
-
+			// new AlertDispatcher(request, response).forward(new AlertBean(e));
+			// return;
+			throw new DataException(e);
 		}
 		String filename = new String(upfile.getFilename().getBytes("Big5"),
 				"ISO8859_1");
@@ -204,11 +201,12 @@ public class Download extends HttpServlet {
 			// request.getRequestDispatcher("Message.jsp").forward(request,
 			// response);
 			// return;
-			AlertBean alert = new AlertBean();
-			alert.setType(AlertBean.Type_ERROR);
-			alert.setTitle("檔案不存在！(" + file.getPath() + ")");
-			new AlertDispatcher(request, response).forward(alert);
-			return;
+			// AlertBean alert = new AlertBean();
+			// alert.setType(AlertBean.Type_ERROR);
+			// alert.setTitle("檔案不存在！(" + file.getPath() + ")");
+			// new AlertDispatcher(request, response).forward(alert);
+			// return;
+			throw new DataException("檔案不存在！(" + file.getPath() + ")");
 		}
 		try {
 			out = response.getOutputStream();

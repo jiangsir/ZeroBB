@@ -3,63 +3,56 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="article" uri="/WEB-INF/article.tld"%>
 <%@ page isELIgnored="false"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>${initParam.TITLE}</title>
-<link href="style.css" rel="stylesheet" type="text/css" />
+<jsp:include page="CommonHead.jsp" />
+<script language="javascript">
+	jQuery(document).ready(function() {
+
+		jQuery("#touch").bind('click', function() {
+			// jQuery("#postdate").text(mytime(parseInt(${now.time})));
+
+			jQuery.ajax({
+				type : "GET",
+				url : "./Touch.api",
+				data : "articleid=" + $(this).attr("articleid"),
+				async : true,
+				timeout : 5000,
+				success : function(result) {
+					if (result == "" || result == null) {
+						result = "";
+					}
+					//jQuery("#postdate").text(result);
+					alert("順序調整成功！ (" + result + ")");
+				}
+			}); // jQusery ajax
+		});
+
+	});
+
+	function mytime(nowtime) {
+		var nowdate = new Date();
+		nowdate.setTime(nowtime);
+		return formatDate(nowdate, "y-MM-dd HH:mm:ss");
+		//jQuery("#postdate").text( formatDate( nowdate, "y-MM-dd HH:mm:ss") );
+	}
+</script>
 </head>
-<jsp:useBean id="userBean" class="jiangsir.zerobb.Beans.UserBean" />
-<jsp:useBean id="articleBean" class="jiangsir.zerobb.Beans.ArticleBean" />
+<%-- <jsp:useBean id="articleBean" class="jiangsir.zerobb.Beans.ArticleBean" />
 <jsp:setProperty name="articleBean" property="id" value="${article.id}" />
 <jsp:setProperty name="articleBean" property="session_account"
 	value="${sessionScope.session_account}" />
-<jsp:useBean id="now" class="java.util.Date" />
-<script type="text/javascript" src="./jscripts/jquery-1.2.6.min.js"></script>
-<script type="text/javascript" src="jscripts/js_date.js"></script>
-<script language="javascript">
-jQuery(document).ready(function(){
-	jQuery(":input[@type='text']:first").focus();
-	
-	jQuery("#touch").bind('click',function(){
-	   // jQuery("#postdate").text(mytime(parseInt(${now.time})));
-		
-		jQuery.ajax({
-			type: "GET",
-			url: "./Touch.api",
-			data: "articleid="+${param.id},
-			async: true,
-			timeout: 5000,
-			success: function(result){
-				if(result=="" || result==null){
-					result = "";
-				}
-				//jQuery("#postdate").text(result);
-				alert("順序調整成功！ ("+ result+")");
-			}
-		}); // jQusery ajax
-	}); 
-
-
-
-});
-
-function mytime(nowtime){
-   var nowdate = new Date();
-   nowdate.setTime(nowtime);
-   return formatDate( nowdate, "y-MM-dd HH:mm:ss");
-   //jQuery("#postdate").text( formatDate( nowdate, "y-MM-dd HH:mm:ss") );
-}
-</script>
+ --%><jsp:useBean id="now" class="java.util.Date" />
 
 <body>
 	<div id="container">
 		<!-- header -->
 		<jsp:include page="Header.jsp" />
-		<jsp:setProperty name="userBean" property="account"
-			value="${article.account}" />
 		<!--end header -->
 		<!-- main -->
 		<div id="main">
@@ -74,9 +67,10 @@ function mytime(nowtime){
 					</c:forEach>
 					<span title="${userBean.user.account}">${userBean.user.divisionName}
 					</span>
-					<c:if test="${articleBean.accessable==true}"> | <img
-							src="images/touch.png" id="touch" border="0"
-							title="碰一下，將排序在最上方" style="cursor: pointer;" /> | <a
+					<c:if
+						test="${article:isUpdatable(article, sessionScope.currentUser)}"> | <img
+							src="images/touch.png" id="touch" articleid="${article.id}"
+							border="0" title="碰一下，將排序在最上方" style="cursor: pointer;" /> | <a
 							href="./UpdateArticle?id=${article.id}"><img
 							src="images/edit18.png" alt="編輯" title="編輯" border="0" /></a> | <a
 							href="./DeleteArticle?articleid=${article.id}"><img

@@ -128,7 +128,7 @@ public class Upfile {
 	public String getINNER_FILENAME() {
 		String sub = filename.substring(filename.lastIndexOf("."));
 		return this.getArticleid() + "_" + this.getId() + "_"
-				+ new ArticleDAO().getArticle(this.getArticleid()).getAccount()
+				+ new ArticleDAO().getArticleById(this.getArticleid()).getAccount()
 				+ sub;
 	}
 

@@ -3,15 +3,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="user" uri="/WEB-INF/user.tld"%>
+
 <%@ page isELIgnored="false"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>${initParam.TITLE}</title>
-<link href="style.css" rel="stylesheet" type="text/css" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>${applicationScope.title}</title>
+<jsp:include page="CommonHead.jsp" />
 </head>
-<jsp:useBean id="userBean" class="jiangsir.zerobb.Beans.UserBean" />
 <body>
 	<div id="container">
 		<!-- header -->
@@ -20,40 +22,54 @@
 		<!-- main -->
 		<div id="main">
 			<div id="text">
-				<table width="70%" border="0" style="margin: auto; margin-top: 30px;">
-					<tr>
-						<td scope="col"	style="vertical-align: top; text-align: center; width: 20%;">
-							<img src="images/${alertBean.type}.png" width="64" height="64">
-								</th>
-								<td scope="col"
-								style="vertical-align: middle; text-align: left;"><c:forEach
-										var="resource" items="${ResourceMessage}"
-										varStatus="varstatus">
-										<fmt:message key="${fn:trim(resource)}">
-											<c:forEach var="paramitem" items="${ResourceMessage_param}"
-												varStatus="paramcount">
-												<fmt:param value="${paramitem}" />
-											</c:forEach>
-										</fmt:message>
-										<br>
-									</c:forEach>
-									<h1 style="padding-top: 10px;">${alertBean.title}</h1> <br />
-									<c:if test="${alertBean.plainText!=''}">
-										<h3>${alertBean.plainText}</h3>
-									</c:if> <c:if test="${alertBean.resourceMessage!=''}">
-										<h3>${alertBean.resourceMessage}</h3>
-									</c:if>
-									<p></p> <c:forEach var="link" items="${alertBean.links}"
-										varStatus="varstatus">
-										<c:if test="${varstatus.count!=1}">
-                |
-              </c:if>
-										<a href="${link.key}"> ${link.value} </a>
-									</c:forEach> <br />
-									</th>
-					</tr>
-				</table>
+				<fieldset
+					style="text-align: left; padding: 1em; margin: auto; width: 60%;">
+					<legend style="font-size: x-large;">${alert.type}</legend>
+					<h1>${alert.title}</h1>
+					<p></p>
+					<h2>${alert.subtitle }</h2>
+					<div>${alert.content}</div>
+					<ul>
+						<c:forEach var="list" items="${alert.list}">
+							<li>${list}</li>
+						</c:forEach>
+					</ul>
+					<ul>
+						<c:forEach var="map" items="${alert.map}">
+							<li>${map.key}: ${map.value}</li>
+						</c:forEach>
+					</ul>
+					<hr style="margin-top: 3em;" />
+					<div style="text-align: center;">
+						<c:forEach var="uri" items="${alert.uris}">
+							<a href="${uri.value}" type="button">${uri.key}</a>
+						</c:forEach>
+					</div>
+				</fieldset>
 			</div>
+			<p></p>
+			<c:if test="${user:isAdmin(sessionScope.currentUser)}">
+				<fieldset style="text-align: left; background-color: maroon;">
+					<legend>Debug: </legend>
+					<ul>
+						<c:forEach var="debug" items="${alert.debugs}">
+							<li>${debug}</li>
+						</c:forEach>
+					</ul>
+					<div>
+						<c:if test="${fn:length(alert.stacktrace)>0}">
+							<div style="text-align: left; margin-top: 1em;">
+								<h3>stacktrace:</h3>
+								<div style="font-family: monospace;">
+									<c:forEach var="stacktrace" items="${alert.stacktrace}">${stacktrace.className}.${stacktrace.methodName}(${stacktrace.fileName}:${stacktrace.lineNumber})<br />
+									</c:forEach>
+								</div>
+							</div>
+						</c:if>
+					</div>
+				</fieldset>
+			</c:if>
+			<p></p>
 		</div>
 		<!-- end main -->
 		<!-- footer -->

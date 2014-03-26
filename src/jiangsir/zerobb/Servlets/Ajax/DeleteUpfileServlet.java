@@ -41,7 +41,7 @@ public class DeleteUpfileServlet extends HttpServlet {
 				.getAttribute("session_account");
 		int upfileid = Integer.parseInt(request.getParameter("upfileid"));
 		upfile = new UpfileDAO().getUpfile(upfileid);
-		article = new ArticleDAO().getArticle(upfile.getArticleid());
+		article = new ArticleDAO().getArticleById(upfile.getArticleid());
 		System.out.println("session_account=" + session_account
 				+ ", article.account=" + article.getAccount());
 

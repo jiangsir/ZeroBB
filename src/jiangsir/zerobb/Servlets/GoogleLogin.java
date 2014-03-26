@@ -75,16 +75,18 @@ public class GoogleLogin extends HttpServlet {
 			// qx 不能用 Dispatcher 的方式, 如果登入錯誤,會照成無線循環,無法結束
 			// 因為 method 一直維持 POST, 就會一直進來 doPost 方法
 			// 只能用 redirect 的方式, 因此 LoginMessage 就只能由 session傳遞
-			response.sendRedirect("Login");
+			response.sendRedirect("."
+					+ LoginServlet.class.getAnnotation(WebServlet.class)
+							.urlPatterns()[0]);
 			return;
 		}
-		jiangsir.zerobb.Tables.User user = new UserDAO().getUser(account);
+		jiangsir.zerobb.Tables.User user = new UserDAO().getUserByAccount(account);
 		session.setAttribute("Logintime", ENV.getNow());
 		session.setAttribute("sessionid", session.getId());
-		session.setAttribute("UserObject", user);
-		session.setAttribute("session_account", user.getAccount());
-		session.setAttribute("session_usergroup", user.getUsergroup());
-		session.setAttribute("session_privilege", user.getPrivilege());
+		// session.setAttribute("UserObject", user);
+		// session.setAttribute("session_account", user.getAccount());
+		// session.setAttribute("session_usergroup", user.getUsergroup());
+		// session.setAttribute("session_privilege", user.getPrivilege());
 		session.setAttribute("Locale", request.getLocale().toString());
 		session.setAttribute("passed", "true");
 		response.sendRedirect(Utils.CurrentPage(request));

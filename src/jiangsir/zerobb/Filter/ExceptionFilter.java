@@ -8,7 +8,6 @@ import javax.servlet.http.*;
 import jiangsir.zerobb.DAOs.*;
 import jiangsir.zerobb.Tables.Log;
 
-@WebFilter(urlPatterns = { "/*" })
 public class ExceptionFilter implements Filter {
 
 	public void init(FilterConfig config) throws ServletException {

@@ -9,7 +9,7 @@ package jiangsir.zerobb.Exceptions;
  * @author nknush-001
  * 
  */
-public class DataException extends Exception {
+public class DataException extends RuntimeException {
 
 	/**
 	 * 

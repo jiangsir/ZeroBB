@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import jiangsir.zerobb.DAOs.UpfileDAO;
+import jiangsir.zerobb.DAOs.UserDAO;
 import jiangsir.zerobb.Exceptions.DataException;
 
 /**
@@ -207,6 +208,34 @@ public class Article {
 
 	public ArrayList<Upfile> getUpfiles() {
 		return new UpfileDAO().getUpfiles(id);
+	}
+
+	public User getUser() {
+		return new UserDAO().getUserByAccount(account);
+	}
+
+	public boolean isNullArticle() {
+		Article newarticle = new Article();
+		if (this.getId().equals(newarticle.getId())
+				&& this.getAccount().equals(newarticle.getAccount())
+				&& this.getTitle().equals(newarticle.getTitle())) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isUpdatable(CurrentUser currentUser) throws DataException {
+		if (currentUser == null || currentUser.isNullUser()) {
+			throw new DataException("您可能尚未登入。");
+		}
+		if (this.isNullArticle()) {
+			throw new DataException("找不到這個文章！");
+		}
+		if ((currentUser.getRole() == User.ROLE.ADMIN || currentUser
+				.getAccount().equals(getAccount()))) {
+			return true;
+		}
+		return false;
 	}
 
 }

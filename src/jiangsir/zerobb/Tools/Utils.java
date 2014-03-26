@@ -803,37 +803,37 @@ public class Utils {
 		return s.matches("[\\d]+");
 	}
 
-	/**
-	 * 強迫所有 Online User logout
-	 * 
-	 */
-	public static void forcedLogout() {
-		Hashtable OnlineUsers = (Hashtable) ENV.context
-				.getAttribute("OnlineUsers");
-		Enumeration keys = OnlineUsers.keys();
-		while (keys.hasMoreElements()) {
-			String key = (String) keys.nextElement();
-			HttpSession session = (HttpSession) OnlineUsers.get(key);
-			String session_account = (String) session
-					.getAttribute("session_account");
-			String session_usergroup = (String) session
-					.getAttribute("session_usergroup");
-			// User user = new User((String) session
-			// .getAttribute("session_account"));
-			// TODO 應該還是要全部踢出，否則後續操作容易出問題如: session 的 User 就沒辦法復原
-			if (!"GroupAdmin".equals(session_usergroup)) {
-				// 20081125 現在已經不需要發簡訊了
-				// IMessageDAO imessage = new IMessageDAO(ENV.context);
-				// imessage.sendMessage("admin", session_account, "[系統通知]
-				// 系統維護通知",
-				// "由於進行維護及更新，系統必須暫時關閉，因此必須強制將您登出。\n不便之處敬請包含。");
-				// System.out.println(ENV.logHeader() + "account= "
-				// + session_account + " was kicked out, key=" + key);
-
-				new UserDAO().getUser(session_account).Logout(session);
-			}
-		}
-	}
+	// /**
+	// * 強迫所有 Online User logout
+	// *
+	// */
+	// public static void forcedLogout() {
+	// Hashtable OnlineUsers = (Hashtable) ENV.context
+	// .getAttribute("OnlineUsers");
+	// Enumeration keys = OnlineUsers.keys();
+	// while (keys.hasMoreElements()) {
+	// String key = (String) keys.nextElement();
+	// HttpSession session = (HttpSession) OnlineUsers.get(key);
+	// String session_account = (String) session
+	// .getAttribute("session_account");
+	// String session_usergroup = (String) session
+	// .getAttribute("session_usergroup");
+	// // User user = new User((String) session
+	// // .getAttribute("session_account"));
+	// // TODO 應該還是要全部踢出，否則後續操作容易出問題如: session 的 User 就沒辦法復原
+	// if (!"GroupAdmin".equals(session_usergroup)) {
+	// // 20081125 現在已經不需要發簡訊了
+	// // IMessageDAO imessage = new IMessageDAO(ENV.context);
+	// // imessage.sendMessage("admin", session_account, "[系統通知]
+	// // 系統維護通知",
+	// // "由於進行維護及更新，系統必須暫時關閉，因此必須強制將您登出。\n不便之處敬請包含。");
+	// // System.out.println(ENV.logHeader() + "account= "
+	// // + session_account + " was kicked out, key=" + key);
+	//
+	// new UserDAO().getUser(session_account).Logout(session);
+	// }
+	// }
+	// }
 
 	public static String printStackTrace(Exception e) {
 		if (e == null) {

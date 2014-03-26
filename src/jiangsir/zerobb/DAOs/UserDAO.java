@@ -9,96 +9,132 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+
+import jiangsir.zerobb.Exceptions.DataException;
+import jiangsir.zerobb.Factories.UserFactory;
 import jiangsir.zerobb.Tables.User;
 
 /**
  * @author jiangsir
  * 
  */
-public class UserDAO extends GeneralDAO<User> {
+public class UserDAO extends SuperDAO<User> {
 
-    /**
-     * 取得所有 user
-     * 
-     * @return
-     */
-    public ArrayList<User> getUsers() {
-	String sql = "SELECT * FROM users WHERE visible=true";
-	return this.executeQuery(sql, User.class);
-    }
-
-    public User getUser(int userid) {
-	String sql = "SELECT * FROM users WHERE id=" + userid;
-	for (User user : this.executeQuery(sql, User.class)) {
-	    return user;
+	/**
+	 * 取得所有 user
+	 * 
+	 * @return
+	 */
+	public ArrayList<User> getUsers() {
+		String sql = "SELECT * FROM users WHERE visible=true";
+		try {
+			PreparedStatement pstmt = this.getConnection()
+					.prepareStatement(sql);
+			return this.executeQuery(pstmt, User.class);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return new ArrayList<User>();
 	}
-	return new User();
-    }
 
-    public User getUser(String account) {
-	if (account == null) {
-	    return null;
+	public User getUserById(int userid) {
+		String sql = "SELECT * FROM users WHERE id=?";
+		try {
+			PreparedStatement pstmt = this.getConnection()
+					.prepareStatement(sql);
+			pstmt.setInt(1, userid);
+			for (User user : this.executeQuery(pstmt, User.class)) {
+				return user;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return UserFactory.getNullUser();
 	}
-	String sql = "SELECT * FROM users WHERE account=?";
-	try {
-	    PreparedStatement pstmt = this.getConnection()
-		    .prepareStatement(sql);
-	    pstmt.setString(1, account);
-	    for (User user : this.executeQuery(pstmt, User.class)) {
-		return user;
-	    }
-	} catch (SQLException e) {
-	    e.printStackTrace();
+
+	public User getUserByAccount(String account) {
+		if (account == null) {
+			return null;
+		}
+		String sql = "SELECT * FROM users WHERE account=?";
+		try {
+			PreparedStatement pstmt = this.getConnection()
+					.prepareStatement(sql);
+			pstmt.setString(1, account);
+			for (User user : this.executeQuery(pstmt, User.class)) {
+				return user;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return UserFactory.getNullUser();
 	}
-	return new User();
-    }
 
-    public boolean isUser(String account, String passwd) {
-	String sql = "SELECT * FROM users WHERE account=? AND passwd=?";
-	try {
-	    PreparedStatement pstmt = this.getConnection()
-		    .prepareStatement(sql);
-	    pstmt.setString(1, account);
-	    pstmt.setString(2, passwd);
-	    for (User user : this.executeQuery(pstmt, User.class)) {
-		return true;
-	    }
-	    pstmt.close();
-	} catch (SQLException e) {
-	    e.printStackTrace();
+	/**
+	 * 用 account, passwd 取得 User, 找不到的話，則回傳 NullUser
+	 * 
+	 * @param account
+	 * @param passwd
+	 * @return
+	 */
+	public User getUserByAccountPasswd(String account, String passwd) {
+		String sql = "SELECT * FROM users WHERE account=? AND passwd=?";
+		try {
+			PreparedStatement pstmt = this.getConnection()
+					.prepareStatement(sql);
+			pstmt.setString(1, account);
+			pstmt.setString(2, passwd);
+			for (User user : this.executeQuery(pstmt, User.class)) {
+				return user;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return UserFactory.getNullUser();
 	}
-	return false;
-    }
 
-    public ArrayList<User> getUserByDivision(String division) {
-	String sql = "SELECT * FROM users WHERE division='" + division + "'";
-	return this.executeQuery(sql, User.class);
-    }
+	// public boolean isUser(String account, String passwd) {
+	// return this.getUserByAccountPasswd(account, passwd).isNullUser();
+	// }
 
-    public LinkedHashMap<String, String> getDivisions() {
-	LinkedHashMap<String, String> divisions = new LinkedHashMap<String, String>();
-	ArrayList<User> users = this.getUsers();
-	for (User user : users) {
-	    divisions.put(user.getDivision(), user.getDivisionName());
+	public ArrayList<User> getUserByDivision(String division) {
+		String sql = "SELECT * FROM users WHERE division=?";
+		PreparedStatement pstmt;
+		try {
+			pstmt = this.getConnection().prepareStatement(sql);
+			pstmt.setString(1, division);
+			return this.executeQuery(pstmt, User.class);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);
+		}
 	}
-	return divisions;
-    }
 
-    @Override
-    public int insert(User t) {
-	// TODO Auto-generated method stub
-	return 0;
-    }
+	public LinkedHashMap<String, String> getDivisions() {
+		LinkedHashMap<String, String> divisions = new LinkedHashMap<String, String>();
+		ArrayList<User> users = this.getUsers();
+		for (User user : users) {
+			divisions.put(user.getDivision(), user.getDivisionName());
+		}
+		return divisions;
+	}
 
-    @Override
-    public int update(User t) {
-	// TODO Auto-generated method stub
-	return 0;
-    }
+	@Override
+	public int insert(User t) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
-    @Override
-    public boolean delete(int i) {
-	// TODO Auto-generated method stub
-	return false;
-    }
+	@Override
+	public int update(User t) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	protected boolean delete(long i) throws SQLException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

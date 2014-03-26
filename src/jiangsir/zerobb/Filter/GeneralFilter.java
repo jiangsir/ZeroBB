@@ -4,11 +4,9 @@ import java.io.IOException;
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.*;
-
-import jiangsir.zerobb.Beans.AlertBean;
 import jiangsir.zerobb.DAOs.LogDAO;
+import jiangsir.zerobb.Exceptions.DataException;
 import jiangsir.zerobb.Tables.Log;
-import jiangsir.zerobb.Tools.AlertDispatcher;
 import jiangsir.zerobb.Tools.ENV;
 import jiangsir.zerobb.Tools.MyProperties;
 
@@ -71,9 +69,11 @@ public class GeneralFilter implements Filter {
 			// response);
 			// return;
 
-			new AlertDispatcher(request, response).forward(new AlertBean(myprop
-					.getProperty("IS_SYSTEMOPEN")));
-			return;
+			// new AlertDispatcher(request, response).forward(new
+			// AlertBean(myprop
+			// .getProperty("IS_SYSTEMOPEN")));
+			// return;
+			throw new DataException(myprop.getProperty("IS_SYSTEMOPEN"));
 		}
 
 		// Runtime runtime = Runtime.getRuntime();

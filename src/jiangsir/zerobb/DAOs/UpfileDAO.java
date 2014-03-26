@@ -18,7 +18,6 @@ import jiangsir.zerobb.Tables.Article;
 import jiangsir.zerobb.Tables.Log;
 import jiangsir.zerobb.Tables.Upfile;
 import jiangsir.zerobb.Tables.User;
-import jiangsir.zerobb.Tools.ENV;
 
 /**
  * @author jiangsir
@@ -35,8 +34,8 @@ public class UpfileDAO extends GeneralDAO<Upfile> {
 			new LogDAO().insert(new Log(this.getClass(), e));
 			e.printStackTrace();
 		}
-		System.out.println(ENV.logHeader() + "PSTMT_SQL=" + pstmt.toString()
-				+ " 共耗時 " + (System.currentTimeMillis() - starttime) + " ms");
+		System.out.println("PSTMT_SQL=" + pstmt.toString() + " 共耗時 "
+				+ (System.currentTimeMillis() - starttime) + " ms");
 		return result;
 	}
 

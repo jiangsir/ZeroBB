@@ -15,6 +15,7 @@ import java.util.Calendar;
 
 import jiangsir.zerobb.Beans.ArticleBean;
 import jiangsir.zerobb.Exceptions.DataException;
+import jiangsir.zerobb.Factories.ArticleFactory;
 import jiangsir.zerobb.Tables.Article;
 import jiangsir.zerobb.Tables.Article_Tag;
 import jiangsir.zerobb.Tables.Log;
@@ -210,7 +211,7 @@ public class ArticleDAO extends GeneralDAO<Article> {
 		ArrayList<Article> articles = new ArrayList<Article>();
 		for (Article_Tag tag : new Article_TagDAO().getArticle_Tags(tagname,
 				page, pagesize)) {
-			Article article = this.getArticle(tag.getArticleid());
+			Article article = this.getArticleById(tag.getArticleid());
 			if (article != null) {
 				articles.add(article);
 			}
@@ -312,12 +313,19 @@ public class ArticleDAO extends GeneralDAO<Article> {
 	// this.execute(sql);
 	// }
 
-	public Article getArticle(int articleid) {
+	public Article getArticleById(int articleid) {
 		String sql = "SELECT * FROM articles WHERE id=" + articleid;
 		for (Article article : executeQuery(sql, Article.class)) {
 			return article;
 		}
-		return null;
+		return ArticleFactory.getNullArticle();
+	}
+
+	public Article getArticleById(String articleid) {
+		if (articleid == null || !articleid.matches("[0-9]+")) {
+			return ArticleFactory.getNullArticle();
+		}
+		return this.getArticleById(Integer.parseInt(articleid));
 	}
 
 	/**
@@ -326,8 +334,7 @@ public class ArticleDAO extends GeneralDAO<Article> {
 	 * @return
 	 * @throws DataException
 	 */
-	public Article getArticle(User session_user, int articleid)
-			throws DataException {
+	public Article getArticle(User user, int articleid) throws DataException {
 		Article article = new Article();
 		String sql = "SELECT * FROM articles WHERE id=" + articleid;
 
@@ -336,7 +343,7 @@ public class ArticleDAO extends GeneralDAO<Article> {
 			break;
 		}
 
-		if (session_user == null) {
+		if (user == null) {
 			if (article.getVisible() == false) {
 				throw new DataException("本公告已設定為不顯示！");
 			}
@@ -346,7 +353,7 @@ public class ArticleDAO extends GeneralDAO<Article> {
 			if (article.getPostdate().after(Calendar.getInstance().getTime())) {
 				throw new DataException("本公告尚未發佈。");
 			}
-		} else if (session_user.getUsergroup().equals(User.GROUP_USER)) {
+		} else if (user.getRole() == User.ROLE.USER) {
 			if (article.getVisible() == false) {
 				throw new DataException("本公告已設定為不顯示！");
 			}

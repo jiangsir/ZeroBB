@@ -5,19 +5,15 @@ import java.util.Enumeration;
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
-
-import jiangsir.zerobb.Beans.AlertBean;
-import jiangsir.zerobb.Tools.AlertDispatcher;
+import jiangsir.zerobb.Exceptions.DataException;
 import jiangsir.zerobb.Tools.ENV;
 
-@WebServlet(urlPatterns = { "/ShowSessions" }, name = "ShowSessions.do")
-public class ShowSessions extends HttpServlet {
+@WebServlet(urlPatterns = { "/ShowSessions" })
+public class ShowSessionsServlet extends HttpServlet {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -4136309018469803793L;
-	public static String urlpattern = ShowSessions.class.getAnnotation(
-			WebServlet.class).urlPatterns()[0];
 
 	@Override
 	public void init() throws ServletException {
@@ -48,10 +44,10 @@ public class ShowSessions extends HttpServlet {
 		// request.setAttribute("message", message);
 		// request.getRequestDispatcher("/Message.jsp").forward(request,
 		// response);
-		AlertBean alert = new AlertBean();
-		alert.setTitle("列出所有的 sessions");
-		alert.setPlainText(text);
-		new AlertDispatcher(request, response).forward(alert);
-		return;
+		// AlertBean alert = new AlertBean();
+		// alert.setTitle("列出所有的 sessions");
+		// alert.setPlainText(text);
+		// new AlertDispatcher(request, response).forward(alert);
+		throw new DataException(text);
 	}
 }

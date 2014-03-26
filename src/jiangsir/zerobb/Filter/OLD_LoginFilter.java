@@ -5,20 +5,18 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import jiangsir.zerobb.Beans.AlertBean;
 import jiangsir.zerobb.DAOs.UserDAO;
-import jiangsir.zerobb.Servlets.Login;
+import jiangsir.zerobb.Exceptions.DataException;
+import jiangsir.zerobb.Servlets.LoginServlet;
 import jiangsir.zerobb.Tables.User;
-import jiangsir.zerobb.Tools.AlertDispatcher;
 import jiangsir.zerobb.Tools.ENV;
 import jiangsir.zerobb.Tools.Utils;
 
-@WebFilter(servletNames = { "Admin.do", "InsertArticle.do", "UpdateArticle.do",
-		"RemoveUpfile.ajax", "UpdateOldfilepath.ajax", "DeleteArticle.do",
-		"Touch.api" })
-public class LoginFilter implements Filter {
+public class OLD_LoginFilter implements Filter {
 
 	private String FilterName;
 
@@ -36,7 +34,7 @@ public class LoginFilter implements Filter {
 
 		HttpSession session = request.getSession(false);
 		// qx 測試在 filter 內部再來過濾 如 regex 的判斷
-		String requestURI = request.getRequestURI();
+		// String requestURI = request.getRequestURI();
 		String servletPath = request.getServletPath();
 		// String urlpattern = requestURI
 		// .substring(requestURI.lastIndexOf('/') + 1);
@@ -64,10 +62,10 @@ public class LoginFilter implements Filter {
 				// request.setAttribute("message", message);
 				// request.getRequestDispatcher("Message.jsp").forward(request,
 				// response);
-				new AlertDispatcher(request, response).forward(new AlertBean(
-						"您沒有權限處理!!"));
-				return;
-
+				// new AlertDispatcher(request, response).forward(new AlertBean(
+				// "您沒有權限處理!!"));
+				// return;
+				throw new DataException("您沒有權限處理!!");
 			} else if ("allowed".equals(parseprivilege)) {
 				Class<?> servletclass;
 				boolean isAccessible = false;
@@ -90,9 +88,10 @@ public class LoginFilter implements Filter {
 					// request.setAttribute("message", message);
 					// request.getRequestDispatcher("Message.jsp").forward(
 					// request, response);
-					new AlertDispatcher(request, response)
-							.forward(new AlertBean(e));
-					return;
+					// new AlertDispatcher(request, response)
+					// .forward(new AlertBean(e));
+					// return;
+					throw new DataException(e);
 
 				} catch (IllegalArgumentException e) {
 					e.printStackTrace();
@@ -106,9 +105,10 @@ public class LoginFilter implements Filter {
 					// request.setAttribute("message", message);
 					// request.getRequestDispatcher("Message.jsp").forward(
 					// request, response);
-					new AlertDispatcher(request, response)
-							.forward(new AlertBean(e));
-					return;
+					// new AlertDispatcher(request, response)
+					// .forward(new AlertBean(e));
+					// return;
+					throw new DataException(e);
 				} catch (InstantiationException e) {
 					e.printStackTrace();
 				}
@@ -118,7 +118,8 @@ public class LoginFilter implements Filter {
 
 				return;
 			} else if ("passing".equals(passed)) {
-				if (servletPath.equals(Login.urlpattern)) {
+				if (servletPath.equals(LoginServlet.class.getAnnotation(
+						WebServlet.class).urlPatterns()[0])) {
 					chain.doFilter(request, response);
 					return;
 				}
@@ -130,7 +131,7 @@ public class LoginFilter implements Filter {
 						.getAttribute("session_account");
 				User user = (User) session.getAttribute("UserObject");
 				if (user == null) {
-					user = new UserDAO().getUser(session_account);
+					user = new UserDAO().getUserByAccount(session_account);
 				}
 				System.out.println(ENV.logHeader() + "UserObject=" + user);
 				System.out.println(ENV.logHeader() + "privilege=" + privilege);
@@ -160,8 +161,9 @@ public class LoginFilter implements Filter {
 			servletPath += "?" + request.getQueryString();
 		}
 		session.setAttribute("OriginalURI", servletPath);
-		request.getRequestDispatcher(Login.urlpattern).forward(request,
-				response);
+		request.getRequestDispatcher(
+				LoginServlet.class.getAnnotation(WebServlet.class)
+						.urlPatterns()[0]).forward(request, response);
 	}
 
 	public void destroy() {

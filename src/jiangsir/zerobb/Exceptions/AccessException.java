@@ -9,7 +9,7 @@ package jiangsir.zerobb.Exceptions;
  * @author nknush-001
  * 
  */
-public class AccessException extends Exception {
+public class AccessException extends RuntimeException {
 
 	/**
 	 * 
@@ -21,7 +21,11 @@ public class AccessException extends Exception {
 	}
 
 	public AccessException(Throwable cause) {
-		super(cause.getLocalizedMessage(), cause);
+		super(cause);
+	}
+
+	public AccessException(String title, Throwable cause) {
+		super(title, cause);
 	}
 
 	public AccessException(AccessCause cause) {
@@ -29,13 +33,13 @@ public class AccessException extends Exception {
 				cause);
 	}
 
-	/**
-	 * @param string
-	 */
-	public AccessException(String session_account, String string) {
-		super(string);
-		// Logger logger = Logger.getLogger(this.getClass().getName());
-		// logger.log(Level.WARNING, "ZjException: " + string);
-	}
+	// /**
+	// * @param string
+	// */
+	// public AccessException(String session_account, String string) {
+	// super(string);
+	// // Logger logger = Logger.getLogger(this.getClass().getName());
+	// // logger.log(Level.WARNING, "ZjException: " + string);
+	// }
 
 }

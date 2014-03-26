@@ -1,6 +1,6 @@
 package jiangsir.zerobb.Tables;
 
-import javax.servlet.http.HttpSession;
+import jiangsir.zerobb.Annotations.Persistent;
 import jiangsir.zerobb.Exceptions.DataException;
 import jiangsir.zerobb.Tools.ENV;
 
@@ -15,22 +15,73 @@ import jiangsir.zerobb.Tools.ENV;
  * 
  */
 public class User {
+	public enum ROLE {
+		ADMIN, // 管理權限
+		MANAGER, // 一般管理員
+		USER, // 一般使用者
+		GUEST; // 訪客，或未登入者
+	}
 
+	public enum DIVISION {
+		教務處, //
+		學務處, //
+		總務處, //
+		輔導室, //
+		人事室, //
+		會計室, //
+		圖資中心, //
+		註冊組, //
+		設備組, //
+		健康中心, //
+		公文公告區, //
+		資訊組, //
+		教學組, //
+		學務處衛保組, //
+		教師研習, //
+		學務處榮譽榜, //
+		校長室, //
+		校園新聞, //
+		榮譽榜, //
+		校友會;//
+	}
+
+	@Persistent(name = "id")
 	private Integer id = 0;
+	@Persistent(name = "account")
 	private String account = "";
+	@Persistent(name = "name")
 	private String name = "";
+	@Persistent(name = "division")
 	private String division = "";
-	public static String GROUP_USER = "GroupUser";
-	public static String GROUP_ADMIN = "GroupAdmin";
-	private String usergroup = "GroupUser";
+	@Persistent(name = "role")
+	private ROLE role = ROLE.GUEST;
+
+	// public static String GROUP_USER = "GroupUser";
+	// public static String GROUP_ADMIN = "GroupAdmin";
+	// private String usergroup = "GroupUser";
+
+	@Persistent(name = "passwd")
 	private String passwd = "";
+	@Persistent(name = "email")
 	private String email = "";
+	@Persistent(name = "homepage")
 	private String homepage = "";
+	@Persistent(name = "description")
 	private String description = "";
+	@Persistent(name = "headline")
 	private Boolean headline = false;
+	@Persistent(name = "visible")
 	private Boolean visible = true;
 
 	public User() {
+	}
+
+	public boolean isNullUser() {
+		if (this.getId().equals(new User().getId())
+				&& this.getAccount().equals(new User().getAccount())) {
+			return true;
+		}
+		return false;
 	}
 
 	public Integer getId() {
@@ -124,42 +175,41 @@ public class User {
 		this.visible = visible;
 	}
 
-	public String getUsergroup() {
-		return usergroup;
+	// public String getUsergroup() {
+	// return usergroup;
+	// }
+	//
+	// public void setUsergroup(String usergroup) {
+	// this.usergroup = usergroup;
+	// }
+
+	// /**
+	// * 這個 privilege 結合了 Group 裡的權限加上 extraprvilege
+	// *
+	// * @return
+	// */
+	// public String getPrivilege() {
+	// return ENV.context.getInitParameter(usergroup);
+	// }
+
+	public ROLE[] getRoles() {
+		return ROLE.values();
 	}
 
-	public void setUsergroup(String usergroup) {
-		this.usergroup = usergroup;
+	public ROLE getRole() {
+		return role;
 	}
 
-	/**
-	 * 登出相關動作, 包含 session 逾時也執行 doLogout <br>
-	 */
-	public void Logout(HttpSession session) {
-
-		session.invalidate();
+	public void setRole(ROLE role) {
+		this.role = role;
 	}
 
-	/**
-	 *
-	 *
-	 */
-	public static void relogin(User user, HttpSession session) {
-		// 在 context restart 後，上線人數會歸零，這時可以透過其他 servlet 讓這些人慢慢重新加入
-		session.setAttribute("session_account", user.getAccount());
-		session.setAttribute("session_usergroup", user.getUsergroup());
-		session.setAttribute("passed", "true");
-		session.setAttribute("UserObject", user);
-		// ENV.OnlineUsers.put(session.getId(), session);
-	}
-
-	/**
-	 * 這個 privilege 結合了 Group 裡的權限加上 extraprvilege
-	 * 
-	 * @return
-	 */
-	public String getPrivilege() {
-		return ENV.context.getInitParameter(usergroup);
+	public void setRole(String role) {
+		try {
+			this.setRole(ROLE.valueOf(role));
+		} catch (Exception e) {
+			throw new DataException("角色不存在！" + e.getLocalizedMessage());
+		}
 	}
 
 }

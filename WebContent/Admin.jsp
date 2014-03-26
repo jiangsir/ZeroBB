@@ -11,7 +11,6 @@
 <title>${initParam.TITLE}</title>
 <link href="style.css" rel="stylesheet" type="text/css" />
 </head>
-<jsp:useBean id="userBean" class="jiangsir.zerobb.Beans.UserBean" />
 <body>
 	<div id="container">
 		<!-- header -->
@@ -62,7 +61,7 @@
 				<form id="form1" name="form1" method="post" action="">
 					選擇： <select name="select">
 						<option>請選擇...</option>
-						<c:forEach var="user" items="${userBean.users}">
+						<c:forEach var="user" items="${users}">
 							<option value="${user.id}">${user.division}</option>
 						</c:forEach>
 					</select>
@@ -77,15 +76,13 @@
 						<th>操作</th>
 					</tr>
 					<c:forEach var="article" items="${articles}">
-						<jsp:setProperty name="userBean" property="account"
-							value="${article.account}" />
 						<tr>
 							<td>${article.id}</td>
 							<td><a href="./ShowArticle?id=${article.id}">${article.title}</a>
 								<c:forEach var="upfile" items="${article.upfiles}">
 									<img src="images/paperclip.png" />
 								</c:forEach></td>
-							<td>${userBean.user.division}</td>
+							<td>${article.user.division}</td>
 							<td><fmt:formatDate value="${article.postdate}"
 									pattern="yyyy-MM-dd HH:mm:ss" /></td>
 							<td>${article.hitnum}</td>

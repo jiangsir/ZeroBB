@@ -6,8 +6,7 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-import jiangsir.zerobb.Beans.AlertBean;
-import jiangsir.zerobb.Beans.UserBean;
+import jiangsir.zerobb.Annotations.RoleSetting;
 import jiangsir.zerobb.DAOs.ArticleDAO;
 import jiangsir.zerobb.DAOs.Article_TagDAO;
 import jiangsir.zerobb.DAOs.TagDAO;
@@ -15,24 +14,27 @@ import jiangsir.zerobb.DAOs.UpfileDAO;
 import jiangsir.zerobb.Exceptions.AccessException;
 import jiangsir.zerobb.Exceptions.DataException;
 import jiangsir.zerobb.Interfaces.IAccessible;
+import jiangsir.zerobb.Scopes.SessionScope;
 import jiangsir.zerobb.Tables.Article;
 import jiangsir.zerobb.Tables.Article_Tag;
+import jiangsir.zerobb.Tables.CurrentUser;
 import jiangsir.zerobb.Tables.Upfile;
-import jiangsir.zerobb.Tools.AlertDispatcher;
 import jiangsir.zerobb.Tools.ENV;
 import jiangsir.zerobb.Tools.FileUploader;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 
-@WebServlet(urlPatterns = { "/InsertArticle" }, name = "InsertArticle.do")
+@WebServlet(urlPatterns = { "/InsertArticle" })
+@RoleSetting
 public class InsertArticle extends HttpServlet implements IAccessible {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6375120086269725826L;
-	public static String urlpattern = InsertArticle.class.getAnnotation(
-			WebServlet.class).urlPatterns()[0];
+
+	// public static String urlpattern = InsertArticle.class.getAnnotation(
+	// WebServlet.class).urlPatterns()[0];
 
 	@Override
 	public void init() throws ServletException {
@@ -57,10 +59,10 @@ public class InsertArticle extends HttpServlet implements IAccessible {
 			HttpServletResponse response) throws ServletException, IOException {
 		request.setAttribute("article", new Article());
 		request.setAttribute("tags", new TagDAO().getTags());
-		HttpSession session = request.getSession(false);
-		String session_account = (String) session
-				.getAttribute("session_account");
-		request.setAttribute("userBean", new UserBean(session_account));
+		// HttpSession session = request.getSession(false);
+		// String session_account = (String) session
+		// .getAttribute("session_account");
+		// request.setAttribute("userBean", new UserBean(session_account));
 		request.getRequestDispatcher("InsertArticle.jsp").forward(request,
 				response);
 	}
@@ -69,8 +71,9 @@ public class InsertArticle extends HttpServlet implements IAccessible {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
-		String session_account = (String) session
-				.getAttribute("session_account");
+		// String session_account = (String) session
+		// .getAttribute("session_account");
+		CurrentUser currentUser = new SessionScope(session).getCurrentUser();
 		// Uploader uploader = new Uploader(request, response);
 		FileUploader uploader = new FileUploader();
 		try {
@@ -79,7 +82,7 @@ public class InsertArticle extends HttpServlet implements IAccessible {
 			e.printStackTrace();
 		}
 		Article newarticle = new Article();
-		newarticle.setAccount(session_account);
+		newarticle.setAccount(currentUser.getAccount());
 		newarticle.setInfo(uploader.getParameter("info"));
 		newarticle.setType(uploader.getParameter("type"));
 		newarticle.setHyperlink(uploader.getParameter("hyperlink"));
@@ -87,15 +90,9 @@ public class InsertArticle extends HttpServlet implements IAccessible {
 		// uploader.getParameter("postdate")).getTime()));
 		// newarticle.setOutdate(new Date(Utils.parseDatetime(
 		// uploader.getParameter("outdate")).getTime()));
-		try {
-			newarticle.setTitle(uploader.getParameter("title"));
-			newarticle.setPostdate(uploader.getParameter("postdate"));
-			newarticle.setOutdate(uploader.getParameter("outdate"));
-		} catch (DataException e) {
-			e.printStackTrace();
-			new AlertDispatcher(request, response).forward(new AlertBean(e));
-			return;
-		}
+		newarticle.setTitle(uploader.getParameter("title"));
+		newarticle.setPostdate(uploader.getParameter("postdate"));
+		newarticle.setOutdate(uploader.getParameter("outdate"));
 		newarticle.setContent(uploader.getParameter("content"));
 		int articleid;
 		try {
@@ -137,9 +134,9 @@ public class InsertArticle extends HttpServlet implements IAccessible {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new DataException(e);
 		}
 
-		response.sendRedirect("./?account=" + session_account);
+		response.sendRedirect("./?account=" + currentUser.getAccount());
 	}
-
 }

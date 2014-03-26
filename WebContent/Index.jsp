@@ -9,8 +9,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>${initParam.TITLE}</title>
-<link href="style.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="./jscripts/jquery-1.2.6.min.js"></script>
+<jsp:include page="CommonHead.jsp" />
+
 <script language="javascript">
 	jQuery(document).ready(function() {
 		$("#division").change(function() { //事件發生
@@ -21,7 +21,6 @@
 </script>
 </head>
 <jsp:useBean id="now" class="java.util.Date" />
-<jsp:useBean id="userBean" class="jiangsir.zerobb.Beans.UserBean" />
 <body>
 	<div id="container">
 		<!-- header -->
@@ -75,8 +74,6 @@
 						<th>點閱數</th>
 					</tr>
 					<c:forEach var="article" items="${articles}">
-						<jsp:setProperty name="userBean" property="account"
-							value="${article.account}" />
 						<tr>
 							<td>${article.id}</td>
 							<td>[${article.info}] <a
@@ -86,7 +83,7 @@
 										title="${upfile.filename}"><img src="images/paperclip.png"
 										border="0" /></a>
 								</c:forEach></td>
-							<td>${userBean.user.divisionName}</td>
+							<td>${article.user.divisionName}</td>
 							<td style="text-align: right; font-size: 10px;"><fmt:formatDate
 									value="${article.postdate}" pattern="yyyy-MM-dd HH:mm" /></td>
 							<td style="text-align: left"><c:if

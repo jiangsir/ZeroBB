@@ -5,11 +5,15 @@ import java.sql.SQLException;
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
+
 import jiangsir.zerobb.DAOs.ArticleDAO;
 import jiangsir.zerobb.DAOs.Article_TagDAO;
 import jiangsir.zerobb.Exceptions.AccessException;
+import jiangsir.zerobb.Exceptions.DataException;
 import jiangsir.zerobb.Interfaces.IAccessible;
+import jiangsir.zerobb.Scopes.SessionScope;
 import jiangsir.zerobb.Tables.Article;
+import jiangsir.zerobb.Tables.CurrentUser;
 import jiangsir.zerobb.Tools.ENV;
 
 @WebServlet(urlPatterns = { "/DeleteUpdate" }, name = "DeleteUpdate.do")
@@ -39,16 +43,19 @@ public class DeleteArticle extends HttpServlet implements IAccessible {
 	public boolean isAccessible(HttpServletRequest request)
 			throws AccessException {
 		HttpSession session = request.getSession(false);
-		String session_account = (String) session
-				.getAttribute("session_account");
-		int articleid = Integer.parseInt(request.getParameter("articleid"));
-		this.article = new ArticleDAO().getArticle(articleid);
-		if (!"".equals(session_account)
-				&& ("admin".equals(session_account) || article.getAccount()
-						.equals(session_account))) {
-			return true;
+		CurrentUser currentUser = new SessionScope(session).getCurrentUser();
+		Article article = new ArticleDAO().getArticleById(request
+				.getParameter("articleid"));
+		try {
+			return article.isUpdatable(currentUser);
+		} catch (DataException e) {
+			e.printStackTrace();
+
+			// throw new AccessException(currentUser.getAccount(), "您("
+			// + currentUser.getAccount() + ") 不能編輯本題目。");
+			throw new AccessException("您(" + currentUser.getAccount()
+					+ ") 不能刪除本題目。", e);
 		}
-		throw new AccessException(session_account, "您沒有該刪除文章的權限。");
 	}
 
 	protected void doGet(HttpServletRequest request,
@@ -56,7 +63,7 @@ public class DeleteArticle extends HttpServlet implements IAccessible {
 		ArticleDAO articleDao = new ArticleDAO();
 		Article_TagDAO article_TagDao = new Article_TagDAO();
 		int articleid = Integer.parseInt(request.getParameter("articleid"));
-		Article article = articleDao.getArticle(articleid);
+		Article article = articleDao.getArticleById(articleid);
 		article.setVisible(false);
 		try {
 			articleDao.update(article);

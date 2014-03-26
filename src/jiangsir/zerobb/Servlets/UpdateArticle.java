@@ -6,7 +6,6 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-import jiangsir.zerobb.Beans.UserBean;
 import jiangsir.zerobb.DAOs.ArticleDAO;
 import jiangsir.zerobb.DAOs.Article_TagDAO;
 import jiangsir.zerobb.DAOs.TagDAO;
@@ -14,9 +13,13 @@ import jiangsir.zerobb.DAOs.UpfileDAO;
 import jiangsir.zerobb.Exceptions.AccessException;
 import jiangsir.zerobb.Exceptions.DataException;
 import jiangsir.zerobb.Interfaces.IAccessible;
+import jiangsir.zerobb.Scopes.SessionScope;
+import jiangsir.zerobb.Services.ArticleService;
 import jiangsir.zerobb.Tables.Article;
 import jiangsir.zerobb.Tables.Article_Tag;
+import jiangsir.zerobb.Tables.CurrentUser;
 import jiangsir.zerobb.Tables.Upfile;
+import jiangsir.zerobb.Tables.User;
 import jiangsir.zerobb.Tools.ENV;
 import jiangsir.zerobb.Tools.FileUploader;
 import org.apache.commons.fileupload.FileItem;
@@ -28,8 +31,6 @@ public class UpdateArticle extends HttpServlet implements IAccessible {
 	 * 
 	 */
 	private static final long serialVersionUID = -4970745549105351949L;
-	public static String urlpattern = UpdateArticle.class.getAnnotation(
-			WebServlet.class).urlPatterns()[0];
 
 	@Override
 	public void init() throws ServletException {
@@ -37,33 +38,36 @@ public class UpdateArticle extends HttpServlet implements IAccessible {
 		ENV.putServlet(this.getClass());
 	}
 
-	String session_account;
-	Article article;
-
 	public boolean isAccessible(HttpServletRequest request)
 			throws AccessException {
 		HttpSession session = request.getSession(false);
-		this.session_account = (String) session.getAttribute("session_account");
-		int articleid = Integer.parseInt(request.getParameter("id"));
-		this.article = new ArticleDAO().getArticle(articleid);
-		if (!"".equals(session_account)
-				&& ("admin".equals(session_account) || article.getAccount()
-						.equals(session_account))) {
-			return true;
+		CurrentUser currentUser = new SessionScope(session).getCurrentUser();
+		Article article = new ArticleDAO().getArticleById(request
+				.getParameter("id"));
+		try {
+			return article.isUpdatable(currentUser);
+		} catch (DataException e) {
+			e.printStackTrace();
+
+			// throw new AccessException(currentUser.getAccount(), "您("
+			// + currentUser.getAccount() + ") 不能編輯本題目。");
+			// throw new AccessException("您(" + currentUser.getAccount()
+			// + ") 不能編輯本題目。", e);
+			throw new AccessException(e);
 		}
-		throw new AccessException(session_account, "您不能編輯此文件！");
 	}
 
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		int articleid = Integer.parseInt(request.getParameter("id"));
-		this.article = new ArticleDAO().getArticle(articleid);
+		Article article = new ArticleDAO().getArticleById(request
+				.getParameter("id"));
 
 		request.setAttribute("tags", new TagDAO().getTags());
-		request.setAttribute("userBean", new UserBean(article.getAccount()));
-		request.setAttribute("article", this.article);
+		// request.setAttribute("userBean", new
+		// UserBean_Deprecated(article.getAccount()));
+		request.setAttribute("article", article);
 		request.setAttribute("article_tags",
-				new Article_TagDAO().getArticle_TagNames(this.article.getId()));
+				new Article_TagDAO().getArticle_TagNames(article.getId()));
 		request.getRequestDispatcher("InsertArticle.jsp").forward(request,
 				response);
 	}
@@ -72,7 +76,8 @@ public class UpdateArticle extends HttpServlet implements IAccessible {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
-		this.session_account = (String) session.getAttribute("session_account");
+		CurrentUser currentUser = new SessionScope(session).getCurrentUser();
+
 		// Uploader uploader = new Uploader(request, response);
 		FileUploader uploader = new FileUploader();
 		try {
@@ -81,7 +86,7 @@ public class UpdateArticle extends HttpServlet implements IAccessible {
 			e.printStackTrace();
 		}
 		int articleid = Integer.parseInt(uploader.getParameter("articleid"));
-		Article article = new ArticleDAO().getArticle(articleid);
+		Article article = new ArticleDAO().getArticleById(articleid);
 		// if (!this.isAccessable(session_account, article)) {
 		// Message message = new Message();
 		// message.setType(Message.MessageType_ERROR);
@@ -155,6 +160,6 @@ public class UpdateArticle extends HttpServlet implements IAccessible {
 			e.printStackTrace();
 		}
 
-		response.sendRedirect("./?account=" + session_account);
+		response.sendRedirect("./?account=" + currentUser.getAccount());
 	}
 }
