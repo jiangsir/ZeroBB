@@ -46,8 +46,9 @@ public class GetCSV extends HttpServlet {
 		if (this.GET_HEADLINES.equals(action)) {
 			StringBuffer csv = new StringBuffer(5000);
 			for (Article article : articleDao.getArticles(
-					new String[] { Article.info_HEADLINE }, null, 1, 10)) {
-				User user = new UserDAO().getUserByAccount(article.getAccount());
+					new Article.INFO[] { Article.INFO.頭條 }, null, 1, 10)) {
+				User user = new UserDAO()
+						.getUserByAccount(article.getAccount());
 				csv.append(article.getTitle() + ",ShowArticle?id="
 						+ article.getId() + "," + user.getName() + "\n");
 				response.getWriter().print(csv.toString());

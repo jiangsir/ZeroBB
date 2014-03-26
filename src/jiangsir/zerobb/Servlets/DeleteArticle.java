@@ -5,22 +5,20 @@ import java.sql.SQLException;
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
-
+import jiangsir.zerobb.Annotations.RoleSetting;
 import jiangsir.zerobb.DAOs.ArticleDAO;
 import jiangsir.zerobb.DAOs.Article_TagDAO;
 import jiangsir.zerobb.Exceptions.AccessException;
-import jiangsir.zerobb.Exceptions.DataException;
 import jiangsir.zerobb.Interfaces.IAccessible;
 import jiangsir.zerobb.Scopes.SessionScope;
 import jiangsir.zerobb.Tables.Article;
 import jiangsir.zerobb.Tables.CurrentUser;
+import jiangsir.zerobb.Tables.User;
 import jiangsir.zerobb.Tools.ENV;
 
-@WebServlet(urlPatterns = { "/DeleteUpdate" }, name = "DeleteUpdate.do")
+@WebServlet(urlPatterns = { "/DeleteArticle" })
+@RoleSetting(allowHigherThen = User.ROLE.USER)
 public class DeleteArticle extends HttpServlet implements IAccessible {
-	public static String urlpattern = DeleteArticle.class.getAnnotation(
-			WebServlet.class).urlPatterns()[0];
-	Article article;
 
 	/**
 	 * 
@@ -45,28 +43,20 @@ public class DeleteArticle extends HttpServlet implements IAccessible {
 		CurrentUser currentUser = new SessionScope(session).getCurrentUser();
 		Article article = new ArticleDAO().getArticleById(request
 				.getParameter("articleid"));
-		// try {
 		if (!article.isUpdatable(currentUser)) {
 			throw new AccessException("您(" + currentUser.getAccount()
 					+ ") 不能刪除本題目。");
 		}
-		// } catch (DataException e) {
-		// e.printStackTrace();
-		//
-		// // throw new AccessException(currentUser.getAccount(), "您("
-		// // + currentUser.getAccount() + ") 不能編輯本題目。");
-		// throw new AccessException("您(" + currentUser.getAccount()
-		// + ") 不能刪除本題目。", e);
-		// }
 	}
 
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
 		ArticleDAO articleDao = new ArticleDAO();
 		Article_TagDAO article_TagDao = new Article_TagDAO();
 		int articleid = Integer.parseInt(request.getParameter("articleid"));
 		Article article = articleDao.getArticleById(articleid);
-		article.setVisible(false);
+		article.setVisible(Article.visible_FALSE);
 		try {
 			articleDao.update(article);
 		} catch (SQLException e) {
@@ -74,7 +64,8 @@ public class DeleteArticle extends HttpServlet implements IAccessible {
 		}
 		article_TagDao.delete(articleid);
 
-		response.sendRedirect("./");
+		response.sendRedirect("."
+				+ new SessionScope(session).getHistories().get(0));
 	}
 
 }

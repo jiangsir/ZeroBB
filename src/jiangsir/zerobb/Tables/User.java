@@ -2,7 +2,6 @@ package jiangsir.zerobb.Tables;
 
 import jiangsir.zerobb.Annotations.Persistent;
 import jiangsir.zerobb.Exceptions.DataException;
-import jiangsir.zerobb.Tools.ENV;
 
 /**
  *  - User.java
@@ -23,26 +22,37 @@ public class User {
 	}
 
 	public enum DIVISION {
-		教務處, //
-		學務處, //
-		總務處, //
-		輔導室, //
-		人事室, //
-		會計室, //
-		圖資中心, //
-		註冊組, //
-		設備組, //
-		健康中心, //
-		公文公告區, //
-		資訊組, //
-		教學組, //
-		學務處衛保組, //
-		教師研習, //
-		學務處榮譽榜, //
-		校長室, //
-		校園新聞, //
-		榮譽榜, //
-		校友會;//
+		none(""), //
+		jiaowu("教務處"), //
+		xuewu("學務處"), //
+		zongwu("總務處"), //
+		fudao("輔導室"), //
+		renshi("人事室"), //
+		kuaiji("會計室"), //
+		lib("圖資中心"), //
+		zhucezu("註冊組"), //
+		shebei("設備組"), //
+		jiankang("健康中心"), //
+		documentation("公文公告區"), //
+		zixun("資訊組"), //
+		jiaoxue("教學組"), //
+		weisheng("學務處衛保組"), //
+		teachers("教師研習"), //
+		xuewuhonor("學務處榮譽榜"), //
+		principal("校長室"), //
+		schoolnews("校園新聞"), //
+		honoredlist("榮譽榜"), //
+		alumni("校友會");//
+
+		private String value;
+
+		DIVISION(final String value) {
+			this.value = value;
+		}
+
+		public String getValue() {
+			return this.value;
+		}
 	}
 
 	@Persistent(name = "id")
@@ -52,7 +62,7 @@ public class User {
 	@Persistent(name = "name")
 	private String name = "";
 	@Persistent(name = "division")
-	private String division = "";
+	private DIVISION division = DIVISION.none;
 	@Persistent(name = "role")
 	private ROLE role = ROLE.GUEST;
 
@@ -111,20 +121,16 @@ public class User {
 		this.name = name;
 	}
 
-	public String getDivision() {
+	public DIVISION getDivision() {
 		return division;
 	}
 
-	public String getDivisionName() {
-		if (ENV.divisionmap.containsKey(division)) {
-			return ENV.divisionmap.get(division);
-		} else {
-			return division;
-		}
+	public void setDivision(DIVISION division) {
+		this.division = division;
 	}
 
 	public void setDivision(String division) {
-		this.division = division;
+		this.setDivision(User.DIVISION.valueOf(division));
 	}
 
 	public String getPasswd() {

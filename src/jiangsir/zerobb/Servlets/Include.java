@@ -6,6 +6,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import jiangsir.zerobb.DAOs.ArticleDAO;
+import jiangsir.zerobb.Tables.Article;
+import jiangsir.zerobb.Tables.User;
 import jiangsir.zerobb.Tools.ENV;
 
 @WebServlet(urlPatterns = { "/Include" }, name = "Include.do")
@@ -28,21 +30,23 @@ public class Include extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		String pattern = (String) request.getParameter("p");
 		// String[] accounts = (String[]) request.getParameterValues("account");
-		String division = request.getParameter("division");
-		if (division == null) {
-			division = "";
-		} else {
-			// division = new String(division.getBytes("ISO-8859-1"), "UTF-8");
+		User.DIVISION division;
+		try {
+			division = User.DIVISION.valueOf(request.getParameter("division"));
+		} catch (Exception e) {
+			e.printStackTrace();
+			division = User.DIVISION.jiaowu;
 		}
+
 		if ("HEADLINE".equals(pattern)) {
 			request.setAttribute("articles", new ArticleDAO().getArticles(
-					new String[] { "頭條" }, division, 1, 10));
+					new Article.INFO[] { Article.INFO.頭條 }, division, 1, 10));
 			request.getRequestDispatcher("include/HEADLINE.jsp").forward(
 					request, response);
 			return;
 		} else if ("IMPORTANT".equals(pattern)) {
 			request.setAttribute("articles", new ArticleDAO().getArticles(
-					new String[] { "重要" }, division, 1, 5));
+					new Article.INFO[] { Article.INFO.重要 }, division, 1, 5));
 			request.getRequestDispatcher("include/IMPORTANT.jsp").forward(
 					request, response);
 			return;

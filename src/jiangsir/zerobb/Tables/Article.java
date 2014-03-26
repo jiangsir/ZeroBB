@@ -23,11 +23,12 @@ public class Article {
 	private Integer id = 0;
 	private String account = "";
 	private String title = "";
-	private String division = "";
-	public static final String infos[] = { "一般", "重要", "頭條" };
-	public static final String info_GENERAL = infos[0];
-	public static final String info_IMPORTANT = infos[1];
-	public static final String info_HEADLINE = infos[2];
+	private User.DIVISION division = User.DIVISION.none;
+
+	// public static final String infos[] = { "一般", "重要", "頭條" };
+	// public static final String info_GENERAL = infos[0];
+	// public static final String info_IMPORTANT = infos[1];
+	// public static final String info_HEADLINE = infos[2];
 
 	public enum INFO {
 		一般, //
@@ -84,12 +85,16 @@ public class Article {
 		this.title = title;
 	}
 
-	public String getDivision() {
+	public User.DIVISION getDivision() {
 		return division;
 	}
 
-	public void setDivision(String division) {
+	public void setDivision(User.DIVISION division) {
 		this.division = division;
+	}
+
+	public void setDivision(String division) {
+		this.setDivision(User.DIVISION.valueOf(division));
 	}
 
 	public INFO getInfo() {

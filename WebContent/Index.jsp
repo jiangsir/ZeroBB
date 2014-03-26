@@ -83,7 +83,7 @@
 										title="${upfile.filename}"><img src="images/paperclip.png"
 										border="0" /></a>
 								</c:forEach></td>
-							<td>${article.user.divisionName}</td>
+							<td>${article.user.division.value}</td>
 							<td style="text-align: right; font-size: 10px;"><fmt:formatDate
 									value="${article.postdate}" pattern="yyyy-MM-dd HH:mm" /></td>
 							<td style="text-align: left"><c:if

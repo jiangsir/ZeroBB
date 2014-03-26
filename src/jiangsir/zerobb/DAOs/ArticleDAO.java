@@ -19,6 +19,7 @@ import jiangsir.zerobb.Factories.ArticleFactory;
 import jiangsir.zerobb.Tables.Article;
 import jiangsir.zerobb.Tables.Article_Tag;
 import jiangsir.zerobb.Tables.User;
+import jiangsir.zerobb.Tables.User.DIVISION;
 import jiangsir.zerobb.Tools.ENV;
 import jiangsir.zerobb.Tools.Utils;
 
@@ -110,8 +111,8 @@ public class ArticleDAO extends SuperDAO<Article> {
 	 * @param page
 	 * @return
 	 */
-	public ArrayList<Article> getArticles(String[] infos, String division,
-			int page, int pagesize) {
+	public ArrayList<Article> getArticles(Article.INFO[] infos,
+			DIVISION division, int page, int pagesize) {
 		String info = "";
 		for (int i = 0; infos != null && i < infos.length; i++) {
 			// try {
@@ -243,8 +244,8 @@ public class ArticleDAO extends SuperDAO<Article> {
 	 * @param page
 	 * @return
 	 */
-	public ArrayList<Article> getOutdateArticles(String[] infos,
-			String division, int page) {
+	public ArrayList<Article> getOutdateArticles(Article.INFO[] infos,
+			User.DIVISION division, int page) {
 		String info = "";
 		for (int i = 0; infos != null && i < infos.length; i++) {
 			if (i == 0) {

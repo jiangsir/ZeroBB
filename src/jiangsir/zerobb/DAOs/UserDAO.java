@@ -13,6 +13,7 @@ import java.util.LinkedHashMap;
 import jiangsir.zerobb.Exceptions.DataException;
 import jiangsir.zerobb.Factories.UserFactory;
 import jiangsir.zerobb.Tables.User;
+import jiangsir.zerobb.Tables.User.DIVISION;
 
 /**
  * @author jiangsir
@@ -97,12 +98,12 @@ public class UserDAO extends SuperDAO<User> {
 	// return this.getUserByAccountPasswd(account, passwd).isNullUser();
 	// }
 
-	public ArrayList<User> getUserByDivision(String division) {
+	public ArrayList<User> getUserByDivision(DIVISION division) {
 		String sql = "SELECT * FROM users WHERE division=?";
 		PreparedStatement pstmt;
 		try {
 			pstmt = this.getConnection().prepareStatement(sql);
-			pstmt.setString(1, division);
+			pstmt.setString(1, division.name());
 			return this.executeQuery(pstmt, User.class);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -114,7 +115,8 @@ public class UserDAO extends SuperDAO<User> {
 		LinkedHashMap<String, String> divisions = new LinkedHashMap<String, String>();
 		ArrayList<User> users = this.getUsers();
 		for (User user : users) {
-			divisions.put(user.getDivision(), user.getDivisionName());
+			divisions.put(user.getDivision().name(), user.getDivision()
+					.getValue());
 		}
 		return divisions;
 	}

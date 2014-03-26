@@ -49,7 +49,7 @@ public class GetJson extends HttpServlet {
 		if (this.GET_HEADLINES.equals(action)) {
 			JSONArray json_articles = new JSONArray();
 			for (Article article : articleDao.getArticles(
-					new String[] { Article.info_HEADLINE }, null, 1, 10)) {
+					new Article.INFO[] { Article.INFO.頭條 }, null, 1, 10)) {
 				JSONObject json_article = new JSONObject();
 				try {
 					json_article.put("articleid", article.getId());
