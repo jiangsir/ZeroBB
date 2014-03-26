@@ -14,10 +14,11 @@
 <jsp:include page="CommonHead.jsp" />
 
 <script language="javascript" type="text/javascript"
-	src="./jscripts/tiny_mce/tiny_mce.js" />
+	src="./jscripts/tiny_mce/tiny_mce.js"></script>
 
 <script language="javascript" type="text/javascript">
-	tinyMCE.init({
+	tinyMCE
+			.init({
 				mode : "exact",
 				elements : "content",
 				theme : "advanced",
@@ -41,6 +42,10 @@
 				language : "zh_tw_utf8"
 			})
 </script>
+
+<link href="jscripts/datetimepicker/jquery-ui-timepicker-addon.css"
+	rel="stylesheet" />
+<script src="jscripts/datetimepicker/jquery-ui-timepicker-addon.js"></script>
 <script type="text/javascript" src="InsertArticle.js"></script>
 </head>
 
@@ -91,10 +96,8 @@
 					</div>
 					<div>
 						有效日期： 從 <input name="postdate" type="text" id="postdate"
-							value="${article.postdate}" /> <input type="reset" id="trigger1"
-							value=" ... " /> 到 <input name="outdate" type="text"
-							id="outdate" value="${article.outdate}" /> <input type="reset"
-							id="trigger2" value=" ... " />
+							value="${article.postdate}" /> 到 <input name="outdate"
+							type="text" id="outdate" value="${article.outdate}" />
 					</div>
 					<div>
 						內容： <br />
@@ -128,8 +131,7 @@
 					</div>
 					<span id="addupfile" style="text-decoration: underline;">
 						更多... </span> <input name="articleid" type="hidden" value="${article.id}" />
-					<br /> <br /> <br /> <input type="button" name="Submit"
-						id="Submit" value="送出" /> <br />
+					<br /> <br /> <br /> <input type="submit" value="送出" /> <br />
 				</form>
 			</div>
 		</div>

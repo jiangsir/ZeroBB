@@ -1,11 +1,18 @@
 jQuery(document).ready(
 		function() {
+			$("input[name='postdate']").datetimepicker({
+				dateFormat : 'yy-mm-dd',
+				timeFormat : 'HH:mm:ss'
+			});
+			$("input[name='outdate']").datetimepicker({
+				dateFormat : 'yy-mm-dd',
+				timeFormat : 'HH:mm:ss'
+			});
 
-			jQuery(":input[type='text']:first").focus();
-			jQuery(":input[name=postdate]").val(
-					jQuery.trim(jQuery(":input[name=postdate]").val()));
-			jQuery(":input[name=outdate]").val(
-					jQuery.trim(jQuery(":input[name=outdate]").val()));
+			// jQuery("input[name=postdate]").val(
+			// jQuery.trim(jQuery("input[name=postdate]").val()));
+			// jQuery("input[name=outdate]").val(
+			// jQuery.trim(jQuery("input[name=outdate]").val()));
 			jQuery("#addupfile").click(
 					function() {
 						jQuery("div[name=upfilelist]:last").clone(true)
