@@ -28,7 +28,15 @@ public class Article {
 	public static final String info_GENERAL = infos[0];
 	public static final String info_IMPORTANT = infos[1];
 	public static final String info_HEADLINE = infos[2];
-	private String info = info_GENERAL;
+
+	public enum INFO {
+		一般, //
+		重要, //
+		頭條; //
+	}
+
+	private INFO info = INFO.一般;
+
 	public static final String[] types = { "default", "hyperlink" };
 	public static final int type_DEFAULT = 0;
 	public static final int type_HYPERLINK = 1;
@@ -38,12 +46,10 @@ public class Article {
 	private Integer hitnum = 0;
 	private Timestamp postdate = new Timestamp(new java.util.Date().getTime());
 	private Timestamp outdate = new Timestamp(new java.util.Date().getTime());
-	// private Date postdate = new Date(new java.util.Date().getTime());
-	// private Date outdate = new Date(new java.util.Date().getTime());
 
 	private Long sortable = Calendar.getInstance().getTimeInMillis();
-	public static final int visible_VIEW = 1;
-	public static final int visible_HIDE = 0;
+	public static final Boolean visible_TRUE = true;
+	public static final Boolean visible_FALSE = false;
 	private Boolean visible = true;
 
 	// =======================================================
@@ -86,12 +92,16 @@ public class Article {
 		this.division = division;
 	}
 
-	public String getInfo() {
+	public INFO getInfo() {
 		return info;
 	}
 
+	public void setInfo(INFO info) {
+		this.info = info;
+	}
+
 	public void setInfo(String info) {
-		this.info = info == null ? this.info : info;
+		this.setInfo(INFO.valueOf(info));
 	}
 
 	public String getType() {

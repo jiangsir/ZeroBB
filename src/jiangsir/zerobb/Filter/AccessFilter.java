@@ -78,10 +78,11 @@ public class AccessFilter implements Filter {
 						e.printStackTrace();
 						throw new AccessException(e);
 					} catch (InvocationTargetException e) {
-						if (e.getTargetException() instanceof AccessException) {
-							throw (AccessException) e.getTargetException();
-						}
-						throw new AccessException(e);
+						// if (e.getTargetException() instanceof
+						// AccessException) {
+						// throw (AccessException) e.getTargetException();
+						// }
+						throw new AccessException(e.getTargetException());
 					} catch (InstantiationException e) {
 						e.printStackTrace();
 						throw new AccessException(e);

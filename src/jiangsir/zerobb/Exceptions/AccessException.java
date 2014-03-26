@@ -28,6 +28,10 @@ public class AccessException extends RuntimeException {
 		super(title, cause);
 	}
 
+	public AccessException(String title) {
+		super(title);
+	}
+
 	public AccessException(AccessCause cause) {
 		super(cause.getText_message() + ": debug:" + cause.getDebug_message(),
 				cause);

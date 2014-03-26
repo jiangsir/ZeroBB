@@ -33,9 +33,7 @@ public class Admin extends HttpServlet implements IAccessible {
 	 * jiangsir.zerobb.Interfaces.IAccessible#isAccessible(javax.servlet.http
 	 * .HttpServletRequest)
 	 */
-	public boolean isAccessible(HttpServletRequest request)
-			throws AccessException {
-		return true;
+	public void isAccessible(HttpServletRequest request) throws AccessException {
 	}
 
 	protected void doGet(HttpServletRequest request,

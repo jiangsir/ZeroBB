@@ -12,11 +12,12 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.TreeSet;
 import java.util.logging.Logger;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-
 import jiangsir.zerobb.Annotations.Persistent;
 
 abstract public class SuperDAO<T> {
@@ -31,6 +32,7 @@ abstract public class SuperDAO<T> {
 
 	Logger logger = Logger.getLogger(this.getClass().getName());
 	HashMap<String, Field> fields = new HashMap<String, Field>();
+	int PAGESIZE = 20;
 
 	public Connection getConnection() {
 		try {
@@ -339,6 +341,36 @@ abstract public class SuperDAO<T> {
 			return -1;
 		}
 		return result;
+	}
+
+	/**
+	 * 將 rules 組合成 sql 語法。 <br>
+	 * 注意：只有 WHERE 以後的部分進行組合。
+	 * 
+	 * @param rules
+	 * @param orderby
+	 * @param page
+	 * @return
+	 */
+	public String makeRules(TreeSet<String> rules, String orderby, int page) {
+		StringBuffer sql = new StringBuffer(50000);
+		Iterator<String> ruleit = rules.iterator();
+		if (ruleit.hasNext()) {
+			sql.append("WHERE ");
+		}
+		while (ruleit.hasNext()) {
+			sql.append(" (" + ruleit.next() + ")");
+			if (ruleit.hasNext()) {
+				sql.append(" AND ");
+			}
+		}
+		if (orderby != null && !"".equals(orderby)) {
+			sql.append(" ORDER BY " + orderby);
+		}
+		// 不論 page 是多少，都必須 LIMIT
+		sql.append(" LIMIT " + ((page > 1 ? page : 1) - 1) * PAGESIZE + ","
+				+ PAGESIZE);
+		return sql.toString();
 	}
 
 }

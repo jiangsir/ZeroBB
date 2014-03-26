@@ -12,13 +12,12 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
-
-import jiangsir.zerobb.Beans.ArticleBean;
+import java.util.Date;
+import java.util.TreeSet;
 import jiangsir.zerobb.Exceptions.DataException;
 import jiangsir.zerobb.Factories.ArticleFactory;
 import jiangsir.zerobb.Tables.Article;
 import jiangsir.zerobb.Tables.Article_Tag;
-import jiangsir.zerobb.Tables.Log;
 import jiangsir.zerobb.Tables.User;
 import jiangsir.zerobb.Tools.ENV;
 import jiangsir.zerobb.Tools.Utils;
@@ -27,60 +26,21 @@ import jiangsir.zerobb.Tools.Utils;
  * @author jiangsir
  * 
  */
-public class ArticleDAO extends GeneralDAO<Article> {
+public class ArticleDAO extends SuperDAO<Article> {
 
-	private synchronized int executeUpdate(PreparedStatement pstmt) {
-		long starttime = System.currentTimeMillis();
-		int result = -1;
-		try {
-			result = pstmt.executeUpdate();
-		} catch (SQLException e) {
-			new LogDAO().insert(new Log(this.getClass(), e));
-			e.printStackTrace();
-		}
-		System.out.println(ENV.logHeader() + "PSTMT_SQL=" + pstmt.toString()
-				+ " 共耗時 " + (System.currentTimeMillis() - starttime) + " ms");
-		return result;
-	}
-
-	/**
-	 * @deprecated
-	 * @param article
-	 * @return
-	 */
-	public synchronized int insert_PSTMT(Article article) {
-		// code = utils.intoSQL(code);
-		// errmsg 要預先給一個 "" 否則無法寫如資料庫
-		String sql = "INSERT INTO articles (account, title, "
-				+ "info, type, hyperlink, content, hitnum, "
-				+ "postdate, outdate, visible) VALUES"
-				+ "(?,?,?,?,?,?,?,?,?,?)";
-		int articleid = 0;
-		try {
-			PreparedStatement pstmt = getConnection().prepareStatement(sql,
-					Statement.RETURN_GENERATED_KEYS);
-			pstmt.setString(1, article.getAccount());
-			pstmt.setString(2, article.getTitle());
-			pstmt.setString(3, article.getInfo());
-			pstmt.setString(4, article.getType());
-			pstmt.setString(5, article.getHyperlink());
-			pstmt.setString(6, article.getContent());
-			pstmt.setInt(7, article.getHitnum());
-			pstmt.setTimestamp(8,
-					new Timestamp(article.getPostdate().getTime()));
-			pstmt.setTimestamp(9, new Timestamp(article.getOutdate().getTime()));
-			pstmt.setBoolean(10, article.getVisible());
-			this.executeUpdate(pstmt);
-			ResultSet rs = pstmt.getGeneratedKeys();
-			rs.next();
-			articleid = rs.getInt(1);
-			rs.close();
-			pstmt.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return articleid;
-	}
+	// private synchronized int executeUpdate(PreparedStatement pstmt) {
+	// long starttime = System.currentTimeMillis();
+	// int result = -1;
+	// try {
+	// result = pstmt.executeUpdate();
+	// } catch (SQLException e) {
+	// new LogDAO().insert(new Log(this.getClass(), e));
+	// e.printStackTrace();
+	// }
+	// System.out.println(ENV.logHeader() + "PSTMT_SQL=" + pstmt.toString()
+	// + " 共耗時 " + (System.currentTimeMillis() - starttime) + " ms");
+	// return result;
+	// }
 
 	/**
 	 * 將文章設成隱藏, 並不真的刪除
@@ -88,23 +48,17 @@ public class ArticleDAO extends GeneralDAO<Article> {
 	 * @param articleid
 	 * @return
 	 */
-	public boolean delete(int articleid) {
-		String sql = "UPDATE articles SET visible=0 WHERE id=" + articleid;
-		return execute(sql);
-	}
-
-	/**
-	 * 將文章到期日設為現在，就達到強迫過期的目的
-	 * 
-	 * @param articleid
-	 * @return
-	 * @deprecated
-	 */
-	public boolean outdate(int articleid) {
-		String sql = "UPDATE articles SET outdate='"
-				+ Utils.parseDatetime(new java.util.Date().getTime())
-				+ "' WHERE id=" + articleid;
-		return execute(sql);
+	public int delete(int articleid) {
+		String sql = "UPDATE articles SET visible=0 WHERE id=?";
+		try {
+			PreparedStatement pstmt = this.getConnection()
+					.prepareStatement(sql);
+			pstmt.setInt(1, articleid);
+			return this.executeUpdate(pstmt);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return -1;
 	}
 
 	public ArrayList<Article> searchArticles(String keyword, int page,
@@ -115,7 +69,7 @@ public class ArticleDAO extends GeneralDAO<Article> {
 				+ "," + pagesize;
 		try {
 			PreparedStatement pstmt = getConnection().prepareStatement(SQL);
-			pstmt.setInt(1, Article.visible_VIEW);
+			pstmt.setBoolean(1, Article.visible_TRUE);
 			pstmt.setString(2, "%" + keyword + "%");
 			pstmt.setString(3, "%" + keyword + "%");
 			pstmt.setString(4, "%" + keyword + "%");
@@ -132,14 +86,21 @@ public class ArticleDAO extends GeneralDAO<Article> {
 	 * @return
 	 */
 	public ArrayList<Article> getHeadlines() {
-		String sql = "SELECT * FROM articles WHERE visible="
-				+ Article.visible_VIEW + " AND postdate<='"
-				+ Utils.parseDatetime(Calendar.getInstance().getTimeInMillis())
-				+ "' AND  outdate>='"
-				+ Utils.parseDatetime(Calendar.getInstance().getTimeInMillis())
-				+ "' AND info=" + Article.info_HEADLINE
-				+ " ORDER BY postdate DESC LIMIT 0,10";
-		return executeQuery(sql, Article.class);
+		String sql = "SELECT * FROM articles WHERE visible=?"
+				+ " AND postdate<=? AND  outdate>=? AND info=? ORDER BY postdate DESC LIMIT 0,10";
+		try {
+			PreparedStatement pstmt = this.getConnection()
+					.prepareStatement(sql);
+			pstmt.setBoolean(1, true);
+			pstmt.setTimestamp(2, new Timestamp(new Date().getTime()));
+			pstmt.setTimestamp(3, new Timestamp(new Date().getTime()));
+			pstmt.setString(4, Article.INFO.頭條.name());
+
+			return this.executeQuery(pstmt, Article.class);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return new ArrayList<Article>();
 	}
 
 	/**
@@ -184,18 +145,21 @@ public class ArticleDAO extends GeneralDAO<Article> {
 		}
 		String by = info + account;
 		String sql = "SELECT * FROM articles WHERE visible="
-				+ Article.visible_VIEW + " AND postdate<='"
+				+ Article.visible_TRUE + " AND postdate<='"
 				+ Utils.parseDatetime(Calendar.getInstance().getTimeInMillis())
 				+ "' AND  outdate>='"
 				+ Utils.parseDatetime(Calendar.getInstance().getTimeInMillis())
 				+ "' " + by + " ORDER BY sortable DESC, postdate DESC LIMIT "
 				+ ((page - 1) * pagesize < 0 ? 0 : (int) (page - 1) * pagesize)
 				+ "," + pagesize;
-		// ArrayList<ArticleBean> articleBeans = new ArrayList<ArticleBean>();
-		// for (Article article : executeQuery(sql, Article.class)) {
-		// articleBeans.add((ArticleBean) article);
-		// }
-		return executeQuery(sql, Article.class);
+		try {
+			PreparedStatement pstmt = this.getConnection()
+					.prepareStatement(sql);
+			return this.executeQuery(pstmt, Article.class);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return new ArrayList<Article>();
 	}
 
 	/**
@@ -219,9 +183,31 @@ public class ArticleDAO extends GeneralDAO<Article> {
 		return articles;
 	}
 
+	public ArrayList<Article> getArticlesByRules(TreeSet<String> rules,
+			String orderby, int page) {
+		StringBuffer sql = new StringBuffer(5000);
+		sql.append("SELECT * FROM articles ");
+		sql.append(this.makeRules(rules, orderby, page));
+		try {
+			PreparedStatement pstmt = this.getConnection().prepareStatement(
+					sql.toString());
+			return this.executeQuery(pstmt, Article.class);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return new ArrayList<Article>();
+	}
+
 	public ArrayList<Article> getAllArticles() {
 		String sql = "SELECT * FROM articles";
-		return executeQuery(sql, Article.class);
+		try {
+			PreparedStatement pstmt = this.getConnection()
+					.prepareStatement(sql);
+			return this.executeQuery(pstmt, Article.class);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return new ArrayList<Article>();
 	}
 
 	/**
@@ -231,21 +217,23 @@ public class ArticleDAO extends GeneralDAO<Article> {
 	 * @param page
 	 * @return
 	 */
-	public ArrayList<ArticleBean> getAllArticles(String by, int page,
-			int pagesize) {
+	public ArrayList<Article> getAllArticles(String by, int page, int pagesize) {
 		if (by == null || by.equals("") || by.equals("all")) {
 			by = " ";
 		} else {
 			by = " AND account='" + by + "'";
 		}
 		String sql = "SELECT * FROM articles WHERE visible="
-				+ Article.visible_VIEW + by + " ORDER BY id DESC LIMIT "
+				+ Article.visible_TRUE + by + " ORDER BY id DESC LIMIT "
 				+ (page - 1) * pagesize + "," + pagesize;
-		ArrayList<ArticleBean> articleBeans = new ArrayList<ArticleBean>();
-		for (Article article : executeQuery(sql, Article.class)) {
-			articleBeans.add(new ArticleBean(article));
+		try {
+			PreparedStatement pstmt = this.getConnection()
+					.prepareStatement(sql);
+			return executeQuery(pstmt, Article.class);
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-		return articleBeans;
+		return new ArrayList<Article>();
 	}
 
 	/**
@@ -288,35 +276,30 @@ public class ArticleDAO extends GeneralDAO<Article> {
 		String by = info + account;
 		System.out.println("by=" + by);
 		String sql = "SELECT * FROM articles WHERE visible="
-				+ Article.visible_VIEW + " AND  outdate<'"
+				+ Article.visible_TRUE + " AND  outdate<'"
 				+ Utils.parseDatetime(Calendar.getInstance().getTimeInMillis())
 				+ "'" + by + " ORDER BY id DESC LIMIT " + (page - 1)
 				* ENV.getPAGESIZE() + "," + ENV.getPAGESIZE();
-		// ArrayList<ArticleBean> articleBeans = new ArrayList<ArticleBean>();
-		// for (Article article : executeQuery(sql, Article.class)) {
-		// articleBeans.add((ArticleBean) article);
-		// }
-		return executeQuery(sql, Article.class);
+		try {
+			PreparedStatement pstmt = this.getConnection()
+					.prepareStatement(sql);
+			return executeQuery(pstmt, Article.class);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return new ArrayList<Article>();
 	}
-
-	// public int updateHitnum(int articleid) {
-	// String sql = "UPDATE articles SET hitnum=hitnum+1 WHERE id="
-	// + articleid;
-	// execute(sql);
-	// return 0;
-	// }
-
-	// public void updatePostdate(int articleid) {
-	// String sql = "UPDATE articles SET postdate='"
-	// + Utils.parseDatetime(Calendar.getInstance().getTimeInMillis())
-	// + "' WHERE id=" + articleid;
-	// this.execute(sql);
-	// }
 
 	public Article getArticleById(int articleid) {
 		String sql = "SELECT * FROM articles WHERE id=" + articleid;
-		for (Article article : executeQuery(sql, Article.class)) {
-			return article;
+		try {
+			PreparedStatement pstmt = this.getConnection()
+					.prepareStatement(sql);
+			for (Article article : executeQuery(pstmt, Article.class)) {
+				return article;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		return ArticleFactory.getNullArticle();
 	}
@@ -335,13 +318,13 @@ public class ArticleDAO extends GeneralDAO<Article> {
 	 * @throws DataException
 	 */
 	public Article getArticle(User user, int articleid) throws DataException {
-		Article article = new Article();
-		String sql = "SELECT * FROM articles WHERE id=" + articleid;
-
-		for (Article a : executeQuery(sql, Article.class)) {
-			article = a;
-			break;
-		}
+		Article article = this.getArticleById(articleid);
+		// String sql = "SELECT * FROM articles WHERE id=" + articleid;
+		//
+		// for (Article a : executeQuery(sql, Article.class)) {
+		// article = a;
+		// break;
+		// }
 
 		if (user == null) {
 			if (article.getVisible() == false) {
@@ -372,7 +355,7 @@ public class ArticleDAO extends GeneralDAO<Article> {
 				Statement.RETURN_GENERATED_KEYS);
 		pstmt.setString(1, article.getAccount());
 		pstmt.setString(2, article.getTitle());
-		pstmt.setString(3, article.getInfo());
+		pstmt.setString(3, article.getInfo().name());
 		pstmt.setString(4, article.getType());
 		pstmt.setString(5, article.getHyperlink());
 		pstmt.setString(6, article.getContent());
@@ -399,7 +382,7 @@ public class ArticleDAO extends GeneralDAO<Article> {
 		PreparedStatement pstmt = getConnection().prepareStatement(SQL);
 		pstmt.setString(1, article.getAccount());
 		pstmt.setString(2, article.getTitle());
-		pstmt.setString(3, article.getInfo());
+		pstmt.setString(3, article.getInfo().name());
 		pstmt.setString(4, article.getType());
 		pstmt.setString(5, article.getHyperlink());
 		pstmt.setString(6, article.getContent());
@@ -412,6 +395,12 @@ public class ArticleDAO extends GeneralDAO<Article> {
 		result = this.executeUpdate(pstmt);
 		pstmt.close();
 		return result;
+	}
+
+	@Override
+	protected boolean delete(long i) throws SQLException {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

@@ -19,6 +19,7 @@ import jiangsir.zerobb.Tables.Article;
 import jiangsir.zerobb.Tables.Article_Tag;
 import jiangsir.zerobb.Tables.CurrentUser;
 import jiangsir.zerobb.Tables.Upfile;
+import jiangsir.zerobb.Tables.User;
 import jiangsir.zerobb.Tools.ENV;
 import jiangsir.zerobb.Tools.FileUploader;
 
@@ -26,7 +27,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 
 @WebServlet(urlPatterns = { "/InsertArticle" })
-@RoleSetting
+@RoleSetting(allowHigherThen = User.ROLE.USER)
 public class InsertArticle extends HttpServlet implements IAccessible {
 	/**
 	 * 
@@ -49,10 +50,8 @@ public class InsertArticle extends HttpServlet implements IAccessible {
 	 * jiangsir.zerobb.Interfaces.IAccessible#isAccessible(javax.servlet.http
 	 * .HttpServletRequest)
 	 */
-	public boolean isAccessible(HttpServletRequest request)
-			throws AccessException {
+	public void isAccessible(HttpServletRequest request) throws AccessException {
 		// 只要有登入的都可以新增。
-		return true;
 	}
 
 	protected void doGet(HttpServletRequest request,

@@ -38,22 +38,14 @@ public class UpdateArticle extends HttpServlet implements IAccessible {
 		ENV.putServlet(this.getClass());
 	}
 
-	public boolean isAccessible(HttpServletRequest request)
-			throws AccessException {
+	public void isAccessible(HttpServletRequest request) throws AccessException {
 		HttpSession session = request.getSession(false);
 		CurrentUser currentUser = new SessionScope(session).getCurrentUser();
 		Article article = new ArticleDAO().getArticleById(request
 				.getParameter("id"));
-		try {
-			return article.isUpdatable(currentUser);
-		} catch (DataException e) {
-			e.printStackTrace();
-
-			// throw new AccessException(currentUser.getAccount(), "您("
-			// + currentUser.getAccount() + ") 不能編輯本題目。");
-			// throw new AccessException("您(" + currentUser.getAccount()
-			// + ") 不能編輯本題目。", e);
-			throw new AccessException(e);
+		if (!article.isUpdatable(currentUser)) {
+			throw new AccessException("您(" + currentUser.getAccount()
+					+ ") 不能編輯本題目。");
 		}
 	}
 

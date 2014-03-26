@@ -14,6 +14,5 @@ import jiangsir.zerobb.Exceptions.AccessException;
  * 
  */
 public interface IAccessible {
-	public boolean isAccessible(HttpServletRequest request)
-			throws AccessException;
+	public void isAccessible(HttpServletRequest request) throws AccessException;
 }
