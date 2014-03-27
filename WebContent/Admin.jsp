@@ -98,12 +98,12 @@
 				</p>
 				<p>
 					<a
-						href="http://163.32.92.11/ZeroBB_Dev/Include?p=PATTERN1.jsp&amp;info=2">http://163.32.92.11/ZeroBB_Dev/Include?p=PATTERN1.jsp&amp;info=2</a>
+						href="http://127.0.0.1:8080/ZeroBB7/Include?p=HEADLINE">http://127.0.0.1:8080/ZeroBB7/Include?p=HEADLINE</a>
 					// info 0=一般 1=重要 2=頭條
 				</p>
 				<p>
 					<a
-						href="http://163.32.92.11/ZeroBB_Dev/Include?p=PATTERN1.jsp&amp;info=2">http://163.32.92.11/ZeroBB_Dev/Include?p=PATTERN1.jsp&amp;account=office02</a>
+						href="http://127.0.0.1:8080/ZeroBB7/Include?p=TAGS&amp;tagname=HONOR">http://127.0.0.1:8080/ZeroBB7/Include?p=TAGS&amp;tagname=HONOR</a>
 				</p>
 				<p>
 					<a href="./UpdateOldfilepath.ajax">更新 /ZeroBB , /ZeroBB_utf8,

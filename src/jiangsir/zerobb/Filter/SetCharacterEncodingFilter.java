@@ -3,10 +3,8 @@ package jiangsir.zerobb.Filter;
 import java.io.IOException;
 
 import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.*;
 
-@WebFilter(urlPatterns = { "/*" })
 public class SetCharacterEncodingFilter implements Filter {
 
 	private String encoding = null;

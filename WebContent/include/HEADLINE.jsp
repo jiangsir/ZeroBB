@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page isELIgnored="false"%>
+
 <c:forEach var="article" items="${articles}" varStatus="varstatus">
 	<c:set var="info" value="${article.info}" />
 	<c:set var="color" value="color:blue;" />

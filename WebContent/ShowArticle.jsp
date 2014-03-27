@@ -43,11 +43,7 @@
 	}
 </script>
 </head>
-<%-- <jsp:useBean id="articleBean" class="jiangsir.zerobb.Beans.ArticleBean" />
-<jsp:setProperty name="articleBean" property="id" value="${article.id}" />
-<jsp:setProperty name="articleBean" property="session_account"
-	value="${sessionScope.session_account}" />
- --%><jsp:useBean id="now" class="java.util.Date" />
+<jsp:useBean id="now" class="java.util.Date" />
 
 <body>
 	<div id="container">
@@ -65,7 +61,7 @@
 					<c:forEach var="tag" items="${tags}">
 						<span title="${tag.descript}">${tag.tagtitle} | </span>
 					</c:forEach>
-					<span title="${userBean.user.account}">${userBean.user.divisionName}
+					<span title="${article.user.account}">${userBean.user.division.value}
 					</span>
 					<c:if
 						test="${article:isUpdatable(article, sessionScope.currentUser)}"> | <img

@@ -8,7 +8,7 @@
 	<div class="article" style="height: auto">
 		[${article.info}] <a
 			href="http://${pageContext.request.localAddr}:${pageContext.request.localPort}${pageContext.servletContext.contextPath}/ShowArticle?id=${article.id}"
-			target="_blank">${article.title}</a> (${article.user.divisionName})<br />
+			target="_blank">${article.title}</a> (${article.user.division.value})<br />
 	</div>
 </c:forEach>
 <div style="text-align: right">

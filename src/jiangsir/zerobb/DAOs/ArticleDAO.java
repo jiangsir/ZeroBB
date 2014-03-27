@@ -130,7 +130,7 @@ public class ArticleDAO extends SuperDAO<Article> {
 			info = " AND (" + info + ")";
 		}
 		String account = "";
-		if (division != null && !"".equals(division)) {
+		if (division != null && division != User.DIVISION.none) {
 			ArrayList<User> users = new UserDAO().getUserByDivision(division);
 			for (User user : users) {
 				if (account.equals("")) {
