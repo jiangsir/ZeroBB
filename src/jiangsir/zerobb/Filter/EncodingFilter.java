@@ -18,7 +18,21 @@ import jiangsir.zerobb.Wrappers.EncodingWrapper;
  */
 @WebFilter(filterName = "EncodingFilter", urlPatterns = { "/*" }, asyncSupported = true)
 public class EncodingFilter implements Filter {
-	private String ENCODING = "UTF-8";
+	public enum ENCODING {
+		ISO_8859_1("ISO-8859-1"), // ISO-8859-1
+		UTF_8("UTF-8");// UTF-8
+		private String value = "";
+
+		ENCODING(String value) {
+			this.value = value;
+		}
+
+		public String getValue() {
+			return this.value;
+		}
+	};
+
+	// private String ENCODING = "UTF-8";
 
 	/**
 	 * Default constructor.
@@ -40,15 +54,14 @@ public class EncodingFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse resp = (HttpServletResponse) response;
 
-		// if ("GET".equals(req.getMethod())) {
-		// req = new EncodingWrapper(req, ENCODING);
-		// } else {
-		// req.setCharacterEncoding(ENCODING);
-		// }
-		req.setCharacterEncoding(ENCODING);
+		if ("GET".equals(req.getMethod())) {
+			req = new EncodingWrapper(req, ENCODING.UTF_8);
+		} else {
+			req.setCharacterEncoding(ENCODING.UTF_8.getValue());
+		}
 
 		// resp 也要設定好 ENCODING 否則直接 response.writer 輸出會亂碼。
-		resp.setContentType("text/html;charset=" + ENCODING);
+		resp.setContentType("text/html;charset=" + ENCODING.UTF_8.getValue());
 
 		chain.doFilter(req, resp);
 	}
