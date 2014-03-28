@@ -62,7 +62,7 @@
 					選擇： <select name="select">
 						<option>請選擇...</option>
 						<c:forEach var="user" items="${users}">
-							<option value="${user.id}">${user.division}</option>
+							<option value="${user.id}">${user.division.value}</option>
 						</c:forEach>
 					</select>
 				</form>
