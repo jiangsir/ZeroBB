@@ -222,7 +222,7 @@ public class Article {
 	}
 
 	public ArrayList<Upfile> getUpfiles() {
-		return new UpfileDAO().getUpfiles(id);
+		return new UpfileDAO().getUpfilesByArticleid(this.getId());
 	}
 
 	public User getUser() {

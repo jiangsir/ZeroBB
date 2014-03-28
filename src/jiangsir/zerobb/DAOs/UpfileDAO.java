@@ -120,7 +120,7 @@ public class UpfileDAO extends GeneralDAO<Upfile> {
 	 * @param articleid
 	 * @return
 	 */
-	public ArrayList<Upfile> getUpfiles(int articleid) {
+	public ArrayList<Upfile> getUpfilesByArticleid(int articleid) {
 		// 可以解決要 InsertArticle 卻會有莫名的檔案出現在 “上傳檔案” 的地方。
 		// 原因就是有些 upfile 的 articleid 不知什麼原因變成 0，所以在這裡被讀出來了。
 		// 現 將 ArticleDAO 跟 upfileDAO 都加上 synchronized 看看能否改善。
@@ -129,7 +129,7 @@ public class UpfileDAO extends GeneralDAO<Upfile> {
 			return new ArrayList<Upfile>();
 		}
 		// System.out.println("getupfile, articleid=" + articleid);
-		String sql = "SELECT id,articleid,filename,filetype FROM upfiles WHERE visible="
+		String sql = "SELECT id,articleid,filename,filetype,hitnum FROM upfiles WHERE visible="
 				+ Upfile.visible_OPEN + " AND articleid=" + articleid;
 		// Iterator<?> it = new BaseDAO().executeQuery(sql, Upfile.class)
 		// .iterator();
