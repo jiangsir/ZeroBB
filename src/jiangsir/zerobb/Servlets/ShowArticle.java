@@ -5,11 +5,8 @@ import java.sql.SQLException;
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
-
-import jiangsir.zerobb.Beans.AlertBean;
 import jiangsir.zerobb.DAOs.ArticleDAO;
 import jiangsir.zerobb.DAOs.Article_TagDAO;
-import jiangsir.zerobb.DAOs.UserDAO;
 import jiangsir.zerobb.Exceptions.DataException;
 import jiangsir.zerobb.Scopes.SessionScope;
 import jiangsir.zerobb.Tables.Article;

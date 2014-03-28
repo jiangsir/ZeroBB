@@ -17,4 +17,10 @@ public class UserTLD {
 		return currentUser.getRole() == User.ROLE.ADMIN;
 	}
 
+	public static boolean isNullUser(CurrentUser currentUser) {
+		if (currentUser == null) {
+			return true;
+		}
+		return currentUser.isNullUser();
+	}
 }

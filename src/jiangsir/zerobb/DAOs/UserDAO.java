@@ -113,11 +113,14 @@ public class UserDAO extends SuperDAO<User> {
 
 	public LinkedHashMap<String, String> getDivisions() {
 		LinkedHashMap<String, String> divisions = new LinkedHashMap<String, String>();
-		ArrayList<User> users = this.getUsers();
-		for (User user : users) {
-			divisions.put(user.getDivision().name(), user.getDivision()
-					.getValue());
+		for (User.DIVISION division : User.DIVISION.values()) {
+			divisions.put(division.name(), division.getValue());
 		}
+		// ArrayList<User> users = this.getUsers();
+		// for (User user : users) {
+		// divisions.put(user.getDivision().name(), user.getDivision()
+		// .getValue());
+		// }
 		return divisions;
 	}
 

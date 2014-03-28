@@ -33,7 +33,7 @@ jQuery(document).ready(
 				// alert("removeupfile upfileid="+upfileid);
 				jQuery.ajax({
 					type : "GET",
-					url : "./DeleteUpfile.ajax",
+					url : "./DeleteUpfile.api",
 					data : "upfileid=" + upfileid,
 					async : true,
 					timeout : 5000
@@ -47,7 +47,7 @@ jQuery(document).ready(
 			});
 
 			jQuery("input[name='info']").each(function() {
-				if ("${article.info}" == $(this).val()) {
+				if ($(this).attr("info") == $(this).val()) {
 					$(this).attr("checked", true);
 				}
 			});

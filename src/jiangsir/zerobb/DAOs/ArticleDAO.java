@@ -6,7 +6,6 @@
 package jiangsir.zerobb.DAOs;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
@@ -351,7 +350,6 @@ public class ArticleDAO extends SuperDAO<Article> {
 				+ "info, type, hyperlink, content, hitnum, "
 				+ "postdate, outdate, sortable, visible) VALUES"
 				+ "(?,?,?,?,?,?,?,?,?,?,?)";
-		int articleid = 0;
 		PreparedStatement pstmt = getConnection().prepareStatement(sql,
 				Statement.RETURN_GENERATED_KEYS);
 		pstmt.setString(1, article.getAccount());
@@ -365,13 +363,7 @@ public class ArticleDAO extends SuperDAO<Article> {
 		pstmt.setTimestamp(9, article.getOutdate());
 		pstmt.setLong(10, article.getSortable());
 		pstmt.setBoolean(11, article.getVisible());
-		this.executeUpdate(pstmt);
-		ResultSet rs = pstmt.getGeneratedKeys();
-		rs.next();
-		articleid = rs.getInt(1);
-		rs.close();
-		pstmt.close();
-		return articleid;
+		return this.executeInsert(pstmt);
 	}
 
 	@Override
@@ -394,7 +386,6 @@ public class ArticleDAO extends SuperDAO<Article> {
 		pstmt.setBoolean(11, article.getVisible());
 		pstmt.setInt(12, article.getId());
 		result = this.executeUpdate(pstmt);
-		pstmt.close();
 		return result;
 	}
 

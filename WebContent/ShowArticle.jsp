@@ -81,18 +81,22 @@
 				</c:if>
 				<c:forEach var="upfile" items="${article.upfiles}">
 					<h3>
-						<img src="images/paperclip.png" /> ${upfile.filename} <a
-							href="./Download?upfileid=${upfile.id}">下載</a>
-						<c:if
-							test="${fn:endsWith(fn:toLowerCase(upfile.filename), '.doc') || fn:endsWith(fn:toLowerCase(upfile.filename), '.docx') || fn:endsWith(fn:toLowerCase(upfile.filename), '.pdf')}">
-							<a
-								href="https://docs.google.com/viewer?url=http://${pageContext.request.serverName}:${pageContext.request.localPort}${pageContext.request.contextPath}/Download?upfileid=${upfile.id}"
-								target="_blank">檢視</a>
-							<!--		
+						<c:if test="${upfile.isImage}">
+							<img src="./Download?upfileid=${upfile.id}" />
+						</c:if>
+						<c:if test="${!upfile.isImage}">
+							<img src="images/paperclip.png" /> ${upfile.filename} <a
+								href="./Download?upfileid=${upfile.id}">下載</a>
+							<c:if test="${upfile.isGoogleViewer}">
+								<a
+									href="https://docs.google.com/viewer?url=http://${pageContext.request.serverName}:${pageContext.request.localPort}${pageContext.request.contextPath}/Download?upfileid=${upfile.id}"
+									target="_blank">檢視</a>
+								<!--		
 		<a href="http://docs.google.com/viewer?url=http://${pageContext.request.serverName}${pageContext.request.contextPath}/upfiles/${article.id}_${upfile.id}_${article.account}.${fn:split(upfile.filename, '.')[1]}">檢視</a>
 <a href="http://${pageContext.request.serverName}${pageContext.request.contextPath}/upfiles/${article.id}_${upfile.id}_${article.account}.${fn:split(upfile.filename, '.')[1]}">檢視</a>
 -->
 
+							</c:if>
 						</c:if>
 						<span style="font-size: 10px">(${upfile.hitnum}次)</span>
 					</h3>

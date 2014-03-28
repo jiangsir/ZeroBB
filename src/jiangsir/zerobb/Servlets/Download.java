@@ -12,7 +12,6 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-import jiangsir.zerobb.Beans.AlertBean;
 import jiangsir.zerobb.DAOs.LogDAO;
 import jiangsir.zerobb.DAOs.UpfileDAO;
 import jiangsir.zerobb.DAOs.UserDAO;
@@ -116,15 +115,6 @@ public class Download extends HttpServlet {
 	private void doOldDownload(int upfileid) throws ServletException,
 			IOException {
 		if (!this.isAccessable()) {
-			// Message message = new Message();
-			// message.setType(Message.MessageType_ERROR);
-			// message.setPlainTitle("您不能下載這個附件！");
-			// request.getRequestDispatcher("Message.jsp").forward(request,
-			// response);
-			// return;
-			// new AlertDispatcher(request, response).forward(new AlertBean(
-			// "您不能下載這個附件！"));
-			// return;
 			throw new DataException("您不能下載這個附件！");
 		}
 		Upfile upfile = new UpfileDAO().getUpfile(upfileid);

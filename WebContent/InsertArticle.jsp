@@ -60,17 +60,18 @@
 				<form id="form" action="" enctype="multipart/form-data"
 					method="post">
 					<p>重要性：</p>
-					<c:if test="${sessionScope.currentUser.headline==true }">
-						<input name="info" type="radio" value="頭條" /> 頭條
+					<div id="info">
+						<c:if test="${sessionScope.currentUser.headline==true }">
+							<input name="info" type="radio" value="頭條" info="${article.info}" /> 頭條
 					※若設定成頭條，該公告將以顯著字體出現在「頭條消息」區塊中，直到有效期限為止。為免頭條消息過多而雜亂，請小心使用，謝謝。  <br />
-					</c:if>
-					<input name="info" type="radio" value="重要" /> 重要
-					※若設定成重要，該公告就會直接固定顯示在上層，直到有效期限為止。  <br /> <input name="info"
-						type="radio" value="一般" checked="checked" /> 一般 ※一般性的公告訊息 <br />
-					<br /> 請選擇文章分類：(可多選) <br /> <br /> <span>文章分類說明：為了使校外人士，比如家長。能更容易找到學校公告訊息，因此增加了文章分類的選項。<br />請於公告時選取文章分類，可多選。<br />若有新的分類需求請告知資訊組
-						555。謝謝。另外，系統右上方能夠對公告標題及內容進行關鍵字搜尋，可多加利用。
-					</span><br /> <br />
-
+						</c:if>
+						<input name="info" type="radio" value="重要" info="${article.info}" />
+						重要 ※若設定成重要，該公告就會直接固定顯示在上層，直到有效期限為止。  <br /> <input name="info"
+							type="radio" value="一般" checked="checked" info="${article.info}" />
+						一般 ※一般性的公告訊息 <br /> <br /> 請選擇文章分類：(可多選) <br /> <br /> <span>文章分類說明：為了使校外人士，比如家長。能更容易找到學校公告訊息，因此增加了文章分類的選項。<br />請於公告時選取文章分類，可多選。<br />若有新的分類需求請告知資訊組
+							555。謝謝。另外，系統右上方能夠對公告標題及內容進行關鍵字搜尋，可多加利用。
+						</span><br /> <br />
+					</div>
 					<c:forEach var="tag" items="${tags}">
 						<c:set var="checkedTag" value="" />
 						<c:forEach var="article_tag" items="${article_tags}">
@@ -105,10 +106,7 @@
                             ${article.content}
                           </textarea>
 					</div>
-					<br />
-					<jsp:useBean id="upfileBean"
-						class="jiangsir.zerobb.Beans.UpfileBean" />
-					* 檔案上載上限 ${upfileBean.MAX_FILESIZE/1000000} MB <br />
+					<br /> * 檔案上載上限 10 MB <br />
 					<c:forEach var="upfile" items="${article.upfiles}">
 						<h3 id="upfiles">
 							<img src="images/paperclip.png" /> <a

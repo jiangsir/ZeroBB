@@ -10,4 +10,10 @@
 		<function-signature>boolean isAdmin(jiangsir.zerobb.Tables.CurrentUser)</function-signature>
 	</function>
 
+	<function>
+		<name>isNullUser</name>
+		<function-class>jiangsir.zerobb.TLDs.UserTLD</function-class>
+		<function-signature>boolean isNullUser(jiangsir.zerobb.Tables.CurrentUser)</function-signature>
+	</function>
+
 </taglib>

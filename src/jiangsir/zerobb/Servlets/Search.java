@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import jiangsir.zerobb.DAOs.ArticleDAO;
+import jiangsir.zerobb.DAOs.UserDAO;
 import jiangsir.zerobb.Tools.ENV;
 import jiangsir.zerobb.Tools.Utils;
 
@@ -16,8 +17,6 @@ public class Search extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = -3805355353616928055L;
-	public static String urlpattern = Search.class.getAnnotation(
-			WebServlet.class).urlPatterns()[0];
 
 	@Override
 	public void init() throws ServletException {
@@ -37,6 +36,7 @@ public class Search extends HttpServlet {
 		request.setAttribute("page", page);
 		request.setAttribute("querystring",
 				Utils.querystingFilter(request.getQueryString()));
+		request.setAttribute("divisions", new UserDAO().getDivisions());
 		request.setAttribute(
 				"articles",
 				new ArticleDAO().searchArticles(keyword, page,

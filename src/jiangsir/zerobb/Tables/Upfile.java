@@ -127,9 +127,37 @@ public class Upfile {
 
 	public String getINNER_FILENAME() {
 		String sub = filename.substring(filename.lastIndexOf("."));
-		return this.getArticleid() + "_" + this.getId() + "_"
-				+ new ArticleDAO().getArticleById(this.getArticleid()).getAccount()
-				+ sub;
+		return this.getArticleid()
+				+ "_"
+				+ this.getId()
+				+ "_"
+				+ new ArticleDAO().getArticleById(this.getArticleid())
+						.getAccount() + sub;
+	}
+
+	/**
+	 * 判斷是否可以由 google viewer 顯示。如： doc, docx, pdf 等的文件。
+	 */
+	public boolean isIsGoogleViewer() {
+		if (this.getFiletype().equals("application/pdf")
+				|| this.getFiletype().contains("word")
+				|| this.getFiletype().contains("powerpoint")
+				|| this.getFiletype().contains("excel")) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * 判斷是否是圖片
+	 * 
+	 * @return
+	 */
+	public boolean isIsImage() {
+		if (this.getFiletype().startsWith("image/")) {
+			return true;
+		}
+		return false;
 	}
 
 	// =====================================================================
