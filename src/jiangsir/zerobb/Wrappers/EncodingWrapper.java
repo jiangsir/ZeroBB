@@ -24,6 +24,9 @@ public class EncodingWrapper extends HttpServletRequestWrapper {
 	 * @return
 	 */
 	public ENCODING getEncoding(String str) {
+		if (str == null) {
+			return null;
+		}
 		for (ENCODING encoding : ENCODING.values()) {
 			try {
 				if (str.equals(new String(str.getBytes(encoding.getValue()),
@@ -57,12 +60,16 @@ public class EncodingWrapper extends HttpServletRequestWrapper {
 	@Override
 	public String getParameter(String name) {
 		String value = this.getRequest().getParameter(name);
-
-		if (value != null && this.getEncoding(value) == ENCODING.ISO_8859_1) {
+		System.out.println("name=" + name + ", value("
+				+ this.getEncoding(value) + ")=" + value);
+		if (value != null && this.getEncoding(value) != null
+				&& this.getEncoding(value) == ENCODING.ISO_8859_1) {
 			byte[] b;
 			try {
 				b = value.getBytes(ENCODING.ISO_8859_1.getValue());
 				value = new String(b, ENCODING.UTF_8.getValue());
+				System.out.println("value(UTF8)=" + value);
+
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 				throw new RuntimeException(e);
