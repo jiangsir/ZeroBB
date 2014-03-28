@@ -68,8 +68,7 @@ public class EncodingWrapper extends HttpServletRequestWrapper {
 			try {
 				b = value.getBytes(ENCODING.ISO_8859_1.getValue());
 				value = new String(b, ENCODING.UTF_8.getValue());
-				System.out.println("value(UTF8)=" + value);
-
+				System.out.println("value(" + ENCODING.UTF_8 + ")=" + value);
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 				throw new RuntimeException(e);

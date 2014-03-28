@@ -12,7 +12,7 @@
 		<c:forEach var="upfile" items="${article.upfiles}">
 			<img src="images/paperclip.png" />
 		</c:forEach>
-		(${article.user.division})<br />
+		(${article.user.division.value})<br />
 		<fmt:formatDate value="${article.postdate}" pattern="yyyy-MM-dd HH:mm" />
 	</div>
 </c:forEach>
