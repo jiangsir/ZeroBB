@@ -61,7 +61,7 @@ public class Include extends HttpServlet {
 		try {
 			division = User.DIVISION.valueOf(request.getParameter("division"));
 		} catch (Exception e) {
-			e.printStackTrace();
+			// e.printStackTrace();
 			division = User.DIVISION.none;
 		}
 

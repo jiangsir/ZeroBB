@@ -11,7 +11,7 @@
 	<c:if test="${varstatus.count%2==1}">
 		<c:set var="color" value="color:red;" />
 	</c:if>
-	<div style="text-align: center; font-size: 1.5em;">
+	<div style="font-size: 1.5em;">
 		<a
 			href="http://${pageContext.request.localAddr}:${pageContext.request.localPort}${pageContext.servletContext.contextPath}/ShowArticle?id=${article.id}"
 			target="_blank" style="${color}">${article.title}</a>
