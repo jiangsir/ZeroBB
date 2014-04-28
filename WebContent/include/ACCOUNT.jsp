@@ -10,7 +10,8 @@
 			href="http://${pageContext.request.localAddr}:${pageContext.request.localPort}${pageContext.servletContext.contextPath}/ShowArticle?id=${article.id}"
 			target="_blank">${article.title}</a>
 		<c:forEach var="upfile" items="${article.upfiles}">
-			<img src="images/paperclip.png" />
+			<img
+				src="http://${pageContext.request.localAddr}:${pageContext.request.localPort}${pageContext.servletContext.contextPath}/images/paperclip.png" />
 		</c:forEach>
 		(${article.user.division.value})<br />
 		<fmt:formatDate value="${article.postdate}" pattern="yyyy-MM-dd HH:mm" />
