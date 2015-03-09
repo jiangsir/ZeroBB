@@ -5,8 +5,8 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-import jiangsir.zerobb.DAOs.ArticleDAO;
-import jiangsir.zerobb.DAOs.UserDAO;
+import jiangsir.zerobb.Services.ArticleDAO;
+import jiangsir.zerobb.Services.UserDAO;
 import jiangsir.zerobb.Tools.ENV;
 import jiangsir.zerobb.Tools.Utils;
 

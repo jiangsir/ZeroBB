@@ -3,7 +3,7 @@
  * 2008/4/29 下午 05:46:51
  * jiangsir
  */
-package jiangsir.zerobb.DAOs;
+package jiangsir.zerobb.Services;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

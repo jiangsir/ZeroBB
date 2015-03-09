@@ -7,7 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import jiangsir.zerobb.DAOs.UserDAO;
+
+import jiangsir.zerobb.Services.UserDAO;
 import jiangsir.zerobb.Tables.Parameter;
 import jiangsir.zerobb.Tools.*;
 

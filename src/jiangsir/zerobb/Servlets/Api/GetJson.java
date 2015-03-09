@@ -12,7 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import jiangsir.zerobb.DAOs.ArticleDAO;
+import jiangsir.zerobb.Services.ArticleService;
 import jiangsir.zerobb.Tables.Article;
 import jiangsir.zerobb.Tools.ENV;
 
@@ -44,12 +44,11 @@ public class GetJson extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		ArticleDAO articleDao = new ArticleDAO();
 		String action = request.getParameter("a");
 		if (this.GET_HEADLINES.equals(action)) {
 			JSONArray json_articles = new JSONArray();
-			for (Article article : articleDao.getArticles(
-					new Article.INFO[] { Article.INFO.頭條 }, null, 1, 10)) {
+			for (Article article : new ArticleService().getArticlesByInfo(
+					new Article.INFO[] { Article.INFO.頭條 }, 1, 10)) {
 				JSONObject json_article = new JSONObject();
 				try {
 					json_article.put("articleid", article.getId());
@@ -66,8 +65,8 @@ public class GetJson extends HttpServlet {
 			response.getWriter().print(json_articles.toString());
 		} else if (this.GET_TAGS.equals(action)) {
 			String[] tags = request.getParameterValues("tagname");
-			Iterator<Article> articles = articleDao.getArticles(tags, 0, 10)
-					.iterator();
+			Iterator<Article> articles = new ArticleService()
+					.getArticlesByTabnames(tags, 0, 10).iterator();
 			JSONArray json_articles = new JSONArray();
 
 			while (articles.hasNext()) {

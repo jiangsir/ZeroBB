@@ -6,16 +6,16 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import jiangsir.zerobb.Annotations.RoleSetting;
-import jiangsir.zerobb.DAOs.TagDAO;
-import jiangsir.zerobb.DAOs.UserDAO;
 import jiangsir.zerobb.Exceptions.AccessException;
-import jiangsir.zerobb.Interfaces.IAccessible;
+import jiangsir.zerobb.Interfaces.IAccessFilter;
+import jiangsir.zerobb.Services.TagDAO;
+import jiangsir.zerobb.Services.UserDAO;
 import jiangsir.zerobb.Tools.ENV;
 import jiangsir.zerobb.Tables.User;
 
 @WebServlet(urlPatterns = { "/Admin" })
 @RoleSetting(allowHigherThen = User.ROLE.ADMIN)
-public class Admin extends HttpServlet implements IAccessible {
+public class Admin extends HttpServlet implements IAccessFilter {
 	// public static String urlpattern = Admin.class.getAnnotation(
 	// WebServlet.class).urlPatterns()[0];
 	private static final long serialVersionUID = -3241402006500382488L;
@@ -33,7 +33,7 @@ public class Admin extends HttpServlet implements IAccessible {
 	 * jiangsir.zerobb.Interfaces.IAccessible#isAccessible(javax.servlet.http
 	 * .HttpServletRequest)
 	 */
-	public void isAccessible(HttpServletRequest request) throws AccessException {
+	public void AccessFilter(HttpServletRequest request) throws AccessException {
 	}
 
 	protected void doGet(HttpServletRequest request,

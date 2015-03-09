@@ -4,9 +4,7 @@ import java.io.IOException;
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
-
-import jiangsir.zerobb.DAOs.ArticleDAO;
-import jiangsir.zerobb.Exceptions.DataException;
+import jiangsir.zerobb.Services.ArticleService;
 import jiangsir.zerobb.Tables.Article;
 import jiangsir.zerobb.Tables.User;
 import jiangsir.zerobb.Tools.ENV;
@@ -41,10 +39,9 @@ public class Include extends HttpServlet {
 			pattern = PATTERN.valueOf(request.getParameter("p"));
 		} catch (Exception e) {
 			e.printStackTrace();
-			response.getWriter()
-					.println(
-							"參數有誤！/ZeroBB/Include?p={\"HEADLINE\",\"IMPORTANT\",\"ACCOUNT\",\"NEWS\", \"TAGS\"}&"
-									+ "account={jiaowu, xuewu}");
+			response.getWriter().println(
+					"參數有誤！/Include?p={\"HEADLINE\",\"IMPORTANT\",\"ACCOUNT\",\"NEWS\", \"TAGS\"}&"
+							+ "account={jiaowu, xuewu}");
 			// String s = "";
 			// for (PATTERN pp : PATTERN.values()) {
 			// if (s.equals("")) {
@@ -68,32 +65,36 @@ public class Include extends HttpServlet {
 		switch (pattern) {
 		case ACCOUNT:
 			request.setAttribute("articles",
-					new ArticleDAO().getArticles(null, division, 1, 10));
+					new ArticleService().getArticlesByDivision(division, 1, 10));
 			request.getRequestDispatcher("include/ACCOUNT.jsp").forward(
 					request, response);
 			return;
 		case HEADLINE:
-			request.setAttribute("articles", new ArticleDAO().getArticles(
-					new Article.INFO[] { Article.INFO.頭條 }, division, 1, 10));
+			request.setAttribute("articles", new ArticleService()
+					.getArticlesByInfoDivision(
+							new Article.INFO[] { Article.INFO.頭條 }, division,
+							1, 10));
 			request.getRequestDispatcher("include/HEADLINE.jsp").forward(
 					request, response);
 			return;
 		case IMPORTANT:
-			request.setAttribute("articles", new ArticleDAO().getArticles(
-					new Article.INFO[] { Article.INFO.重要 }, division, 1, 5));
+			request.setAttribute("articles", new ArticleService()
+					.getArticlesByInfoDivision(
+							new Article.INFO[] { Article.INFO.重要 }, division,
+							1, 5));
 			request.getRequestDispatcher("include/IMPORTANT.jsp").forward(
 					request, response);
 			return;
 		case NEWS:
 			request.setAttribute("articles",
-					new ArticleDAO().getArticles(null, division, 1, 10));
+					new ArticleService().getArticlesByDivision(division, 1, 10));
 			request.getRequestDispatcher("include/NEWS.jsp").forward(request,
 					response);
 			return;
 		case TAGS:
 			String[] tagnames = request.getParameterValues("tagname");
 			request.setAttribute("articles",
-					new ArticleDAO().getArticles(tagnames, 0, 6));
+					new ArticleService().getArticlesByTabnames(tagnames, 0, 6));
 			request.getRequestDispatcher("include/TAGS.jsp").forward(request,
 					response);
 			return;

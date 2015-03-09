@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import jiangsir.zerobb.Exceptions.AccessCause;
 import jiangsir.zerobb.Exceptions.AccessException;
-import jiangsir.zerobb.Interfaces.IAccessible;
+import jiangsir.zerobb.Interfaces.IAccessFilter;
 import jiangsir.zerobb.Scopes.ApplicationScope;
 
 /**
@@ -57,8 +57,8 @@ public class AccessFilter implements Filter {
 		 * 由 servlet 獲得的參數來決定是否可以存取。固定寫在 servlet.isAccessible(request);
 		 */
 		for (Class<?> iface : httpServlet.getClass().getInterfaces()) {
-			if (iface == IAccessible.class) {
-				for (Method method : IAccessible.class.getMethods()) {
+			if (iface == IAccessFilter.class) {
+				for (Method method : IAccessFilter.class.getMethods()) {
 					try {
 						Method servletMethod = httpServlet.getClass()
 								.getDeclaredMethod(method.getName(),

@@ -9,7 +9,7 @@ import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import jiangsir.zerobb.DAOs.UserDAO;
+import jiangsir.zerobb.Services.UserDAO;
 
 public class Utils {
 

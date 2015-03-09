@@ -10,17 +10,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import jiangsir.zerobb.DAOs.ArticleDAO;
 import jiangsir.zerobb.Exceptions.AccessException;
 import jiangsir.zerobb.Exceptions.DataException;
-import jiangsir.zerobb.Interfaces.IAccessible;
+import jiangsir.zerobb.Interfaces.IAccessFilter;
 import jiangsir.zerobb.Scopes.SessionScope;
+import jiangsir.zerobb.Services.ArticleDAO;
 import jiangsir.zerobb.Tables.Article;
 import jiangsir.zerobb.Tables.CurrentUser;
 import jiangsir.zerobb.Tools.ENV;
 
 @WebServlet(urlPatterns = { "/Touch.api" })
-public class TouchServlet extends HttpServlet implements IAccessible {
+public class TouchServlet extends HttpServlet implements IAccessFilter {
 	/**
 	 * 
 	 */
@@ -39,7 +39,7 @@ public class TouchServlet extends HttpServlet implements IAccessible {
 	 * jiangsir.zerobb.Interfaces.IAccessible#isAccessible(javax.servlet.http
 	 * .HttpServletRequest)
 	 */
-	public void isAccessible(HttpServletRequest request) throws AccessException {
+	public void AccessFilter(HttpServletRequest request) throws AccessException {
 		HttpSession session = request.getSession(false);
 		CurrentUser currentUser = new SessionScope(session).getCurrentUser();
 		Article article = new ArticleDAO().getArticleById(request

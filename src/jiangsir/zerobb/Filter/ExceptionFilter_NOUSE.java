@@ -2,13 +2,11 @@ package jiangsir.zerobb.Filter;
 
 import java.io.IOException;
 import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.*;
-
-import jiangsir.zerobb.DAOs.*;
+import jiangsir.zerobb.Services.LogDAO;
 import jiangsir.zerobb.Tables.Log;
 
-public class ExceptionFilter implements Filter {
+public class ExceptionFilter_NOUSE implements Filter {
 
 	public void init(FilterConfig config) throws ServletException {
 	}

@@ -4,7 +4,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import jiangsir.zerobb.DAOs.UserDAO;
+
+import jiangsir.zerobb.Services.UserDAO;
 
 public class LoginChecker {
 

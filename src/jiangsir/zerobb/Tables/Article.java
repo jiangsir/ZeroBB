@@ -4,9 +4,9 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import jiangsir.zerobb.DAOs.UpfileDAO;
-import jiangsir.zerobb.DAOs.UserDAO;
 import jiangsir.zerobb.Exceptions.DataException;
+import jiangsir.zerobb.Services.UpfileDAO;
+import jiangsir.zerobb.Services.UserDAO;
 
 /**
  *  - User.java

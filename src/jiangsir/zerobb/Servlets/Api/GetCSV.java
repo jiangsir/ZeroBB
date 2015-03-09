@@ -11,8 +11,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import jiangsir.zerobb.DAOs.ArticleDAO;
-import jiangsir.zerobb.DAOs.UserDAO;
+
+import jiangsir.zerobb.Services.ArticleDAO;
+import jiangsir.zerobb.Services.ArticleService;
+import jiangsir.zerobb.Services.UserDAO;
 import jiangsir.zerobb.Tables.Article;
 import jiangsir.zerobb.Tables.User;
 import jiangsir.zerobb.Tools.ENV;
@@ -40,13 +42,12 @@ public class GetCSV extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		ArticleDAO articleDao = new ArticleDAO();
 		String action = request.getParameter("a");
 
 		if (this.GET_HEADLINES.equals(action)) {
 			StringBuffer csv = new StringBuffer(5000);
-			for (Article article : articleDao.getArticles(
-					new Article.INFO[] { Article.INFO.頭條 }, null, 1, 10)) {
+			for (Article article : new ArticleService().getArticlesByInfo(
+					new Article.INFO[] { Article.INFO.頭條 }, 1, 10)) {
 				User user = new UserDAO()
 						.getUserByAccount(article.getAccount());
 				csv.append(article.getTitle() + ",ShowArticle?id="

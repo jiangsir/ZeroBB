@@ -1,5 +1,7 @@
 package jiangsir.zerobb.Tables;
 
+import java.io.Serializable;
+
 import jiangsir.zerobb.Annotations.Persistent;
 import jiangsir.zerobb.Exceptions.DataException;
 
@@ -13,7 +15,12 @@ import jiangsir.zerobb.Exceptions.DataException;
  * @author jiangsir
  * 
  */
-public class User {
+public class User implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -363437329708413101L;
+
 	public enum ROLE {
 		ADMIN, // 管理權限
 		MANAGER, // 一般管理員

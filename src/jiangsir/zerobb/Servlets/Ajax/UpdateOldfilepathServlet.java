@@ -6,7 +6,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import jiangsir.zerobb.DAOs.UpfileDAO;
+
+import jiangsir.zerobb.Services.UpfileDAO;
 import jiangsir.zerobb.Tools.ENV;
 
 @WebServlet(urlPatterns = { "/UpdateOldfilepath" }, name = "UpdateOldfilepath.ajax")

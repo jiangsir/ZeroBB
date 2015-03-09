@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import jiangsir.zerobb.DAOs.UpfileDAO;
+import jiangsir.zerobb.Services.UpfileDAO;
 import jiangsir.zerobb.Tables.Upfile;
 
 public class FileToBlob {

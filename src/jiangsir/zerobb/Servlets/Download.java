@@ -12,11 +12,10 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-import jiangsir.zerobb.DAOs.LogDAO;
-import jiangsir.zerobb.DAOs.UpfileDAO;
-import jiangsir.zerobb.DAOs.UserDAO;
 import jiangsir.zerobb.Exceptions.DataException;
 import jiangsir.zerobb.Scopes.SessionScope;
+import jiangsir.zerobb.Services.LogDAO;
+import jiangsir.zerobb.Services.UpfileDAO;
 import jiangsir.zerobb.Tables.CurrentUser;
 import jiangsir.zerobb.Tables.Log;
 import jiangsir.zerobb.Tables.Upfile;
@@ -59,8 +58,7 @@ public class Download extends HttpServlet {
 		// String session_account = (String) session
 		// .getAttribute("session_account");
 		CurrentUser currentUser = new SessionScope(session).getCurrentUser();
-		new UpfileDAO().getArticle(
-				new UserDAO().getUserById(currentUser.getId()), upfileid);
+		new UpfileDAO().getArticle(currentUser, upfileid);
 		// if (upfileid <= Upfile.OLD_UPFILDID) {
 		// this.doOldDownload(upfileid);
 		// } else if (upfileid <= Upfile.FILE_UPFILDID) {

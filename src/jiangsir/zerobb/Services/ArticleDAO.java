@@ -3,7 +3,7 @@
  * 2008/4/29 下午 05:46:51
  * jiangsir
  */
-package jiangsir.zerobb.DAOs;
+package jiangsir.zerobb.Services;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -17,6 +17,7 @@ import jiangsir.zerobb.Exceptions.DataException;
 import jiangsir.zerobb.Factories.ArticleFactory;
 import jiangsir.zerobb.Tables.Article;
 import jiangsir.zerobb.Tables.Article_Tag;
+import jiangsir.zerobb.Tables.CurrentUser;
 import jiangsir.zerobb.Tables.User;
 import jiangsir.zerobb.Tables.User.DIVISION;
 import jiangsir.zerobb.Tools.ENV;
@@ -110,7 +111,7 @@ public class ArticleDAO extends SuperDAO<Article> {
 	 * @param page
 	 * @return
 	 */
-	public ArrayList<Article> getArticles(Article.INFO[] infos,
+	protected ArrayList<Article> getArticles(Article.INFO[] infos,
 			DIVISION division, int page, int pagesize) {
 		String info = "";
 		for (int i = 0; infos != null && i < infos.length; i++) {
@@ -170,20 +171,45 @@ public class ArticleDAO extends SuperDAO<Article> {
 	 * @param pagesize
 	 * @return
 	 */
-	public ArrayList<Article> getArticles(String[] tagname, int page,
-			int pagesize) {
-		ArrayList<Article> articles = new ArrayList<Article>();
-		for (Article_Tag tag : new Article_TagDAO().getArticle_Tags(tagname,
-				page, pagesize)) {
-			Article article = this.getArticleById(tag.getArticleid());
-			if (article != null) {
-				articles.add(article);
+	protected ArrayList<Article> getArticlesByTabnames(String[] tagnames,
+			int page, int pagesize) {
+		String sql_tagnames = "";
+		if (tagnames == null || tagnames.length == 0) {
+
+		} else {
+			sql_tagnames += " AND (";
+			for (String tagname : tagnames) {
+				if (!sql_tagnames.contains("tagname")) {
+					sql_tagnames += "tagname='" + tagname + "'";
+				} else {
+					sql_tagnames += " OR tagname='" + tagname + "'";
+				}
 			}
+			sql_tagnames += ")";
 		}
-		return articles;
+		String sql = "SELECT * FROM articles, article_tags WHERE "
+				+ "articles.id=article_tags.articleid " + sql_tagnames
+				+ " ORDER BY sortable DESC LIMIT " + (page - 1) * pagesize
+				+ "," + pagesize;
+		try {
+			return this.executeQuery(
+					this.getConnection().prepareStatement(sql), Article.class);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return new ArrayList<Article>();
+		}
+		// ArrayList<Article> articles = new ArrayList<Article>();
+		// for (Article_Tag tag : new Article_TagDAO().getArticle_Tags(tagnames,
+		// page, pagesize)) {
+		// Article article = this.getArticleById(tag.getArticleid());
+		// if (article != null) {
+		// articles.add(article);
+		// }
+		// }
+		// return articles;
 	}
 
-	public ArrayList<Article> getArticlesByRules(TreeSet<String> rules,
+	protected ArrayList<Article> getArticlesByRules(TreeSet<String> rules,
 			String orderby, int page) {
 		StringBuffer sql = new StringBuffer(5000);
 		sql.append("SELECT * FROM articles ");
@@ -198,7 +224,7 @@ public class ArticleDAO extends SuperDAO<Article> {
 		return new ArrayList<Article>();
 	}
 
-	public ArrayList<Article> getAllArticles() {
+	protected ArrayList<Article> getAllArticles() {
 		String sql = "SELECT * FROM articles";
 		try {
 			PreparedStatement pstmt = this.getConnection()
@@ -317,7 +343,8 @@ public class ArticleDAO extends SuperDAO<Article> {
 	 * @return
 	 * @throws DataException
 	 */
-	public Article getArticle(User user, int articleid) throws DataException {
+	public Article getArticle(CurrentUser currentUser, int articleid)
+			throws DataException {
 		Article article = this.getArticleById(articleid);
 		// String sql = "SELECT * FROM articles WHERE id=" + articleid;
 		//
@@ -326,7 +353,7 @@ public class ArticleDAO extends SuperDAO<Article> {
 		// break;
 		// }
 
-		if (user == null) {
+		if (currentUser == null) {
 			if (article.getVisible() == false) {
 				throw new DataException("本公告已設定為不顯示！");
 			}
@@ -336,7 +363,7 @@ public class ArticleDAO extends SuperDAO<Article> {
 			if (article.getPostdate().after(Calendar.getInstance().getTime())) {
 				throw new DataException("本公告尚未發佈。");
 			}
-		} else if (user.getRole() == User.ROLE.USER) {
+		} else if (currentUser.getRole() == User.ROLE.USER) {
 			if (article.getVisible() == false) {
 				throw new DataException("本公告已設定為不顯示！");
 			}

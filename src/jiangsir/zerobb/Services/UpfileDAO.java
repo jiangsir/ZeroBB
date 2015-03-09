@@ -3,7 +3,7 @@
  * 2008/4/29 下午 05:46:51
  * jiangsir
  */
-package jiangsir.zerobb.DAOs;
+package jiangsir.zerobb.Services;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import jiangsir.zerobb.Exceptions.DataException;
 import jiangsir.zerobb.Tables.Article;
+import jiangsir.zerobb.Tables.CurrentUser;
 import jiangsir.zerobb.Tables.Log;
 import jiangsir.zerobb.Tables.Upfile;
 import jiangsir.zerobb.Tables.User;
@@ -181,10 +182,10 @@ public class UpfileDAO extends GeneralDAO<Upfile> {
 	 * @return
 	 * @throws DataException
 	 */
-	public Article getArticle(User session_user, int upfileid)
+	public Article getArticle(CurrentUser currentUser, int upfileid)
 			throws DataException {
 		Upfile upfile = this.getUpfile(upfileid);
-		return new ArticleDAO().getArticle(session_user, upfile.getArticleid());
+		return new ArticleDAO().getArticle(currentUser, upfile.getArticleid());
 	}
 
 	@Override

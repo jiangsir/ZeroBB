@@ -6,15 +6,15 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-import jiangsir.zerobb.DAOs.ArticleDAO;
-import jiangsir.zerobb.DAOs.Article_TagDAO;
-import jiangsir.zerobb.DAOs.TagDAO;
-import jiangsir.zerobb.DAOs.UpfileDAO;
 import jiangsir.zerobb.Exceptions.AccessException;
 import jiangsir.zerobb.Exceptions.DataException;
-import jiangsir.zerobb.Interfaces.IAccessible;
+import jiangsir.zerobb.Interfaces.IAccessFilter;
 import jiangsir.zerobb.Scopes.SessionScope;
+import jiangsir.zerobb.Services.ArticleDAO;
 import jiangsir.zerobb.Services.ArticleService;
+import jiangsir.zerobb.Services.Article_TagDAO;
+import jiangsir.zerobb.Services.TagDAO;
+import jiangsir.zerobb.Services.UpfileDAO;
 import jiangsir.zerobb.Tables.Article;
 import jiangsir.zerobb.Tables.Article_Tag;
 import jiangsir.zerobb.Tables.CurrentUser;
@@ -26,7 +26,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 
 @WebServlet(urlPatterns = { "/UpdateArticle" }, name = "UpdateArticle.do")
-public class UpdateArticle extends HttpServlet implements IAccessible {
+public class UpdateArticle extends HttpServlet implements IAccessFilter {
 	/**
 	 * 
 	 */
@@ -38,7 +38,7 @@ public class UpdateArticle extends HttpServlet implements IAccessible {
 		ENV.putServlet(this.getClass());
 	}
 
-	public void isAccessible(HttpServletRequest request) throws AccessException {
+	public void AccessFilter(HttpServletRequest request) throws AccessException {
 		HttpSession session = request.getSession(false);
 		CurrentUser currentUser = new SessionScope(session).getCurrentUser();
 		Article article = new ArticleDAO().getArticleById(request

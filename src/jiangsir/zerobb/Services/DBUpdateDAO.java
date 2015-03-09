@@ -1,4 +1,4 @@
-package jiangsir.zerobb.DAOs;
+package jiangsir.zerobb.Services;
 
 import java.io.IOException;
 import java.sql.DatabaseMetaData;

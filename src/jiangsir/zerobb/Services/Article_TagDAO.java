@@ -3,7 +3,7 @@
  * 2008/4/29 下午 05:46:51
  * jiangsir
  */
-package jiangsir.zerobb.DAOs;
+package jiangsir.zerobb.Services;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -115,7 +115,6 @@ public class Article_TagDAO extends GeneralDAO<Article_Tag> {
 				+ " ORDER BY articleid DESC LIMIT "
 				+ ((page - 1) * pagesize < 0 ? 0 : (int) (page - 1) * pagesize)
 				+ "," + pagesize;
-		System.out.println("sql = " + sql);
 		return this.executeQuery(sql, Article_Tag.class);
 	}
 

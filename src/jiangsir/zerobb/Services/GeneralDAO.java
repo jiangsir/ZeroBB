@@ -1,4 +1,4 @@
-﻿package jiangsir.zerobb.DAOs;
+﻿package jiangsir.zerobb.Services;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -104,6 +104,7 @@ abstract public class GeneralDAO<T> {
 		} finally {
 			try {
 				rs.close();
+				System.out.println("pstmt=" + pstmt.toString());
 				pstmt.close();
 				// conn.close();
 			} catch (SQLException e) {

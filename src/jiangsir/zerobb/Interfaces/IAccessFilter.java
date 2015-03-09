@@ -13,6 +13,6 @@ import jiangsir.zerobb.Exceptions.AccessException;
  * @author nknush-001
  * 
  */
-public interface IAccessible {
-	public void isAccessible(HttpServletRequest request) throws AccessException;
+public interface IAccessFilter {
+	public void AccessFilter(HttpServletRequest request) throws AccessException;
 }

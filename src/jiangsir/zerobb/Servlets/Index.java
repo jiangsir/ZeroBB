@@ -4,11 +4,9 @@ import java.io.IOException;
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
-
-import jiangsir.zerobb.DAOs.ArticleDAO;
-import jiangsir.zerobb.DAOs.TagDAO;
-import jiangsir.zerobb.DAOs.UserDAO;
-import jiangsir.zerobb.Tables.Article;
+import jiangsir.zerobb.Services.ArticleService;
+import jiangsir.zerobb.Services.TagDAO;
+import jiangsir.zerobb.Services.UserDAO;
 import jiangsir.zerobb.Tables.User;
 import jiangsir.zerobb.Tools.ENV;
 import jiangsir.zerobb.Tools.Utils;
@@ -53,18 +51,15 @@ public class Index extends HttpServlet {
 			// for (int i = 0; i < param_infos.length; i++) {
 			// infos[i] = Article.INFO.valueOf(param_infos[i]);
 			// }
-			request.setAttribute(
-					"articles",
-					new ArticleDAO().getArticles(null, division, page,
-							ENV.getPAGESIZE()));
+			request.setAttribute("articles", new ArticleService()
+					.getArticlesByDivision(division, page, ENV.getPAGESIZE()));
 		} else if (tagname != null) {
-			request.setAttribute("articles", new ArticleDAO().getArticles(
-					new String[] { tagname }, page, ENV.getPAGESIZE()));
-		} else {
-			request.setAttribute(
-					"articles",
-					new ArticleDAO().getArticles(null, null, page,
+			request.setAttribute("articles", new ArticleService()
+					.getArticlesByTabnames(new String[] { tagname }, page,
 							ENV.getPAGESIZE()));
+		} else {
+			request.setAttribute("articles",
+					new ArticleService().getArticles(page, ENV.getPAGESIZE()));
 		}
 		request.setAttribute("tags", new TagDAO().getTags());
 		request.setAttribute("page", page);

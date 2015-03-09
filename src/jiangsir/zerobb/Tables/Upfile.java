@@ -1,7 +1,8 @@
 package jiangsir.zerobb.Tables;
 
 import java.io.InputStream;
-import jiangsir.zerobb.DAOs.ArticleDAO;
+
+import jiangsir.zerobb.Services.ArticleDAO;
 import jiangsir.zerobb.Tools.ENV;
 
 /**

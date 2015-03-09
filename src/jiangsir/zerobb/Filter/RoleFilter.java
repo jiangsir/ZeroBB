@@ -16,10 +16,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import jiangsir.zerobb.Annotations.RoleSetting;
-import jiangsir.zerobb.DAOs.UserDAO;
 import jiangsir.zerobb.Exceptions.RoleException;
 import jiangsir.zerobb.Scopes.ApplicationScope;
 import jiangsir.zerobb.Scopes.SessionScope;
+import jiangsir.zerobb.Services.UserDAO;
 import jiangsir.zerobb.Servlets.LoginServlet;
 import jiangsir.zerobb.Tables.CurrentUser;
 import jiangsir.zerobb.Tables.User;

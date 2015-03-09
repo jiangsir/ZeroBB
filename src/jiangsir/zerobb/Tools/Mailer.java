@@ -6,7 +6,7 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.*;
-import jiangsir.zerobb.DAOs.*;
+import jiangsir.zerobb.Services.LogDAO;
 import jiangsir.zerobb.Tables.Log;
 
 public class Mailer implements Runnable {
