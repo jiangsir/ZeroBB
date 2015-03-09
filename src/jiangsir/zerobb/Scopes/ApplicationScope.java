@@ -1,6 +1,8 @@
 package jiangsir.zerobb.Scopes;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 import javax.servlet.ServletContext;
@@ -12,6 +14,7 @@ import jiangsir.zerobb.Tables.User;
 public class ApplicationScope {
 	public static ServletContext servletContext = null;
 
+	private static String built = null;
 	private static HashMap<String, HttpSession> onlineSessions = new HashMap<String, HttpSession>();
 	private static HashMap<String, User> onlineUsers = new HashMap<String, User>();
 	private static HashMap<String, HttpServlet> urlpatterns = new HashMap<String, HttpServlet>();
@@ -21,6 +24,7 @@ public class ApplicationScope {
 		ApplicationScope.servletContext = servletContext;
 
 		ApplicationScope.setAppRoot(new File(servletContext.getRealPath("/")));
+		ApplicationScope.setBuilt();
 		ApplicationScope.setOnlineSessions(onlineSessions);
 		ApplicationScope.setOnlineUsers(onlineUsers);
 		ApplicationScope.setUrlpatterns(urlpatterns);
@@ -63,6 +67,19 @@ public class ApplicationScope {
 	public static void setAppRoot(File appRoot) {
 		ApplicationScope.appRoot = appRoot;
 		servletContext.setAttribute("appRoot", appRoot);
+	}
+
+	public static String getBuilt() {
+		if (ApplicationScope.built == null) {
+			setBuilt();
+		}
+		return ApplicationScope.built;
+	}
+
+	public static void setBuilt() {
+		ApplicationScope.built = new SimpleDateFormat("yyMMdd")
+				.format(new Date(ApplicationScope.getAppRoot().lastModified()));
+		servletContext.setAttribute("built", ApplicationScope.built);
 	}
 
 }

@@ -5,7 +5,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page isELIgnored="false"%>
 
-<div id="footer_menu">ZeroBB for Servlet3.0 Built140330</div>
+<div id="footer_menu">ZeroBB for Servlet3.0
+	Built${applicationScope.built}</div>
 <div id="footer">
 	Designed &amp; <a href="./Admin">管理</a> by <a
 		href="mailto:jiangsir@tea.nknush.kh.edu.tw">江其勳@高師大附中</a>.
