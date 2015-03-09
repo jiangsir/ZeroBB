@@ -54,9 +54,9 @@
 		<div id="main">
 			<div id="text">
 				<p style="text-align: right; margin-right: 100px;">
-					瀏覽次數： ${article.hitnum}<br /> 發布自： <span id="postdate"><fmt:formatDate
-							value="${article.postdate}" pattern="yyyy-MM-dd HH:mm:ss" /></span><br />
-					至： <span id="outdate"><fmt:formatDate
+					發佈人員：${article.user.name}，發佈單位:${article.user.division.value}，瀏覽次數： ${article.hitnum}<br /> 發布自： <span
+						id="postdate"><fmt:formatDate value="${article.postdate}"
+							pattern="yyyy-MM-dd HH:mm:ss" /></span><br /> 至： <span id="outdate"><fmt:formatDate
 							value="${article.outdate}" pattern="yyyy-MM-dd HH:mm:ss" /></span><br />
 					<c:forEach var="tag" items="${article.tags}">
 						<span title="${tag.descript}">${tag.tagtitle} | </span>

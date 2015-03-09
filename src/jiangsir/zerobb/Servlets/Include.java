@@ -29,6 +29,7 @@ public class Include extends HttpServlet {
 		HEADLINE, // 頭條
 		IMPORTANT, // 重要
 		ACCOUNT, // 根據帳號
+		DIVISION, // 根據處室
 		NEWS, // 新聞
 		TAGS;// 根據 Tag
 	}
@@ -69,6 +70,15 @@ public class Include extends HttpServlet {
 			request.setAttribute("articles",
 					new ArticleService().getArticlesByDivision(division, 1, 10));
 			request.getRequestDispatcher("include/ACCOUNT.jsp").forward(
+					request, response);
+			return;
+		case DIVISION:
+			division = User.DIVISION.valueOf(request.getParameter("division"));
+			request.setAttribute("articles",
+					new ArticleService().getArticlesByInfoDivision(
+							new Article.INFO[] { Article.INFO.頭條,
+									Article.INFO.重要 }, division, 1, 10));
+			request.getRequestDispatcher("include/DIVISION.jsp").forward(
 					request, response);
 			return;
 		case HEADLINE:
