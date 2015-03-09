@@ -66,7 +66,7 @@ public class GetJson extends HttpServlet {
 		} else if (this.GET_TAGS.equals(action)) {
 			String[] tags = request.getParameterValues("tagname");
 			Iterator<Article> articles = new ArticleService()
-					.getArticlesByTabnames(tags, 0, 10).iterator();
+					.getArticlesByTabnames(null, tags, 0, 10).iterator();
 			JSONArray json_articles = new JSONArray();
 
 			while (articles.hasNext()) {

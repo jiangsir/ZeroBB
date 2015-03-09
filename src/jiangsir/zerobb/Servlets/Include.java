@@ -1,6 +1,8 @@
 package jiangsir.zerobb.Servlets;
 
 import java.io.IOException;
+import java.util.Arrays;
+
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
@@ -40,8 +42,8 @@ public class Include extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 			response.getWriter().println(
-					"參數有誤！/Include?p={\"HEADLINE\",\"IMPORTANT\",\"ACCOUNT\",\"NEWS\", \"TAGS\"}&"
-							+ "account={jiaowu, xuewu}");
+					"參數有誤！/Include?p={" + Arrays.toString(PATTERN.values())
+							+ "}&" + "account={jiaowu, xuewu}");
 			// String s = "";
 			// for (PATTERN pp : PATTERN.values()) {
 			// if (s.equals("")) {
@@ -93,8 +95,9 @@ public class Include extends HttpServlet {
 			return;
 		case TAGS:
 			String[] tagnames = request.getParameterValues("tagname");
-			request.setAttribute("articles",
-					new ArticleService().getArticlesByTabnames(tagnames, 0, 6));
+			request.setAttribute("articles", new ArticleService()
+					.getArticlesByTabnames(new Article.INFO[] {
+							Article.INFO.頭條, Article.INFO.重要 }, tagnames, 0, 6));
 			request.getRequestDispatcher("include/TAGS.jsp").forward(request,
 					response);
 			return;

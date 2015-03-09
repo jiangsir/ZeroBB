@@ -8,15 +8,16 @@ import jiangsir.zerobb.Tools.ENV;
 
 public class ArticleService {
 
-	public ArrayList<Article> getArticlesByTabnames(String[] tagnames,
-			int page, int pagesize) {
+	public ArrayList<Article> getArticlesByTabnames(Article.INFO[] infos,
+			String[] tagnames, int page, int pagesize) {
 		if (page <= 0) {
 			page = 1;
 		}
 		if (pagesize <= 0) {
 			page = ENV.getPAGESIZE();
 		}
-		return new ArticleDAO().getArticlesByTabnames(tagnames, page, pagesize);
+		return new ArticleDAO().getArticlesByTagnames(infos, tagnames, page,
+				pagesize);
 	}
 
 	public ArrayList<Article> getArticlesByInfoDivision(Article.INFO[] infos,

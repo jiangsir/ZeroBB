@@ -171,8 +171,21 @@ public class ArticleDAO extends SuperDAO<Article> {
 	 * @param pagesize
 	 * @return
 	 */
-	protected ArrayList<Article> getArticlesByTabnames(String[] tagnames,
-			int page, int pagesize) {
+	protected ArrayList<Article> getArticlesByTagnames(Article.INFO[] infos,
+			String[] tagnames, int page, int pagesize) {
+		String sql_infos = "";
+		if (infos != null && infos.length > 0) {
+			sql_infos += " AND (";
+			for (Article.INFO info : infos) {
+				if (!sql_infos.contains("info")) {
+					sql_infos += "info='" + info + "'";
+				} else {
+					sql_infos += " OR info='" + info + "'";
+				}
+			}
+			sql_infos += ")";
+		}
+
 		String sql_tagnames = "";
 		if (tagnames == null || tagnames.length == 0) {
 
@@ -188,9 +201,9 @@ public class ArticleDAO extends SuperDAO<Article> {
 			sql_tagnames += ")";
 		}
 		String sql = "SELECT * FROM articles, article_tags WHERE "
-				+ "articles.id=article_tags.articleid " + sql_tagnames
-				+ " ORDER BY sortable DESC LIMIT " + (page - 1) * pagesize
-				+ "," + pagesize;
+				+ "articles.id=article_tags.articleid " + sql_infos
+				+ sql_tagnames + " ORDER BY sortable DESC LIMIT " + (page - 1)
+				* pagesize + "," + pagesize;
 		try {
 			return this.executeQuery(
 					this.getConnection().prepareStatement(sql), Article.class);

@@ -55,8 +55,8 @@ public class Index extends HttpServlet {
 					.getArticlesByDivision(division, page, ENV.getPAGESIZE()));
 		} else if (tagname != null) {
 			request.setAttribute("articles", new ArticleService()
-					.getArticlesByTabnames(new String[] { tagname }, page,
-							ENV.getPAGESIZE()));
+					.getArticlesByTabnames(null, new String[] { tagname },
+							page, ENV.getPAGESIZE()));
 		} else {
 			request.setAttribute("articles",
 					new ArticleService().getArticles(page, ENV.getPAGESIZE()));
