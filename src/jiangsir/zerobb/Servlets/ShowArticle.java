@@ -41,9 +41,10 @@ public class ShowArticle extends HttpServlet {
 			e.printStackTrace();
 			throw new DataException(e);
 		}
-		request.setAttribute("article_tags",
-				new Article_TagDAO().getArticle_TagNames(articleid));
-		request.setAttribute("tags", new Article_TagDAO().getTags(articleid));
+		// request.setAttribute("article_tags",
+		// new Article_TagDAO().getArticle_TagNames(articleid));
+		// request.setAttribute("tags", new
+		// Article_TagDAO().getTags(articleid));
 		request.getRequestDispatcher("ShowArticle.jsp").forward(request,
 				response);
 	}

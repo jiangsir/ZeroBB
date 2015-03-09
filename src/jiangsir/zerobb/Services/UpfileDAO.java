@@ -18,7 +18,6 @@ import jiangsir.zerobb.Tables.Article;
 import jiangsir.zerobb.Tables.CurrentUser;
 import jiangsir.zerobb.Tables.Log;
 import jiangsir.zerobb.Tables.Upfile;
-import jiangsir.zerobb.Tables.User;
 
 /**
  * @author jiangsir

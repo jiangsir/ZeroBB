@@ -3,8 +3,10 @@ package jiangsir.zerobb.Tables;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import jiangsir.zerobb.Exceptions.DataException;
+import jiangsir.zerobb.Services.Article_TagDAO;
 import jiangsir.zerobb.Services.UpfileDAO;
 import jiangsir.zerobb.Services.UserDAO;
 
@@ -45,8 +47,8 @@ public class Article {
 	private String hyperlink = "#";
 	private String content = "";
 	private Integer hitnum = 0;
-	private Timestamp postdate = new Timestamp(new java.util.Date().getTime());
-	private Timestamp outdate = new Timestamp(new java.util.Date().getTime());
+	private Timestamp postdate = new Timestamp(System.currentTimeMillis());
+	private Timestamp outdate = new Timestamp(System.currentTimeMillis());
 
 	private Long sortable = Calendar.getInstance().getTimeInMillis();
 	public static final Boolean visible_TRUE = true;
@@ -253,4 +255,12 @@ public class Article {
 		return false;
 	}
 
+	/**
+	 * 取得這個 Article 的 Tags
+	 * 
+	 * @return
+	 */
+	public List<Tag> getTags() {
+		return new Article_TagDAO().getTags(this.id);
+	}
 }

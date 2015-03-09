@@ -58,7 +58,7 @@
 							value="${article.postdate}" pattern="yyyy-MM-dd HH:mm:ss" /></span><br />
 					至： <span id="outdate"><fmt:formatDate
 							value="${article.outdate}" pattern="yyyy-MM-dd HH:mm:ss" /></span><br />
-					<c:forEach var="tag" items="${tags}">
+					<c:forEach var="tag" items="${article.tags}">
 						<span title="${tag.descript}">${tag.tagtitle} | </span>
 					</c:forEach>
 					<span title="${article.user.account}">${userBean.user.division.value}

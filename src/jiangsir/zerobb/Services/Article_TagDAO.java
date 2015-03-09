@@ -68,20 +68,20 @@ public class Article_TagDAO extends GeneralDAO<Article_Tag> {
 		return tags;
 	}
 
-	/**
-	 * 用 articleid 取得該 article 的所有 Article_Tag
-	 * 
-	 * @param articleid
-	 * @return
-	 */
-	public ArrayList<Article_Tag> getArticle_Tags(int articleid) {
-		ArrayList<Article_Tag> tags = new ArrayList<Article_Tag>();
-		String sql = "SELECT * FROM article_tags WHERE articleid=" + articleid;
-		for (Article_Tag tag : this.executeQuery(sql, Article_Tag.class)) {
-			tags.add(tag);
-		}
-		return tags;
-	}
+	// /**
+	// * 用 articleid 取得該 article 的所有 Article_Tag
+	// *
+	// * @param articleid
+	// * @return
+	// */
+	// public ArrayList<Article_Tag> getArticle_Tags(int articleid) {
+	// ArrayList<Article_Tag> tags = new ArrayList<Article_Tag>();
+	// String sql = "SELECT * FROM article_tags WHERE articleid=" + articleid;
+	// for (Article_Tag tag : this.executeQuery(sql, Article_Tag.class)) {
+	// tags.add(tag);
+	// }
+	// return tags;
+	// }
 
 	public ArrayList<Article_Tag> getAllArticle_Tag() {
 		String sql = "SELECT * FROM article_tags";
@@ -104,8 +104,8 @@ public class Article_TagDAO extends GeneralDAO<Article_Tag> {
 	 * @param articleid
 	 * @return
 	 */
-	public ArrayList<Article_Tag> getArticle_Tags(String[] tagname, int page,
-			int pagesize) {
+	protected ArrayList<Article_Tag> getArticle_Tags(String[] tagname,
+			int page, int pagesize) {
 		String tagnamestring = "WHERE ";
 		for (int i = 0; i < tagname.length; i++) {
 			tagnamestring += (i == 0 ? "" : "OR") + "tagname='" + tagname[i]

@@ -11,7 +11,6 @@ import jiangsir.zerobb.Exceptions.DataException;
 import jiangsir.zerobb.Interfaces.IAccessFilter;
 import jiangsir.zerobb.Scopes.SessionScope;
 import jiangsir.zerobb.Services.ArticleDAO;
-import jiangsir.zerobb.Services.ArticleService;
 import jiangsir.zerobb.Services.Article_TagDAO;
 import jiangsir.zerobb.Services.TagDAO;
 import jiangsir.zerobb.Services.UpfileDAO;
@@ -19,7 +18,6 @@ import jiangsir.zerobb.Tables.Article;
 import jiangsir.zerobb.Tables.Article_Tag;
 import jiangsir.zerobb.Tables.CurrentUser;
 import jiangsir.zerobb.Tables.Upfile;
-import jiangsir.zerobb.Tables.User;
 import jiangsir.zerobb.Tools.ENV;
 import jiangsir.zerobb.Tools.FileUploader;
 import org.apache.commons.fileupload.FileItem;
@@ -58,8 +56,8 @@ public class UpdateArticle extends HttpServlet implements IAccessFilter {
 		// request.setAttribute("userBean", new
 		// UserBean_Deprecated(article.getAccount()));
 		request.setAttribute("article", article);
-		request.setAttribute("article_tags",
-				new Article_TagDAO().getArticle_TagNames(article.getId()));
+		// request.setAttribute("article_tags",
+		// new Article_TagDAO().getArticle_TagNames(article.getId()));
 		request.getRequestDispatcher("InsertArticle.jsp").forward(request,
 				response);
 	}

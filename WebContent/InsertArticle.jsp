@@ -74,8 +74,8 @@
 					</div>
 					<c:forEach var="tag" items="${tags}">
 						<c:set var="checkedTag" value="" />
-						<c:forEach var="article_tag" items="${article_tags}">
-							<c:if test="${tag.tagname == article_tag}">
+						<c:forEach var="article_tag" items="${article.tags}">
+							<c:if test="${tag.tagname == article_tag.tagname}">
 								<c:set var="checkedTag" value="checked" />
 							</c:if>
 						</c:forEach>
