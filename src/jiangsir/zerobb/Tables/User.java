@@ -30,6 +30,7 @@ public class User implements Serializable {
 
 	public enum DIVISION {
 		none(""), //
+		admin("管理員"), //
 		jiaowu("教務處"), //
 		xuewu("學務處"), //
 		zongwu("總務處"), //

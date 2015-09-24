@@ -55,6 +55,8 @@ public class Article {
 	public static final Boolean visible_FALSE = false;
 	private Boolean visible = true;
 
+	private Integer articleid;
+	private String tagname;
 	// =======================================================
 
 	public Article() {
@@ -173,7 +175,8 @@ public class Article {
 	}
 
 	public void setOutdate(Timestamp outdate) {
-		if (Math.abs(outdate.getTime() - new java.util.Date().getTime()) < 20 * 60 * 1000) {
+		if (Math.abs(outdate.getTime() - new java.util.Date().getTime()) < 20
+				* 60 * 1000) {
 			Calendar now = Calendar.getInstance();
 			now.set(Calendar.DATE, now.get(Calendar.DATE) + 7);
 			// 如果時間有誤，就直接預設 7 天後即可。
@@ -248,11 +251,27 @@ public class Article {
 		if (this.isNullArticle()) {
 			throw new DataException("找不到這個文章！");
 		}
-		if ((currentUser.getRole() == User.ROLE.ADMIN || currentUser
-				.getAccount().equals(getAccount()))) {
+		if ((currentUser.getRole() == User.ROLE.ADMIN
+				|| currentUser.getAccount().equals(getAccount()))) {
 			return true;
 		}
 		return false;
+	}
+
+	public Integer getArticleid() {
+		return articleid;
+	}
+
+	public void setArticleid(Integer articleid) {
+		this.articleid = articleid;
+	}
+
+	public String getTagname() {
+		return tagname;
+	}
+
+	public void setTagname(String tagname) {
+		this.tagname = tagname;
 	}
 
 	/**

@@ -16,7 +16,6 @@ import java.util.TreeSet;
 import jiangsir.zerobb.Exceptions.DataException;
 import jiangsir.zerobb.Factories.ArticleFactory;
 import jiangsir.zerobb.Tables.Article;
-import jiangsir.zerobb.Tables.Article_Tag;
 import jiangsir.zerobb.Tables.CurrentUser;
 import jiangsir.zerobb.Tables.User;
 import jiangsir.zerobb.Tables.User.DIVISION;
@@ -202,11 +201,11 @@ public class ArticleDAO extends SuperDAO<Article> {
 		}
 		String sql = "SELECT * FROM articles, article_tags WHERE "
 				+ "articles.id=article_tags.articleid " + sql_infos
-				+ sql_tagnames + " ORDER BY sortable DESC LIMIT " + (page - 1)
-				* pagesize + "," + pagesize;
+				+ sql_tagnames + " ORDER BY sortable DESC LIMIT "
+				+ (page - 1) * pagesize + "," + pagesize;
 		try {
-			return this.executeQuery(
-					this.getConnection().prepareStatement(sql), Article.class);
+			return this.executeQuery(this.getConnection().prepareStatement(sql),
+					Article.class);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return new ArrayList<Article>();
@@ -228,8 +227,8 @@ public class ArticleDAO extends SuperDAO<Article> {
 		sql.append("SELECT * FROM articles ");
 		sql.append(this.makeRules(rules, orderby, page));
 		try {
-			PreparedStatement pstmt = this.getConnection().prepareStatement(
-					sql.toString());
+			PreparedStatement pstmt = this.getConnection()
+					.prepareStatement(sql.toString());
 			return this.executeQuery(pstmt, Article.class);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -256,7 +255,8 @@ public class ArticleDAO extends SuperDAO<Article> {
 	 * @param page
 	 * @return
 	 */
-	public ArrayList<Article> getAllArticles(String by, int page, int pagesize) {
+	public ArrayList<Article> getAllArticles(String by, int page,
+			int pagesize) {
 		if (by == null || by.equals("") || by.equals("all")) {
 			by = " ";
 		} else {
@@ -317,8 +317,8 @@ public class ArticleDAO extends SuperDAO<Article> {
 		String sql = "SELECT * FROM articles WHERE visible="
 				+ Article.visible_TRUE + " AND  outdate<'"
 				+ Utils.parseDatetime(Calendar.getInstance().getTimeInMillis())
-				+ "'" + by + " ORDER BY id DESC LIMIT " + (page - 1)
-				* ENV.getPAGESIZE() + "," + ENV.getPAGESIZE();
+				+ "'" + by + " ORDER BY id DESC LIMIT "
+				+ (page - 1) * ENV.getPAGESIZE() + "," + ENV.getPAGESIZE();
 		try {
 			PreparedStatement pstmt = this.getConnection()
 					.prepareStatement(sql);
