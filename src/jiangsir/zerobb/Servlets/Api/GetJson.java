@@ -24,17 +24,13 @@ import org.json.JSONObject;
  * @author nknush-001
  * 
  */
-@WebServlet(urlPatterns = { "/GetJson" }, name = "GetJson.do")
+@WebServlet(urlPatterns = {"/GetJson"}, name = "GetJson.do")
 public class GetJson extends HttpServlet {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public static String urlpattern = GetJson.class.getAnnotation(
-			WebServlet.class).urlPatterns()[0];
-
-	private String GET_HEADLINES = "headlines";
-	private String GET_TAGS = "tags";
+	public static String urlpattern = GetJson.class.getAnnotation(WebServlet.class).urlPatterns()[0];
 
 	@Override
 	public void init() throws ServletException {
@@ -42,53 +38,62 @@ public class GetJson extends HttpServlet {
 		ENV.putServlet(this.getClass());
 	}
 
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	public enum ACTION {
+		headlines, // 取得頭條
+		tags; // 取得分類資料。
+	}
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String action = request.getParameter("a");
-		if (this.GET_HEADLINES.equals(action)) {
-			JSONArray json_articles = new JSONArray();
-			for (Article article : new ArticleService().getArticlesByInfo(
-					new Article.INFO[] { Article.INFO.頭條 }, 1, 10)) {
-				JSONObject json_article = new JSONObject();
-				try {
-					json_article.put("articleid", article.getId());
-					json_article.put("info", article.getInfo());
-					json_article.put("title", article.getTitle());
-					json_article.put("account", article.getAccount());
-				} catch (JSONException e) {
-					e.printStackTrace();
+		switch (ACTION.valueOf(action)) {
+			case headlines :
+				// http://127.0.0.1:8080/GetJson?a=headlines
+				JSONArray json_articles = new JSONArray();
+				for (Article article : new ArticleService().getArticlesByInfo(new Article.INFO[]{Article.INFO.頭條}, 1,
+						10)) {
+					JSONObject json_article = new JSONObject();
+					try {
+						json_article.put("articleid", article.getId());
+						json_article.put("info", article.getInfo());
+						json_article.put("title", article.getTitle());
+						json_article.put("account", article.getUser().getName());
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+					// System.out.println("json=" + json_article.toString());
+					json_articles.put(json_article);
+					// response.getWriter().print(json_article.toString());
 				}
-				// System.out.println("json=" + json_article.toString());
-				json_articles.put(json_article);
-				// response.getWriter().print(json_article.toString());
-			}
-			response.getWriter().print(json_articles.toString());
-		} else if (this.GET_TAGS.equals(action)) {
-			String[] tags = request.getParameterValues("tagname");
-			Iterator<Article> articles = new ArticleService()
-					.getArticlesByTabnames(null, tags, 0, 10).iterator();
-			JSONArray json_articles = new JSONArray();
+				response.getWriter().print(json_articles.toString());
+				return;
+			case tags :
+				// http://127.0.0.1:8080/GetJson?a=tags&tagname=???&tagname=???.....
+				String[] tags = request.getParameterValues("tagname");
+				Iterator<Article> articles = new ArticleService().getArticlesByTabnames(null, tags, 0, 10).iterator();
+				json_articles = new JSONArray();
 
-			while (articles.hasNext()) {
-				Article article = articles.next();
-				JSONObject json_article = new JSONObject();
-				try {
-					json_article.put("articleid", article.getId());
-					json_article.put("info", article.getInfo());
-					json_article.put("title", article.getTitle());
-					json_article.put("account", article.getAccount());
-				} catch (JSONException e) {
-					e.printStackTrace();
+				while (articles.hasNext()) {
+					Article article = articles.next();
+					JSONObject json_article = new JSONObject();
+					try {
+						json_article.put("articleid", article.getId());
+						json_article.put("info", article.getInfo());
+						json_article.put("title", article.getTitle());
+						json_article.put("account", article.getAccount());
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+					// System.out.println("json=" + json_article.toString());
+					json_articles.put(json_article);
+					// response.getWriter().print(json_article.toString());
 				}
-				// System.out.println("json=" + json_article.toString());
-				json_articles.put(json_article);
-				// response.getWriter().print(json_article.toString());
-			}
-			response.getWriter().print(json_articles.toString());
-		} else {
-			response.getWriter().println("parameter 有誤！");
-			response.getWriter().println(
-					"使用範例：/ZeroBB/api/get.json?a={\"headlines\", \"tags\"}");
+				response.getWriter().print(json_articles.toString());
+				return;
+			default :
+				response.getWriter().println("parameter 有誤！");
+				response.getWriter().println("使用範例：/ZeroBB/api/get.json?a={\"headlines\", \"tags\"}");
+				return;
+
 		}
 	}
 }

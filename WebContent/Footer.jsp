@@ -9,5 +9,5 @@
 	Built${applicationScope.built}</div>
 <div id="footer">
 	Designed &amp; <a href="./Admin">管理</a> by <a
-		href="mailto:jiangsir@tea.nknush.kh.edu.tw">江其勳@高師大附中</a>.
+		href="mailto:jiangsir@tea.nknush.kh.edu.tw">jiangsir@高師大附中</a>.
 </div>
