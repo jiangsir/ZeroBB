@@ -6,6 +6,9 @@
 package jiangsir.zerobb.Servlets.Api;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -31,6 +34,7 @@ public class GetJson extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 	public static String urlpattern = GetJson.class.getAnnotation(WebServlet.class).urlPatterns()[0];
+	public static ArrayList<Article> articles = null;
 
 	@Override
 	public void init() throws ServletException {
@@ -49,8 +53,11 @@ public class GetJson extends HttpServlet {
 			case headlines :
 				// http://127.0.0.1:8080/GetJson?a=headlines
 				JSONArray json_articles = new JSONArray();
-				for (Article article : new ArticleService().getArticlesByInfo(new Article.INFO[]{Article.INFO.頭條}, 1,
-						10)) {
+				int min = Calendar.getInstance().get(Calendar.MINUTE);
+				if (articles == null || min % 5 == 0) {
+					articles = new ArticleService().getArticlesByInfo(new Article.INFO[]{Article.INFO.頭條}, 1, 10);
+				}
+				for (Article article : articles) {
 					JSONObject json_article = new JSONObject();
 					try {
 						json_article.put("articleid", article.getId());

@@ -122,28 +122,22 @@ public class Upfile {
 	}
 
 	public String getINNER_PATH() {
-		return System.getProperty("file.separator") + "upfiles"
-				+ System.getProperty("file.separator");
+		return System.getProperty("file.separator") + "upfiles" + System.getProperty("file.separator");
 	}
 
 	public String getINNER_FILENAME() {
 		String sub = filename.substring(filename.lastIndexOf("."));
-		return this.getArticleid()
-				+ "_"
-				+ this.getId()
-				+ "_"
-				+ new ArticleDAO().getArticleById(this.getArticleid())
-						.getAccount() + sub;
+		return this.getArticleid() + "_" + this.getId() + "_"
+				+ new ArticleDAO().getArticleById(this.getArticleid()).getAccount() + sub;
 	}
 
 	/**
 	 * 判斷是否可以由 google viewer 顯示。如： doc, docx, pdf 等的文件。
 	 */
 	public boolean isIsGoogleViewer() {
-		if (this.getFiletype().equals("application/pdf")
-				|| this.getFiletype().contains("word")
-				|| this.getFiletype().contains("powerpoint")
-				|| this.getFiletype().contains("excel")) {
+		if (this.getFiletype().contains("pdf") || this.getFiletype().contains("word")
+				|| this.getFiletype().contains("powerpoint") || this.getFiletype().contains("excel")
+				|| this.getFiletype().contains("spreadsheet")) {
 			return true;
 		}
 		return false;
