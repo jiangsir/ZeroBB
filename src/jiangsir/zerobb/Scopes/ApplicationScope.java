@@ -23,7 +23,7 @@ public class ApplicationScope {
 	public static void setAllAttributes(ServletContext servletContext) {
 		ApplicationScope.servletContext = servletContext;
 
-		ApplicationScope.setAppRoot(new File(servletContext.getRealPath("/")));
+		ApplicationScope.setAppRoot();
 		ApplicationScope.setBuilt();
 		ApplicationScope.setOnlineSessions(onlineSessions);
 		ApplicationScope.setOnlineUsers(onlineUsers);
@@ -36,8 +36,7 @@ public class ApplicationScope {
 		return onlineSessions;
 	}
 
-	public static void setOnlineSessions(
-			HashMap<String, HttpSession> onlineSessions) {
+	public static void setOnlineSessions(HashMap<String, HttpSession> onlineSessions) {
 		ApplicationScope.onlineSessions = onlineSessions;
 		servletContext.setAttribute("onlineSessions", onlineSessions);
 	}
@@ -64,9 +63,19 @@ public class ApplicationScope {
 		return appRoot;
 	}
 
+	/**
+	 * 直接指定 AppRoot，在單機直接執行的時候使用。因此不具備 serveltContext
+	 * 
+	 * @param appRoot
+	 */
 	public static void setAppRoot(File appRoot) {
 		ApplicationScope.appRoot = appRoot;
-		servletContext.setAttribute("appRoot", appRoot);
+		// servletContext.setAttribute("appRoot", appRoot);
+	}
+
+	public static void setAppRoot() {
+		ApplicationScope.appRoot = new File(servletContext.getRealPath("/"));
+		ApplicationScope.servletContext.setAttribute("appRoot", appRoot);
 	}
 
 	public static String getBuilt() {
