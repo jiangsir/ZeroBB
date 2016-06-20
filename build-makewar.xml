@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="makewar">
+	<property environment="env" />
+
+	<tstamp>
+		<format property="now" pattern="yyyy-MM-dd" />
+	</tstamp>
+	<target name="makewar">
+		<war warfile="${basedir}/${modulename}.war" webxml="${basedir}/${modulename}/WEB-INF/web.xml">
+			<lib dir="${basedir}/${modulename}/WEB-INF/lib" />
+			<classes dir="${basedir}/${modulename}/WEB-INF/classes" />
+			<fileset dir="${basedir}/${modulename}">
+			</fileset>
+		</war>
+	</target>
+</project>
