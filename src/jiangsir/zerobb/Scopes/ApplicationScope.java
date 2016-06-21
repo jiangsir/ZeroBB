@@ -1,19 +1,19 @@
 package jiangsir.zerobb.Scopes;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpSession;
-
+import org.apache.commons.io.FileUtils;
 import jiangsir.zerobb.Tables.User;
 
 public class ApplicationScope {
 	public static ServletContext servletContext = null;
-
+	private static String version = null;
 	private static String built = null;
 	private static HashMap<String, HttpSession> onlineSessions = new HashMap<String, HttpSession>();
 	private static HashMap<String, User> onlineUsers = new HashMap<String, User>();
@@ -24,6 +24,7 @@ public class ApplicationScope {
 		ApplicationScope.servletContext = servletContext;
 
 		ApplicationScope.setAppRoot();
+		ApplicationScope.setVersion();
 		ApplicationScope.setBuilt();
 		ApplicationScope.setOnlineSessions(onlineSessions);
 		ApplicationScope.setOnlineUsers(onlineUsers);
@@ -76,6 +77,30 @@ public class ApplicationScope {
 	public static void setAppRoot() {
 		ApplicationScope.appRoot = new File(servletContext.getRealPath("/"));
 		ApplicationScope.servletContext.setAttribute("appRoot", appRoot);
+	}
+
+	/**
+	 * 取得目前系統的版本。
+	 */
+	public static String getVersion() {
+		if (ApplicationScope.version == null) {
+			setVersion();
+		}
+		return ApplicationScope.version;
+	}
+
+	/**
+	 * 取得目前系統的版本。
+	 */
+	public static void setVersion() {
+		try {
+			ApplicationScope.version = FileUtils
+					.readFileToString(new File(ApplicationScope.appRoot + File.separator + "META-INF", "Version.txt"))
+					.trim();
+		} catch (IOException e) {
+			e.printStackTrace();
+			ApplicationScope.version = "";
+		}
 	}
 
 	public static String getBuilt() {
