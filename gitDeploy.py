@@ -22,9 +22,9 @@ if choose1 == "n":
 
 os.system('git clone ' + gituri)
 
-pipe = subprocess.Popen('git --git-dir=' + apptmpdir + '/.git" describe', shell=True, stdout=subprocess.PIPE).stdout
+pipe = subprocess.Popen('git --git-dir=' + apptmpdir + '/.git describe', shell=True, stdout=subprocess.PIPE).stdout
 tag = str(pipe.read(), 'utf-8')
-open(appname + '/WebContent/META-INF/Version.txt', mode='w', encoding='utf-8').write(tag)
+open(apptmpdir + '/WebContent/META-INF/Version.txt', mode='w', encoding='utf-8').write(tag)
 
 for root, dirs, files in os.walk(apptmpdir + "/src/"):
     for file in files:
@@ -36,11 +36,11 @@ for root, dirs, files in os.walk(apptmpdir + "/src/"):
 
 choose2 = input("使用原本的 app name=" + appname + " (Y/n)")
 if choose2 == "n":
-    appname = input("請輸入本地要發布的的 appname=")  # 如 ROOT
+    appname = input("請輸入要發布的的 appname= ")  # 如 ROOT
 
 os.system('ant -f ' + apptmpdir + '/build.xml -Dappname=' + appname + ' -DTOMCAT_HOME=/usr/share/' + tomcatN + '/')
 
-os.system('cp ' + appname + '.war /var/lib/' + tomcatN + '/webapps/' + appname + '.war')
+os.system('cp ' + apptmpdir + '/' + appname + '.war /var/lib/' + tomcatN + '/webapps/' + appname + '.war')
 time.sleep(20)
 # check if war file 是否已經完全解開。
 os.system('python3 /var/lib/' + tomcatN + '/webapps/' + appname + '/Setup.py')
