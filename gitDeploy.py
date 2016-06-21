@@ -11,18 +11,20 @@ for file in os.listdir('/etc/init.d/'):
         
 appname = input("請輸入 git host 上的應用程式名稱:")  # ex: ZeroBB
 apptmpdir = appname + "_" + datetime.datetime.now().strftime('%Y-%m-%d')
-gituri = "ssh://git@git.nknush.kh.edu.tw:22/home/git/repository/" + appname + ".git";
+
+os.system('rm -rf ' + apptmpdir)
+os.system('mkdir ' + apptmpdir)
+
+gituri = "ssh://git@git.nknush.kh.edu.tw:22/home/git/repository/" + appname + ".git " + apptmpdir;
 choose1 = input("預設 git uri=" + gituri + " (Y/n)")
 if choose1 == "n":
     gituri = input("請輸入 git uri=")
 
-
-os.system('rm -rf ' + apptmpdir)
 os.system('git clone ' + gituri)
 
 pipe = subprocess.Popen('git --git-dir=' + apptmpdir + '/.git" describe', shell=True, stdout=subprocess.PIPE).stdout
 tag = str(pipe.read(), 'utf-8')
-open(apptmpdir + '/WebContent/META-INF/Version.txt', mode='w', encoding='utf-8').write(tag)
+open(appname + '/WebContent/META-INF/Version.txt', mode='w', encoding='utf-8').write(tag)
 
 for root, dirs, files in os.walk(apptmpdir + "/src/"):
     for file in files:

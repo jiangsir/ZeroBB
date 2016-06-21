@@ -37,7 +37,7 @@
 			<classpath refid="CLASSPATH" />
 		</javac>
 
-		<war warfile="${basedir}/${modulename}.war" webxml="${basedir}/WebContent/WEB-INF/web.xml">
+		<war warfile="${basedir}/${appname}.war" webxml="${basedir}/WebContent/WEB-INF/web.xml">
 			<lib dir="${basedir}/WebContent/WEB-INF/lib" />
 			<classes dir="${basedir}/WebContent/WEB-INF/classes" />
 			<fileset dir="${basedir}" />
