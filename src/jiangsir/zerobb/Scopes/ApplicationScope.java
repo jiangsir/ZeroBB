@@ -13,8 +13,8 @@ import jiangsir.zerobb.Tables.User;
 
 public class ApplicationScope {
 	public static ServletContext servletContext = null;
-	private static String version = null;
-	private static String built = null;
+	private static String version = "Undefined Version";
+	private static String built = "Undefined BuiltNumber";
 	private static HashMap<String, HttpSession> onlineSessions = new HashMap<String, HttpSession>();
 	private static HashMap<String, User> onlineUsers = new HashMap<String, User>();
 	private static HashMap<String, HttpServlet> urlpatterns = new HashMap<String, HttpServlet>();
@@ -99,8 +99,9 @@ public class ApplicationScope {
 					.trim();
 		} catch (IOException e) {
 			e.printStackTrace();
-			ApplicationScope.version = "";
+			// ApplicationScope.version = "";
 		}
+		servletContext.setAttribute("version", ApplicationScope.version);
 	}
 
 	public static String getBuilt() {
