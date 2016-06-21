@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project basedir="." default="makewar">
 	<property environment="env" />
-	<property name="modulename" value="${modulename}" />
+	<property name="appname" value="${appname}" />
 	<property name="TOMCAT_HOME" value="${TOMCAT_HOME}" />
 	<path id="CLASSPATH">
 		<pathelement location="${basedir}/WebContent/WEB-INF/lib/activation.jar" />

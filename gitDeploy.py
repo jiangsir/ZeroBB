@@ -3,31 +3,42 @@ import fnmatch
 import sys
 import time
 import subprocess
-
-modulename = "ZeroBB"
-appname = "ZeroBB_20160621"
+import datetime
 
 for file in os.listdir('/etc/init.d/'):
     if fnmatch.fnmatch(file, 'tomcat*'):
         tomcatN = file
-# os.system('rm -rf ZeroBB')
-# os.system('git clone ssh://git@apps.nknush.kh.edu.tw:22/home/git/repository/ZeroBB.git')
+        
+appname = input("請輸入 git host 上的應用程式名稱:")  # ex: ZeroBB
+apptmpdir = appname + "_" + datetime.datetime.now().strftime('%Y-%m-%d')
+gituri = "ssh://git@git.nknush.kh.edu.tw:22/home/git/repository/" + appname + ".git";
+choose1 = input("預設 git uri=" + gituri + " (Y/n)")
+if choose1 == "n":
+    gituri = input("請輸入 git uri=")
 
-pipe = subprocess.Popen('git --git-dir="ZeroBB/.git" tag -l', shell=True, stdout=subprocess.PIPE).stdout
-tags = pipe.read()
-print(str(tags, 'utf-8'))
 
-for root, dirs, files in os.walk("ZeroBB/src/"):
+os.system('rm -rf ' + apptmpdir)
+os.system('git clone ' + gituri)
+
+pipe = subprocess.Popen('git --git-dir=' + apptmpdir + '/.git" describe', shell=True, stdout=subprocess.PIPE).stdout
+tag = str(pipe.read(), 'utf-8')
+open(apptmpdir + '/WebContent/META-INF/Version.txt', mode='w', encoding='utf-8').write(tag)
+
+for root, dirs, files in os.walk(apptmpdir + "/src/"):
     for file in files:
         if file.endswith(".java"):
-             #print(os.path.join(root, file))
+             # print(os.path.join(root, file))
              s = open(os.path.join(root, file), mode='r', encoding='utf-8-sig').read()
              open(os.path.join(root, file), mode='w', encoding='utf-8').write(s)
 
 
-os.system('ant -f ZeroBB/build.xml -Dmodulename=ZeroBB -DTOMCAT_HOME=/usr/share/' + tomcatN + '/')
+choose2 = input("使用原本的 app name=" + appname + " (Y/n)")
+if choose2 == "n":
+    appname = input("請輸入本地要發布的的 appname=")  # 如 ROOT
 
-os.system('cp ' + modulename + '.war /var/lib/' + tomcatN + '/webapps/' + appname + '.war')
+os.system('ant -f ' + apptmpdir + '/build.xml -Dappname=' + appname + ' -DTOMCAT_HOME=/usr/share/' + tomcatN + '/')
+
+os.system('cp ' + appname + '.war /var/lib/' + tomcatN + '/webapps/' + appname + '.war')
 time.sleep(20)
 # check if war file 是否已經完全解開。
 os.system('python3 /var/lib/' + tomcatN + '/webapps/' + appname + '/Setup.py')
