@@ -4,21 +4,23 @@
 	<property name="modulename" value="${modulename}" />
 	<property name="TOMCAT_HOME" value="${TOMCAT_HOME}" />
 	<path id="CLASSPATH">
-		<pathelement location="${basedir}/${modulename}/WebContent/WEB-INF/lib/activation.jar" />
-		<pathelement location="${basedir}/${modulename}/WebContent/WEB-INF/lib/commons-fileupload-1.2.1.jar" />
-		<pathelement location="${basedir}/${modulename}/WebContent/WEB-INF/lib/commons-io-1.4.jar" />
-		<pathelement location="${basedir}/${modulename}/WebContent/WEB-INF/lib/jackson-all-1.8.3.jar" />
-		<pathelement location="${basedir}/${modulename}/WebContent/WEB-INF/lib/jdom.jar" />
-		<pathelement location="${basedir}/${modulename}/WebContent/WEB-INF/lib/jericho-html-3.2.jar" />
-		<pathelement location="${basedir}/${modulename}/WebContent/WEB-INF/lib/json.jar" />
-		<pathelement location="${basedir}/${modulename}/WebContent/WEB-INF/lib/jstl.jar" />
-		<pathelement location="${basedir}/${modulename}/WebContent/WEB-INF/lib/junit-4.4.jar" />
-		<pathelement location="${basedir}/${modulename}/WebContent/WEB-INF/lib/mail.jar" />
-		<pathelement location="${basedir}/${modulename}/WebContent/WEB-INF/lib/mysql-connector-java-5.1.5-bin.jar" />
-		<pathelement location="${basedir}/${modulename}/WebContent/WEB-INF/lib/standard.jar" />
-		<pathelement location="${basedir}/${modulename}/WebContent/WEB-INF/lib/jsch-0.1.45.jar" />
-		<pathelement location="${basedir}/${modulename}/WebContent/WEB-INF/classes" />
-		<pathelement location="${basedir}/${modulename}/work" />
+		<pathelement location="${basedir}/WebContent/WEB-INF/lib/activation.jar" />
+		<pathelement location="${basedir}/WebContent/WEB-INF/lib/commons-fileupload-1.2.1.jar" />
+		<pathelement location="${basedir}/WebContent/WEB-INF/lib/commons-io-1.4.jar" />
+		<pathelement location="${basedir}/WebContent/WEB-INF/lib/jackson-all-1.8.3.jar" />
+		<pathelement location="${basedir}/WebContent/WEB-INF/lib/jdom.jar" />
+		<pathelement location="${basedir}/WebContent/WEB-INF/lib/jericho-html-3.2.jar" />
+		<pathelement location="${basedir}/WebContent/WEB-INF/lib/json.jar" />
+		<pathelement location="${basedir}/WebContent/WEB-INF/lib/jstl.jar" />
+		<pathelement location="${basedir}/WebContent/WEB-INF/lib/junit-4.4.jar" />
+		<pathelement location="${basedir}/WebContent/WEB-INF/lib/mail.jar" />
+		<pathelement location="${basedir}/WebContent/WEB-INF/lib/mysql-connector-java-5.1.5-bin.jar" />
+		<pathelement location="${basedir}/WebContent/WEB-INF/lib/standard.jar" />
+		<pathelement location="${basedir}/WebContent/WEB-INF/lib/jsch-0.1.45.jar" />
+		<pathelement location="${basedir}/WebContent/WEB-INF/lib/log4j-1.2.16.jar" />
+		<pathelement location="${basedir}/WebContent/WEB-INF/lib/commons-lang-2.6.jar" />
+		<pathelement location="${basedir}/WebContent/WEB-INF/classes" />
+		<pathelement location="${basedir}/work" />
 		<pathelement location="${TOMCAT_HOME}/lib/annotations-api.jar" />
 		<pathelement location="${TOMCAT_HOME}/lib/servlet-api.jar" />
 		<pathelement location="${TOMCAT_HOME}/lib/jasper.jar" />
@@ -31,14 +33,14 @@
 	</tstamp>
 	<target name="makewar">
 		<mkdir dir="${basedir}/WebContent/WEB-INF/classes" />
-		<javac srcdir="${basedir}/WebContent/WEB-INF/src" destdir="${basedir}/WebContent/WEB-INF/classes">
+		<javac srcdir="${basedir}/src" destdir="${basedir}/WebContent/WEB-INF/classes">
 			<classpath refid="CLASSPATH" />
 		</javac>
 
-		<war warfile="${basedir}/${modulename}.war" webxml="${basedir}/${modulename}/WebContent/WEB-INF/web.xml">
-			<lib dir="${basedir}/${modulename}/WEB-INF/lib" />
-			<classes dir="${basedir}/${modulename}/WEB-INF/classes" />
-			<fileset dir="${basedir}/${modulename}" />
+		<war warfile="${basedir}/${modulename}.war" webxml="${basedir}/WebContent/WEB-INF/web.xml">
+			<lib dir="${basedir}/WebContent/WEB-INF/lib" />
+			<classes dir="${basedir}/WebContent/WEB-INF/classes" />
+			<fileset dir="${basedir}" />
 		</war>
 	</target>
 </project>
