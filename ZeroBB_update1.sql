@@ -12,7 +12,8 @@ CREATE TABLE IF NOT EXISTS `appconfigs` (
   `client_secret` varchar(255) NOT NULL,
   `redirect_uri` varchar(255) NOT NULL,
   `signinkey` varchar(100) NOT NULL,
+  `signinip` varchar(255) NOT NULL,
   `announcement` text NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;

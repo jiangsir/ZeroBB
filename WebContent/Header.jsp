@@ -7,7 +7,7 @@
 <%@ page isELIgnored="false"%>
 <div id="header">
 	<div id="logo">
-		<a href="./">${initParam.TITLE}</a>
+		<a href="./">${applicationScope.appConfig.title}</a>
 	</div>
 	<div id="slogan"></div>
 </div>
@@ -21,7 +21,7 @@
 	</form>
 	<c:if test="${!user:isNullUser(sessionScope.currentUser)}">
 		<c:if test="${user:isAdmin(sessionScope.currentUser)}"> | <a
-				href="./Admin">管理頁</a>
+				href="./EditAppConfig">管理頁</a>
 		</c:if> | &nbsp; <a href="./Logout">離開</a>
 	</c:if>
 	<br></br>

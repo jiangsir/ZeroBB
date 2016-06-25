@@ -4,8 +4,6 @@
  * jiangsir
  */
 package jiangsir.zerobb.Tables;
-
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.TreeSet;
 
@@ -27,9 +25,6 @@ public class AppConfig {
 	@Property(key = "Header")
 	@Persistent(name = "header")
 	private String Header = "Header";
-	@Property(key = "Author")
-	@Persistent(name = "author")
-	private String Author = "Qixun Jiang";
 	@Property(key = "PageSize")
 	@Persistent(name = "pagesize")
 	private int pagesize = 20;
@@ -104,14 +99,6 @@ public class AppConfig {
 		Header = header;
 	}
 
-	public String getAuthor() {
-		return Author;
-	}
-
-	public void setAuthor(String author) {
-		Author = author;
-	}
-
 	public int getPagesize() {
 		return pagesize;
 	}
@@ -145,21 +132,6 @@ public class AppConfig {
 			return;
 		}
 		this.setAuthdomains(StringTool.String2TreeSet(authDomains));
-	}
-
-	public TreeSet<String> getWorkingstudentids() {
-		return workingstudentids;
-	}
-
-	public void setWorkingstudentids(TreeSet<String> workingstudentids) {
-		this.workingstudentids = workingstudentids;
-	}
-
-	public void setWorkingstudentids(String workingstudentids) {
-		if (workingstudentids == null || "".equals(workingstudentids.trim())) {
-			return;
-		}
-		this.setWorkingstudentids(StringTool.String2TreeSet(workingstudentids));
 	}
 
 	public String getClient_id() {
@@ -251,84 +223,6 @@ public class AppConfig {
 
 	public void setTimestamp(Timestamp timestamp) {
 		this.timestamp = timestamp;
-	}
-
-	public java.sql.Time getSigninbegin() {
-		return signinbegin;
-	}
-
-	public int getPunishingthreshold() {
-		return punishingthreshold;
-	}
-
-	public void setPunishingthreshold(Integer punishingthreshold) {
-		this.punishingthreshold = punishingthreshold;
-	}
-
-	public void setPunishingthreshold(String punishingthreshold) {
-		if (punishingthreshold == null) {
-			return;
-		}
-		this.setPunishingthreshold(Integer.valueOf(punishingthreshold));
-	}
-
-	public int getPunishingdays() {
-		return punishingdays;
-	}
-
-	public void setPunishingdays(Integer punishingdays) {
-		this.punishingdays = punishingdays;
-	}
-
-	public void setPunishingdays(String punishingdays) {
-		if (punishingdays == null) {
-			return;
-		}
-		this.setPunishingdays(Integer.parseInt(punishingdays));
-	}
-
-	public void setSigninbegin(String signinbegin) {
-		this.setSigninbegin(Time.valueOf(signinbegin));
-	}
-
-	public void setSigninbegin(java.sql.Time signinbegin) {
-		this.signinbegin = signinbegin;
-	}
-
-	public java.sql.Time getSigninend() {
-		return signinend;
-	}
-
-	public void setSigninend(java.sql.Time signinend) {
-		this.signinend = signinend;
-	}
-
-	public void setSigninend(String signinend) {
-		this.setSigninend(Time.valueOf(signinend));
-	}
-
-	public java.sql.Time getBookingbegin() {
-		return bookingbegin;
-	}
-
-	public void setBookingbegin(String bookingbegin) {
-		this.setBookingbegin(Time.valueOf(bookingbegin));
-	}
-
-	public void setBookingbegin(java.sql.Time bookingbegin) {
-		this.bookingbegin = bookingbegin;
-	}
-
-	public java.sql.Time getBookingend() {
-		return bookingend;
-	}
-
-	public void setBookingend(String bookingend) {
-		this.setBookingend(Time.valueOf(bookingend));
-	}
-
-	public void setBookingend(java.sql.Time bookingend) {
-		this.bookingend = bookingend;
 	}
 
 	public String getCheckhost() {
