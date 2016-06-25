@@ -8,14 +8,14 @@ import javax.servlet.http.HttpSessionBindingListener;
 
 import jiangsir.zerobb.Scopes.ApplicationScope;
 
-public class CurrentUser extends User implements HttpSessionBindingListener,
-		Serializable {
+public class CurrentUser extends User implements HttpSessionBindingListener, Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -8830679620579860915L;
 	private HttpSession session = null;
+	private boolean isGoogleUser = false;
 
 	@Override
 	public void valueBound(HttpSessionBindingEvent event) {
@@ -41,14 +41,22 @@ public class CurrentUser extends User implements HttpSessionBindingListener,
 		}
 	}
 
+	public void setIsGoogleUser(boolean isGoogleUser) {
+		this.isGoogleUser = isGoogleUser;
+	}
+
+	public boolean getIsGoogleUser() {
+		return isGoogleUser;
+	}
+
 	public boolean isAdmin() {
 		return this.getRole() == User.ROLE.ADMIN;
 	}
 
 	@Override
 	public String toString() {
-		return "[id=" + this.getId() + ", account=" + this.getAccount()
-				+ ", ROLE=" + this.getRole() + ", name=" + this.getName() + "]";
+		return "[id=" + this.getId() + ", account=" + this.getAccount() + ", ROLE=" + this.getRole() + ", name="
+				+ this.getName() + "]";
 	}
 
 }

@@ -9,6 +9,9 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpSession;
 import org.apache.commons.io.FileUtils;
+
+import jiangsir.zerobb.Services.AppConfigService;
+import jiangsir.zerobb.Tables.AppConfig;
 import jiangsir.zerobb.Tables.User;
 
 public class ApplicationScope {
@@ -19,6 +22,7 @@ public class ApplicationScope {
 	private static HashMap<String, User> onlineUsers = new HashMap<String, User>();
 	private static HashMap<String, HttpServlet> urlpatterns = new HashMap<String, HttpServlet>();
 	private static File appRoot = null;
+	private static AppConfig appConfig = null;
 
 	public static void setAllAttributes(ServletContext servletContext) {
 		ApplicationScope.servletContext = servletContext;
@@ -29,8 +33,7 @@ public class ApplicationScope {
 		ApplicationScope.setOnlineSessions(onlineSessions);
 		ApplicationScope.setOnlineUsers(onlineUsers);
 		ApplicationScope.setUrlpatterns(urlpatterns);
-		// ApplicationScope.setAppConfig(ConfigHandler.getAppConfig());
-		// ApplicationScope.setCanBookup();
+		ApplicationScope.setAppConfig(new AppConfigService().getAppConfig());
 	}
 
 	public static HashMap<String, HttpSession> getOnlineSessions() {
@@ -115,6 +118,15 @@ public class ApplicationScope {
 		ApplicationScope.built = new SimpleDateFormat("yyMMdd")
 				.format(new Date(ApplicationScope.getAppRoot().lastModified()));
 		servletContext.setAttribute("built", ApplicationScope.built);
+	}
+
+	public static AppConfig getAppConfig() {
+		return appConfig;
+	}
+
+	public static void setAppConfig(AppConfig appConfig) {
+		ApplicationScope.appConfig = appConfig;
+		servletContext.setAttribute("appConfig", appConfig);
 	}
 
 }

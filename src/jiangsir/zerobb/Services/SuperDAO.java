@@ -9,10 +9,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.logging.Logger;
 import javax.naming.InitialContext;
@@ -39,8 +41,7 @@ abstract public class SuperDAO<T> {
 			if (conn == null || conn.isClosed()) {
 				if (source == null) {
 					InitialContext icontext = new InitialContext();
-					source = (DataSource) icontext
-							.lookup("java:comp/env/mysql");
+					source = (DataSource) icontext.lookup("java:comp/env/mysql");
 				}
 				logger.info("資料庫連結不存在或關閉了。嘗試重新取得連線");
 				conn = source.getConnection();
@@ -55,12 +56,10 @@ abstract public class SuperDAO<T> {
 		return conn;
 	}
 
-	public void setConnection(String driver, String jdbc, String dbaccount,
-			String dbpasswd) {
+	public void setConnection(String driver, String jdbc, String dbaccount, String dbpasswd) {
 		try {
 			Class.forName(driver); // 連結驅動程式
-			SuperDAO.conn = DriverManager.getConnection(jdbc, dbaccount,
-					dbpasswd);
+			SuperDAO.conn = DriverManager.getConnection(jdbc, dbaccount, dbpasswd);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -92,8 +91,7 @@ abstract public class SuperDAO<T> {
 		return fields.get(persistentname);
 	}
 
-	public ArrayList<T> executeQueryByAnnotations(PreparedStatement pstmt,
-			Class<T> clazz) {
+	public ArrayList<T> executeQueryByAnnotations(PreparedStatement pstmt, Class<T> clazz) {
 		long starttime = System.currentTimeMillis();
 		ResultSet rs = null;
 		ArrayList<T> list = new ArrayList<T>(); // 準備用 ArrayList 來回傳查詢結果。
@@ -111,13 +109,10 @@ abstract public class SuperDAO<T> {
 
 					field = this.getField(clazz, columnName);
 					if (field == null) {
-						logger.info("資料庫欄位 columnName=" + columnName
-								+ " 找不到相對應的 Field, Class name="
-								+ clazz.getName());
+						logger.info("資料庫欄位 columnName=" + columnName + " 找不到相對應的 Field, Class name=" + clazz.getName());
 						continue;
 					}
-					if (rsmd.getColumnType(i) == Types.BOOLEAN
-							|| rsmd.getColumnType(i) == Types.TINYINT) {
+					if (rsmd.getColumnType(i) == Types.BOOLEAN || rsmd.getColumnType(i) == Types.TINYINT) {
 						value = rs.getBoolean(columnName);
 					} else if (rsmd.getColumnType(i) == Types.INTEGER) {
 						value = rs.getInt(columnName);
@@ -132,12 +127,10 @@ abstract public class SuperDAO<T> {
 					}
 
 					try {
-						String settername = "set"
-								+ field.getName().toUpperCase().substring(0, 1)
+						String settername = "set" + field.getName().toUpperCase().substring(0, 1)
 								+ field.getName().substring(1);
-						Method settermethod = clazz.getMethod(settername,
-								new Class[] { value.getClass() });
-						settermethod.invoke(t, new Object[] { value });
+						Method settermethod = clazz.getMethod(settername, new Class[]{value.getClass()});
+						settermethod.invoke(t, new Object[]{value});
 					} catch (SecurityException e) {
 						e.printStackTrace();
 						continue;
@@ -160,8 +153,7 @@ abstract public class SuperDAO<T> {
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		} finally {
-			logger.info("PSTMT_SQL=" + pstmt.toString() + " 共耗時 "
-					+ (System.currentTimeMillis() - starttime) + " ms");
+			logger.info("PSTMT_SQL=" + pstmt.toString() + " 共耗時 " + (System.currentTimeMillis() - starttime) + " ms");
 			try {
 				if (rs != null) {
 					rs.close();
@@ -185,11 +177,9 @@ abstract public class SuperDAO<T> {
 			while (rs.next()) {
 				T t = (T) theclass.newInstance(); // 實體化一個 T
 				for (int i = 1; i <= columnCount; i++) {
-					String settername = this.getSetMethodName(rsmd
-							.getColumnName(i));
+					String settername = this.getSetMethodName(rsmd.getColumnName(i));
 					Object value;
-					if (rsmd.getColumnType(i) == Types.BLOB
-							|| rsmd.getColumnType(i) == Types.LONGVARBINARY) {
+					if (rsmd.getColumnType(i) == Types.BLOB || rsmd.getColumnType(i) == Types.LONGVARBINARY) {
 						value = rs.getBytes(rsmd.getColumnName(i));
 						// value = rs.getBlob(rsmd.getColumnName(i));
 						// value = rs.getBinaryStream(rsmd.getColumnName(i));
@@ -197,9 +187,8 @@ abstract public class SuperDAO<T> {
 						value = rs.getObject(rsmd.getColumnName(i));
 					}
 					try {
-						Method m = t.getClass().getMethod(settername,
-								new Class[] { value.getClass() });
-						m.invoke(t, new Object[] { value });
+						Method m = t.getClass().getMethod(settername, new Class[]{value.getClass()});
+						m.invoke(t, new Object[]{value});
 					} catch (InvocationTargetException e1) {
 						e1.printStackTrace();
 						continue;
@@ -219,8 +208,7 @@ abstract public class SuperDAO<T> {
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		} finally {
-			logger.info("PSTMT_SQL=" + pstmt.toString() + " 共耗時 "
-					+ (System.currentTimeMillis() - starttime) + " ms");
+			logger.info("PSTMT_SQL=" + pstmt.toString() + " 共耗時 " + (System.currentTimeMillis() - starttime) + " ms");
 			try {
 				rs.close();
 				pstmt.close();
@@ -251,21 +239,18 @@ abstract public class SuperDAO<T> {
 				Long id = rs.getLong(idname);
 				list.add(id);
 			}
-			logger.info("PSTMT_SQL=" + pstmt.toString() + " 共耗時 "
-					+ (System.currentTimeMillis() - starttime) + " ms");
+			logger.info("PSTMT_SQL=" + pstmt.toString() + " 共耗時 " + (System.currentTimeMillis() - starttime) + " ms");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return list;
 	}
 
-	public synchronized int executeUpdate(PreparedStatement pstmt)
-			throws SQLException {
+	public synchronized int executeUpdate(PreparedStatement pstmt) throws SQLException {
 		long starttime = System.currentTimeMillis();
 
 		int result = pstmt.executeUpdate();
-		logger.info("PSTMT_SQL=" + pstmt.toString() + " 共耗時 "
-				+ (System.currentTimeMillis() - starttime) + " ms");
+		logger.info("PSTMT_SQL=" + pstmt.toString() + " 共耗時 " + (System.currentTimeMillis() - starttime) + " ms");
 		pstmt.close();
 		return result;
 	}
@@ -276,16 +261,14 @@ abstract public class SuperDAO<T> {
 	 * @return
 	 * @throws SQLException
 	 */
-	public synchronized int executeInsert(PreparedStatement pstmt)
-			throws SQLException {
+	public synchronized int executeInsert(PreparedStatement pstmt) throws SQLException {
 		long starttime = System.currentTimeMillis();
 		int id = -1;
 		pstmt.executeUpdate();
 		ResultSet rs = pstmt.getGeneratedKeys();
 		rs.next();
 		id = rs.getInt(1);
-		logger.info("PSTMT_SQL=" + pstmt.toString() + " 共耗時 "
-				+ (System.currentTimeMillis() - starttime) + " ms");
+		logger.info("PSTMT_SQL=" + pstmt.toString() + " 共耗時 " + (System.currentTimeMillis() - starttime) + " ms");
 		rs.close();
 		pstmt.close();
 		return id;
@@ -299,8 +282,7 @@ abstract public class SuperDAO<T> {
 	 * @throws SQLException
 	 * @throws Exception
 	 */
-	public synchronized boolean executeDelete(PreparedStatement pstmt)
-			throws SQLException {
+	public synchronized boolean executeDelete(PreparedStatement pstmt) throws SQLException {
 		int result = pstmt.executeUpdate();
 		logger.info(pstmt.toString());
 		pstmt.close();
@@ -316,8 +298,7 @@ abstract public class SuperDAO<T> {
 	public int executeCount(String sql) {
 		int result = 0;
 		if (sql.matches("^SELECT.+FROM.*")) {
-			sql = sql.replaceFirst("^SELECT.+FROM",
-					"SELECT COUNT(*) AS COUNT FROM");
+			sql = sql.replaceFirst("^SELECT.+FROM", "SELECT COUNT(*) AS COUNT FROM");
 		} else {
 			return -1;
 		}
@@ -341,6 +322,41 @@ abstract public class SuperDAO<T> {
 			return -1;
 		}
 		return result;
+	}
+
+	/**
+	 * 將 fields 組合成 sql 語法。 <br>
+	 * 注意：只有 WHERE 以後的部分進行組合。
+	 * 
+	 * @param fields
+	 * @param orderby
+	 * @param page
+	 * @return
+	 */
+	public String makeFields(TreeMap<String, Object> fields, String orderby, int page) {
+		StringBuffer sql = new StringBuffer(5000);
+		sql.append(" ");
+		if (fields != null) {
+			Iterator<String> keys = fields.keySet().iterator();
+			if (keys.hasNext()) {
+				sql.append("WHERE ");
+			}
+			while (keys.hasNext()) {
+				sql.append(" (" + keys.next() + "=?)");
+				if (keys.hasNext()) {
+					sql.append(" AND ");
+				}
+			}
+		}
+		if (orderby != null && !"".equals(orderby.trim())) {
+			sql.append(" ORDER BY " + orderby);
+		}
+		// 不論 page 是多少，都必須 LIMIT ?? 為什麼？會導致 UserStatistic 裏面的題目列表都只有 20 個。
+		if (page > 0) {
+			sql.append(" LIMIT " + ((page > 1 ? page : 1) - 1) * PAGESIZE + "," + PAGESIZE);
+		}
+		// System.out.println("makeFields=" + sql.toString());
+		return sql.toString();
 	}
 
 	/**
@@ -368,9 +384,37 @@ abstract public class SuperDAO<T> {
 			sql.append(" ORDER BY " + orderby);
 		}
 		// 不論 page 是多少，都必須 LIMIT
-		sql.append(" LIMIT " + ((page > 1 ? page : 1) - 1) * PAGESIZE + ","
-				+ PAGESIZE);
+		sql.append(" LIMIT " + ((page > 1 ? page : 1) - 1) * PAGESIZE + "," + PAGESIZE);
 		return sql.toString();
+	}
+
+	/**
+	 * 執行 SQL 指令
+	 * 
+	 * @param sql
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean execute(String sql) {
+		long starttime = System.currentTimeMillis();
+		boolean result = false;
+		Connection conn = this.getConnection();
+		Statement stmt = null;
+		try {
+			stmt = conn.createStatement();
+			result = stmt.execute(sql);
+			System.out.println(
+					"PSTMT_SQL=" + stmt.toString() + " 共耗時 " + (System.currentTimeMillis() - starttime) + " ms");
+			// logger.info("PSTMT_SQL=" + stmt.toString() + " 共耗時 "
+			// + (System.currentTimeMillis() - starttime) + " ms");
+			stmt.close();
+			// conn.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return result;
 	}
 
 }

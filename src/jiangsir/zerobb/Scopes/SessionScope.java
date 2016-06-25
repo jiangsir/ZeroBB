@@ -8,6 +8,7 @@ import java.util.LinkedHashSet;
 import java.util.Locale;
 
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import jiangsir.zerobb.Servlets.LoginServlet;
@@ -17,8 +18,8 @@ import jiangsir.zerobb.Tables.CurrentUser;
 
 public class SessionScope implements Serializable {
 	/**
-     * 
-     */
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 	private HttpSession session = null;
 	private String sessionid = "";
@@ -37,6 +38,10 @@ public class SessionScope implements Serializable {
 		}
 	};
 
+	public SessionScope(HttpServletRequest request) {
+		this(request.getSession(false));
+	}
+
 	@SuppressWarnings("unchecked")
 	public SessionScope(HttpSession session) {
 		if (session == null) { // 避免第一次剛進來, session 尚未建立，會產生 NullException
@@ -45,13 +50,10 @@ public class SessionScope implements Serializable {
 		this.session = session;
 		this.setSessionid(session.getId());
 		this.setSession_ip((String) session.getAttribute("session_ip"));
-		this.setSession_privilege((LinkedHashSet<String>) session
-				.getAttribute("session_privilege"));
+		this.setSession_privilege((LinkedHashSet<String>) session.getAttribute("session_privilege"));
 		this.setSession_locale((Locale) session.getAttribute("session_locale"));
-		this.setSession_useragent((String) session
-				.getAttribute("session_useragent"));
-		this.setSession_requestheaders((HashMap<String, String>) session
-				.getAttribute("session_requestheaders"));
+		this.setSession_useragent((String) session.getAttribute("session_useragent"));
+		this.setSession_requestheaders((HashMap<String, String>) session.getAttribute("session_requestheaders"));
 		this.setCurrentUser((CurrentUser) session.getAttribute("currentUser"));
 		this.setLastsubmission((Date) session.getAttribute("lastsubmission"));
 		this.setHistories((ArrayList<String>) session.getAttribute("histories"));
@@ -118,8 +120,7 @@ public class SessionScope implements Serializable {
 		return session_requestheaders;
 	}
 
-	public void setSession_requestheaders(
-			HashMap<String, String> session_requestheaders) {
+	public void setSession_requestheaders(HashMap<String, String> session_requestheaders) {
 		if (session_requestheaders == null) {
 			return;
 		}
@@ -154,8 +155,7 @@ public class SessionScope implements Serializable {
 	@SuppressWarnings("unchecked")
 	public ArrayList<String> getHistories() {
 		if (session != null && session.getAttribute("histories") != null) {
-			this.histories = (ArrayList<String>) session
-					.getAttribute("histories");
+			this.histories = (ArrayList<String>) session.getAttribute("histories");
 		}
 		return this.histories;
 	}
@@ -169,22 +169,15 @@ public class SessionScope implements Serializable {
 	}
 
 	public void addHistory(String servletPath, String querystring) {
-		if (servletPath.startsWith(LoginServlet.class.getAnnotation(
-				WebServlet.class).urlPatterns()[0])
-				|| servletPath.equals(LogoutServlet.class.getAnnotation(
-						WebServlet.class).urlPatterns()[0])
-				|| servletPath.equals(ShowSessionsServlet.class.getAnnotation(
-						WebServlet.class).urlPatterns()[0])
-				|| servletPath.startsWith("/Update")
-				|| servletPath.startsWith("/Insert")
-				|| servletPath.startsWith("/api/")
-				|| servletPath.endsWith(".ajax")
-				|| servletPath.endsWith(".api")) {
+		if (servletPath.startsWith(LoginServlet.class.getAnnotation(WebServlet.class).urlPatterns()[0])
+				|| servletPath.equals(LogoutServlet.class.getAnnotation(WebServlet.class).urlPatterns()[0])
+				|| servletPath.equals(ShowSessionsServlet.class.getAnnotation(WebServlet.class).urlPatterns()[0])
+				|| servletPath.startsWith("/Update") || servletPath.startsWith("/Insert")
+				|| servletPath.startsWith("/api/") || servletPath.endsWith(".ajax") || servletPath.endsWith(".api")) {
 			return;
 		}
 		ArrayList<String> histories = this.getHistories();
-		String history = servletPath
-				+ (querystring == null ? "" : "?" + querystring);
+		String history = servletPath + (querystring == null ? "" : "?" + querystring);
 		System.out.println("histories1=" + histories);
 		if (!history.equals(histories.get(0))) {
 			histories.remove(histories.size() - 1);
@@ -193,6 +186,23 @@ public class SessionScope implements Serializable {
 			System.out.println("histories3=" + histories);
 			this.setHistories(histories);
 		}
+	}
+	/**
+	 * 回到前一頁
+	 * 
+	 * @return
+	 */
+	public String getPreviousPage() {
+		return this.getHistories().get(1);
+	}
+
+	/**
+	 * 回到同一頁。
+	 * 
+	 * @return
+	 */
+	public String getCurrentPage() {
+		return this.getHistories().get(0);
 	}
 
 }

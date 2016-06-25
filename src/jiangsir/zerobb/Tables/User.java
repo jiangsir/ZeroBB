@@ -84,6 +84,8 @@ public class User implements Serializable {
 	private String email = "";
 	@Persistent(name = "homepage")
 	private String homepage = "";
+	@Persistent(name = "picture")
+	private String picture = "";
 	@Persistent(name = "description")
 	private String description = "";
 	@Persistent(name = "headline")
@@ -95,8 +97,7 @@ public class User implements Serializable {
 	}
 
 	public boolean isNullUser() {
-		if (this.getId().equals(new User().getId())
-				&& this.getAccount().equals(new User().getAccount())) {
+		if (this.getId().equals(new User().getId()) && this.getAccount().equals(new User().getAccount())) {
 			return true;
 		}
 		return false;
@@ -163,6 +164,14 @@ public class User implements Serializable {
 
 	public void setHomepage(String homepage) {
 		this.homepage = homepage;
+	}
+
+	public String getPicture() {
+		return picture;
+	}
+
+	public void setPicture(String picture) {
+		this.picture = picture;
 	}
 
 	public String getDescription() {
