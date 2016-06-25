@@ -60,23 +60,6 @@ public class AppConfig {
 
 	@Persistent(name = "checktype")
 	private CHECKTYPE checktype = CHECKTYPE.POP;
-	@Persistent(name = "workingstudentids")
-	private TreeSet<String> workingstudentids = new TreeSet<String>();
-
-	@Persistent(name = "bookingbegin")
-	private java.sql.Time bookingbegin = java.sql.Time.valueOf("06:00:00");
-	@Persistent(name = "bookingend")
-	private java.sql.Time bookingend = java.sql.Time.valueOf("22:00:00");
-
-	@Persistent(name = "signinbegin")
-	private java.sql.Time signinbegin = java.sql.Time.valueOf("18:00:00");
-	@Persistent(name = "signinend")
-	private java.sql.Time signinend = java.sql.Time.valueOf("22:00:00");
-
-	@Persistent(name = "punishingthreshold")
-	private int punishingthreshold = 3;
-	@Persistent(name = "punishingdays")
-	private int punishingdays = 14;
 
 	@Property(key = "signinip")
 	@Persistent(name = "signinip")
