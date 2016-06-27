@@ -2,7 +2,6 @@ CREATE TABLE IF NOT EXISTS `appconfigs` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
   `header` varchar(255) NOT NULL,
-  `author` varchar(255) NOT NULL,
   `pagesize` int(11) NOT NULL,
   `defaultlogin` varchar(100) NOT NULL,
   `authdomains` varchar(255) NOT NULL,
