@@ -144,3 +144,33 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `account` (`account`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+INSERT INTO `users` VALUES(1, 'admin', '管理者', 'admin', 'ADMIN', '!1ashsashs', 'Jiangzero@gmail.com', 'homepage', 'describe', 1, 1);
+INSERT INTO `users` VALUES(2, 'all', '全部', 'all', 'USER', '', '', '', '', 0, 0);
+INSERT INTO `users` VALUES(3, 'principal', '校長室', 'principal', 'USER', 'prin', '', 'homepage', 'describe', 0, 1);
+INSERT INTO `users` VALUES(4, 'jiaowu', '教務處', 'jiaowu', 'USER', 'off1', '', 'homepage', 'describe', 0, 1);
+INSERT INTO `users` VALUES(5, 'xuewu', '學務處', 'xuewu', 'USER', 'off2', '', 'homepage', 'describe', 0, 1);
+INSERT INTO `users` VALUES(6, 'zongwu', '總務處', 'zongwu', 'USER', 'off3', '', 'homepage', 'describe', 0, 1);
+INSERT INTO `users` VALUES(7, 'fudao', '輔導室', 'fudao', 'USER', 'off4', '', 'homepage', 'describe', 0, 1);
+INSERT INTO `users` VALUES(8, 'lib', '圖資中心', 'lib', 'USER', 'lib', '', 'homepage', 'describe', 0, 1);
+INSERT INTO `users` VALUES(9, 'kuaiji', '會計室', 'kuaiji', 'USER', '7717735', '', 'homepage', 'describe', 0, 1);
+INSERT INTO `users` VALUES(10, 'renshi', '人事室', 'renshi', 'USER', '309340', '', 'homepage', 'describe', 0, 1);
+INSERT INTO `users` VALUES(21, 'weisheng', '學務處衛生保健組', 'weisheng', 'USER', '528', '', '', '', 0, 1);
+INSERT INTO `users` VALUES(12, 'zixun', '資訊組', 'zixun', 'USER', 'j04xu3', '', 'homepage', 'describe', 0, 1);
+INSERT INTO `users` VALUES(13, 'schoolnews', '校園新聞', 'schoolnews', 'USER', 'cjh', '', 'homepage', 'describe', 0, 1);
+INSERT INTO `users` VALUES(14, 'teachers', '段考答案區', 'teachers', 'USER', '1234', '', '', '', 0, 1);
+INSERT INTO `users` VALUES(15, 'documentation', '公文上傳區', 'documentation', 'USER', 'doc', '', '', '', 0, 1);
+INSERT INTO `users` VALUES(16, 'zhucezu', '教務處註冊組', 'zhucezu', 'USER', 'tosca', '', '', '', 0, 1);
+INSERT INTO `users` VALUES(17, 'jiaoxue', '教務處教學組', 'jiaoxue', 'USER', 'jiaoxue', '', '', '', 0, 1);
+INSERT INTO `users` VALUES(18, 'honoredlist', '榮譽榜', 'honoredlist', 'USER', 'off2', '', '', '', 0, 1);
+INSERT INTO `users` VALUES(20, 'jiankang', '健康中心', 'jiankang', 'USER', '525525', '', '', '健康中心', 0, 1);
+INSERT INTO `users` VALUES(22, 'xuewuhonor', '學務處榮譽榜', 'xuewuhonor', 'USER', 'off2', '', '', '', 0, 1);
+INSERT INTO `users` VALUES(24, 'shebei', '教務處設備組', 'shebei', 'USER', 'tosca', '', '', '', 0, 1);
+INSERT INTO `users` VALUES(27, 'jiaowuzhuren', '教務主任', 'jiaowu', 'USER', '5100', '', '', '', 1, 1);
+INSERT INTO `users` VALUES(28, 'xuewuwuzhuren', '學務主任', 'xuewu', 'USER', '5200', '', '', '', 1, 1);
+INSERT INTO `users` VALUES(29, 'zongwuzhuren', '總務主任', 'zongwu', 'USER', '5300', '', '', '', 1, 1);
+INSERT INTO `users` VALUES(30, 'fudaozhuren', '輔導主任', 'fudao', 'USER', '5600', '', '', '', 1, 1);
+INSERT INTO `users` VALUES(31, 'renshizhuren', '人事主任', 'renshi', 'USER', '5700', '', '', '', 1, 1);
+INSERT INTO `users` VALUES(32, 'kuaijizhuren', '會計主任', 'kuaiji', 'USER', '5800', '', '', '', 1, 1);
+INSERT INTO `users` VALUES(33, 'libzhuren', '圖書主任', 'lib', 'USER', '5500', '', '', '', 1, 1);
+INSERT INTO `users` VALUES(34, '501', '秘書', 'principal', 'USER', '5010', '', '', '', 1, 1);

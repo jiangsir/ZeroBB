@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page isELIgnored="false"%>
+
 <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
 <link rel="stylesheet"
 	href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
@@ -34,4 +35,7 @@
 		});
 	});
 </script>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>${applicationScope.appConfig.title}</title>
 
