@@ -8,6 +8,6 @@
 <div id="footer_menu">ZeroBB for Servlet3.0
 	${applicationScope.version} Built${applicationScope.built}</div>
 <div id="footer">
-	<a href="./GoogleLogin">登入</a> | Designed &amp; <a href="./Admin">管理</a>
+	<!-- <a href="./GoogleLogin">登入</a> | --> Designed &amp; <a href="./Admin">管理</a>
 	by <a href="mailto:jiangsir@tea.nknush.kh.edu.tw">jiangsir@高師大附中</a>.
 </div>
