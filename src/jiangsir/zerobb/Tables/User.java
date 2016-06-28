@@ -179,6 +179,9 @@ public class User implements Serializable {
 	}
 
 	public void setDescription(String description) {
+		if (description == null) {
+			return;
+		}
 		this.description = description;
 	}
 
@@ -189,6 +192,12 @@ public class User implements Serializable {
 	public void setHeadline(Boolean headline) {
 		this.headline = headline;
 	}
+	public void setHeadline(String headline) {
+		if (headline == null) {
+			return;
+		}
+		this.headline = Boolean.valueOf(headline);
+	}
 
 	public Boolean getVisible() {
 		return visible;
@@ -197,23 +206,12 @@ public class User implements Serializable {
 	public void setVisible(Boolean visible) {
 		this.visible = visible;
 	}
-
-	// public String getUsergroup() {
-	// return usergroup;
-	// }
-	//
-	// public void setUsergroup(String usergroup) {
-	// this.usergroup = usergroup;
-	// }
-
-	// /**
-	// * 這個 privilege 結合了 Group 裡的權限加上 extraprvilege
-	// *
-	// * @return
-	// */
-	// public String getPrivilege() {
-	// return ENV.context.getInitParameter(usergroup);
-	// }
+	public void setVisible(String visible) {
+		if (visible == null) {
+			return;
+		}
+		this.visible = Boolean.valueOf(visible);
+	}
 
 	public ROLE[] getRoles() {
 		return ROLE.values();

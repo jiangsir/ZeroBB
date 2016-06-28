@@ -41,6 +41,9 @@
 		<jsp:include page="Header.jsp" />
 		<div id="main">
 			<div id="text">
+				<div>
+					<a href="./EditUsers">管理公告人員</a>
+				</div>
 				<form id="form1" name="form1" method="post" action="">
 					<div id="tabs-1">
 						<table align="center" style="margin: 10px;">
