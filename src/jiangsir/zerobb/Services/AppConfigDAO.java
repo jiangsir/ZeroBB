@@ -23,7 +23,7 @@ public class AppConfigDAO extends SuperDAO<AppConfig> {
 	@Override
 	protected synchronized int insert(AppConfig appConfig) throws SQLException {
 		String sql = "INSERT INTO appconfigs(title, header, pagesize, defaultlogin, authdomains, "
-				+ "checktype, checkhost, client_id, client_secret, redirect_uri, signinkey, signinip, "
+				+ "checktype, checkhost, client_id, client_secret, redirect_uri, signinip, "
 				+ "announcement, timestamp) VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,now());";
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		pstmt.setString(1, appConfig.getTitle());
@@ -36,16 +36,15 @@ public class AppConfigDAO extends SuperDAO<AppConfig> {
 		pstmt.setString(8, appConfig.getClient_id());
 		pstmt.setString(9, appConfig.getClient_secret());
 		pstmt.setString(10, appConfig.getRedirect_uri());
-		pstmt.setString(11, appConfig.getSigninkey());
-		pstmt.setString(12, appConfig.getSigninip().toString());
-		pstmt.setString(13, appConfig.getAnnouncement());
+		pstmt.setString(11, appConfig.getSigninip().toString());
+		pstmt.setString(12, appConfig.getAnnouncement());
 		return this.executeInsert(pstmt);
 	}
 
 	protected synchronized int update(AppConfig appConfig) throws SQLException {
 		String sql = "UPDATE appconfigs SET title=?, header=?, pagesize=?, defaultlogin=?, "
 				+ "authdomains=?, checktype=?, checkhost=?, client_id=?, client_secret=?, redirect_uri=?, "
-				+ "signinkey=?, signinip=?, announcement=? WHERE id=?";
+				+ "signinip=?, announcement=? WHERE id=?";
 		int result = -1;
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 		pstmt.setString(1, appConfig.getTitle());
@@ -58,10 +57,9 @@ public class AppConfigDAO extends SuperDAO<AppConfig> {
 		pstmt.setString(8, appConfig.getClient_id());
 		pstmt.setString(9, appConfig.getClient_secret());
 		pstmt.setString(10, appConfig.getRedirect_uri());
-		pstmt.setString(11, appConfig.getSigninkey());
-		pstmt.setString(12, appConfig.getSigninip().toString());
-		pstmt.setString(13, appConfig.getAnnouncement());
-		pstmt.setLong(14, appConfig.getId());
+		pstmt.setString(11, appConfig.getSigninip().toString());
+		pstmt.setString(12, appConfig.getAnnouncement());
+		pstmt.setLong(13, appConfig.getId());
 		result = this.executeUpdate(pstmt);
 		pstmt.close();
 		return result;

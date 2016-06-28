@@ -40,11 +40,10 @@ public class AppConfig {
 	@Property(key = "client_secret")
 	@Persistent(name = "client_secret")
 	private String client_secret = "";
+
 	@Property(key = "redirect_uri")
 	@Persistent(name = "redirect_url")
 	private String redirect_uri = "";
-	@Persistent(name = "signinkey")
-	private String signinkey = "";
 
 	@Persistent(name = "checkhost")
 	private String checkhost = "127.0.0.1";
@@ -161,29 +160,6 @@ public class AppConfig {
 		this.redirect_uri = redirect_uri;
 	}
 
-	public String getSigninkey() {
-		return signinkey;
-	}
-
-	public void setSigninkey(String signinKey) {
-		if (signinKey == null) {
-			return;
-		}
-		signinkey = signinKey.trim();
-	}
-
-	// public String getSigninip() {
-	// return signinip;
-	// }
-	//
-	// public void setSigninip(String signinip) {
-	// if (signinip == null) {
-	// return;
-	// }
-	// this.signinip = signinip.trim();
-	// }
-	//
-	//
 	public TreeSet<IpAddress> getSigninip() {
 		return signinip;
 	}

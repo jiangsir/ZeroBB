@@ -107,12 +107,6 @@
 									maxlength="255" /></td>
 							</tr>
 							<tr style="padding: 10px;">
-								<th>SigninKey</th>
-								<td style="padding: 10px;"><input name="signinkey"
-									type="text" value="${appConfig.signinkey}" size="100"
-									maxlength="255" /></td>
-							</tr>
-							<tr style="padding: 10px;">
 								<th>可以進行簽到／退的 ip (CIDR表示)</th>
 								<td style="padding: 10px;"><input name="signinip"
 									type="text" id="SigninIp" value="${appConfig.signinip}"
