@@ -23,27 +23,25 @@ public class AppConfigDAO extends SuperDAO<AppConfig> {
 	@Override
 	protected synchronized int insert(AppConfig appConfig) throws SQLException {
 		String sql = "INSERT INTO appconfigs(title, header, pagesize, defaultlogin, authdomains, "
-				+ "checktype, checkhost, client_id, client_secret, redirect_uri, signinip, "
-				+ "announcement, timestamp) VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,now());";
+				+ "client_id, client_secret, redirect_uri, signinip, "
+				+ "announcement, timestamp) VALUES (?,?,?,?,?, ?,?,?,?,?, now());";
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		pstmt.setString(1, appConfig.getTitle());
 		pstmt.setString(2, appConfig.getHeader());
 		pstmt.setInt(3, appConfig.getPagesize());
 		pstmt.setString(4, appConfig.getDefaultlogin());
 		pstmt.setString(5, appConfig.getAuthdomains().toString());
-		pstmt.setString(6, appConfig.getChecktype().toString());
-		pstmt.setString(7, appConfig.getCheckhost());
-		pstmt.setString(8, appConfig.getClient_id());
-		pstmt.setString(9, appConfig.getClient_secret());
-		pstmt.setString(10, appConfig.getRedirect_uri());
-		pstmt.setString(11, appConfig.getSigninip().toString());
-		pstmt.setString(12, appConfig.getAnnouncement());
+		pstmt.setString(6, appConfig.getClient_id());
+		pstmt.setString(7, appConfig.getClient_secret());
+		pstmt.setString(8, appConfig.getRedirect_uri());
+		pstmt.setString(9, appConfig.getSigninip().toString());
+		pstmt.setString(10, appConfig.getAnnouncement());
 		return this.executeInsert(pstmt);
 	}
 
 	protected synchronized int update(AppConfig appConfig) throws SQLException {
 		String sql = "UPDATE appconfigs SET title=?, header=?, pagesize=?, defaultlogin=?, "
-				+ "authdomains=?, checktype=?, checkhost=?, client_id=?, client_secret=?, redirect_uri=?, "
+				+ "authdomains=?, client_id=?, client_secret=?, redirect_uri=?, "
 				+ "signinip=?, announcement=? WHERE id=?";
 		int result = -1;
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
@@ -52,14 +50,12 @@ public class AppConfigDAO extends SuperDAO<AppConfig> {
 		pstmt.setInt(3, appConfig.getPagesize());
 		pstmt.setString(4, appConfig.getDefaultlogin());
 		pstmt.setString(5, appConfig.getAuthdomains().toString());
-		pstmt.setString(6, appConfig.getChecktype().toString());
-		pstmt.setString(7, appConfig.getCheckhost());
-		pstmt.setString(8, appConfig.getClient_id());
-		pstmt.setString(9, appConfig.getClient_secret());
-		pstmt.setString(10, appConfig.getRedirect_uri());
-		pstmt.setString(11, appConfig.getSigninip().toString());
-		pstmt.setString(12, appConfig.getAnnouncement());
-		pstmt.setLong(13, appConfig.getId());
+		pstmt.setString(6, appConfig.getClient_id());
+		pstmt.setString(7, appConfig.getClient_secret());
+		pstmt.setString(8, appConfig.getRedirect_uri());
+		pstmt.setString(9, appConfig.getSigninip().toString());
+		pstmt.setString(10, appConfig.getAnnouncement());
+		pstmt.setLong(11, appConfig.getId());
 		result = this.executeUpdate(pstmt);
 		pstmt.close();
 		return result;

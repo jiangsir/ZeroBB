@@ -5,8 +5,6 @@ CREATE TABLE IF NOT EXISTS `appconfigs` (
   `pagesize` int(11) NOT NULL,
   `defaultlogin` varchar(100) NOT NULL,
   `authdomains` varchar(255) NOT NULL,
-  `checktype` varchar(50) NOT NULL,
-  `checkhost` varchar(50) NOT NULL,
   `client_id` varchar(255) NOT NULL,
   `client_secret` varchar(255) NOT NULL,
   `redirect_uri` varchar(255) NOT NULL,

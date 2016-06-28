@@ -10,11 +10,13 @@ import jiangsir.zerobb.Annotations.RoleSetting;
 import jiangsir.zerobb.Exceptions.AccessException;
 import jiangsir.zerobb.Exceptions.DataException;
 import jiangsir.zerobb.Interfaces.IAccessFilter;
+import jiangsir.zerobb.Scopes.ApplicationScope;
 import jiangsir.zerobb.Scopes.SessionScope;
 import jiangsir.zerobb.Services.ArticleDAO;
 import jiangsir.zerobb.Services.Article_TagDAO;
 import jiangsir.zerobb.Services.TagDAO;
 import jiangsir.zerobb.Services.UpfileDAO;
+import jiangsir.zerobb.Tables.AppConfig;
 import jiangsir.zerobb.Tables.Article;
 import jiangsir.zerobb.Tables.Article_Tag;
 import jiangsir.zerobb.Tables.CurrentUser;
@@ -22,11 +24,12 @@ import jiangsir.zerobb.Tables.Upfile;
 import jiangsir.zerobb.Tables.User;
 import jiangsir.zerobb.Tools.ENV;
 import jiangsir.zerobb.Tools.FileUploader;
+import jiangsir.zerobb.Tools.IpAddress;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 
-@WebServlet(urlPatterns = { "/InsertArticle" })
+@WebServlet(urlPatterns = {"/InsertArticle"})
 @RoleSetting(allowHigherThen = User.ROLE.USER)
 public class InsertArticle extends HttpServlet implements IAccessFilter {
 	/**
@@ -52,23 +55,27 @@ public class InsertArticle extends HttpServlet implements IAccessFilter {
 	 */
 	public void AccessFilter(HttpServletRequest request) throws AccessException {
 		// 只要有登入的都可以新增。
+		AppConfig appConfig = ApplicationScope.getAppConfig();
+		IpAddress ip = new IpAddress(request.getRemoteAddr());
+		if (!ip.getIsSubnetOf(appConfig.getSigninip())) {
+			throw new AccessException("您所在的位置(" + ip + ")不能發佈公告，如有問題請詢問管理員。");
+		}
 	}
 
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		request.setAttribute("article", new Article());
 		request.setAttribute("tags", new TagDAO().getTags());
 		// HttpSession session = request.getSession(false);
 		// String session_account = (String) session
 		// .getAttribute("session_account");
 		// request.setAttribute("userBean", new UserBean(session_account));
-		request.getRequestDispatcher("InsertArticle.jsp").forward(request,
-				response);
+		request.getRequestDispatcher("InsertArticle.jsp").forward(request, response);
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		// String session_account = (String) session
 		// .getAttribute("session_account");

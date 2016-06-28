@@ -5,10 +5,12 @@
  */
 package jiangsir.zerobb.Tables;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.TreeSet;
 
 import jiangsir.zerobb.Annotations.Persistent;
 import jiangsir.zerobb.Annotations.Property;
+import jiangsir.zerobb.Services.TagDAO;
 import jiangsir.zerobb.Tools.IpAddress;
 import jiangsir.zerobb.Tools.StringTool;
 
@@ -44,16 +46,6 @@ public class AppConfig {
 	@Property(key = "redirect_uri")
 	@Persistent(name = "redirect_url")
 	private String redirect_uri = "";
-
-	@Persistent(name = "checkhost")
-	private String checkhost = "127.0.0.1";
-
-	public enum CHECKTYPE {
-		POP;
-	}
-
-	@Persistent(name = "checktype")
-	private CHECKTYPE checktype = CHECKTYPE.POP;
 
 	@Property(key = "signinip")
 	@Persistent(name = "signinip")
@@ -201,33 +193,9 @@ public class AppConfig {
 		this.timestamp = timestamp;
 	}
 
-	public String getCheckhost() {
-		return checkhost;
-	}
-
-	public void setCheckhost(String checkhost) {
-		if (checkhost == null) {
-			return;
-		}
-		this.checkhost = checkhost.trim();
-	}
-
-	public CHECKTYPE getChecktype() {
-		return checktype;
-	}
-
-	public void setChecktype(CHECKTYPE checktype) {
-		if (checktype == null) {
-			return;
-		}
-		this.checktype = checktype;
-	}
-
-	public void setChecktype(String checktype) {
-		if (checktype == null) {
-			return;
-		}
-		this.setChecktype(CHECKTYPE.valueOf(checktype));
+	// ===================================================================
+	public ArrayList<Tag> getTags() {
+		return new TagDAO().getTags();
 	}
 
 }

@@ -8,7 +8,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <jsp:include page="CommonHead.jsp" />
 <script type="text/javascript"
 	src="EditAppConfig.js?${applicationScope.built}"></script>
@@ -68,12 +67,6 @@
 									maxlength="50" /></td>
 							</tr>
 							<tr style="padding: 10px;">
-								<th>Google apps POP 認證主機</th>
-								<td style="padding: 10px;"><input name="checkhost"
-									type="text" id="checkhost" value="${appConfig.checkhost}"
-									size="50" maxlength="255" /></td>
-							</tr>
-							<tr style="padding: 10px;">
 								<th>Google OAuth2 認證主機</th>
 								<td style="padding: 10px;"><input name="authdomains"
 									type="text" id="authdomains" value="${appConfig.authdomains}"
@@ -107,7 +100,8 @@
 									maxlength="255" /></td>
 							</tr>
 							<tr style="padding: 10px;">
-								<th>可以進行簽到／退的 ip (CIDR表示)</th>
+								<th>允許發佈公告的來源 IP<br /> (以 CIDR表示，逗號隔開)
+								</th>
 								<td style="padding: 10px;"><input name="signinip"
 									type="text" id="SigninIp" value="${appConfig.signinip}"
 									size="50" maxlength="50" /></td>
@@ -117,6 +111,13 @@
 								<td style="padding: 10px;"><textarea
 										style="width: 80%; height: 20em;" name="announcement"
 										class="mceSimple">${appConfig.announcement}</textarea></td>
+							</tr>
+							<tr style="padding: 10px;">
+								<th>管理分類項目</th>
+								<td style="padding: 10px;"><c:forEach var="tag"
+										items="${appConfig.tags }">
+							        ${tag.tagname}: ${tag.tagtitle}: ${tag.descript } : 修改 | 刪除<br />
+									</c:forEach></td>
 							</tr>
 						</table>
 					</div>

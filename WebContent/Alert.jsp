@@ -10,8 +10,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>${applicationScope.title}</title>
 <jsp:include page="CommonHead.jsp" />
 </head>
 <body>
@@ -29,6 +27,7 @@
 					<p></p>
 					<h2>${alert.subtitle }</h2>
 					<div>${alert.content}</div>
+					<hr style="margin-top: 3em;" />
 					<ul>
 						<c:forEach var="list" items="${alert.list}">
 							<li>${list}</li>
@@ -36,7 +35,7 @@
 					</ul>
 					<ul>
 						<c:forEach var="map" items="${alert.map}">
-							<li>${map.key}: ${map.value}</li>
+							<li>${map.key}:${map.value}</li>
 						</c:forEach>
 					</ul>
 					<hr style="margin-top: 3em;" />

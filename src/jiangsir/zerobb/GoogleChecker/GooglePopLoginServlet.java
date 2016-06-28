@@ -48,34 +48,28 @@ public class GooglePopLoginServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		HttpSession session = request.getSession(false);
-		String account = request.getParameter("account");
-		String passwd = request.getParameter("passwd");
-
-		try {
-			new PopChecker().isGmailAccount(account + "@" + ApplicationScope.getAppConfig().getCheckhost(), passwd);
-			CurrentUser currentUser = new CurrentUser();
-			currentUser.setAccount(account);
-			currentUser.setPasswd(passwd);
-			currentUser.setName(account);
-			currentUser.setRole(User.ROLE.USER);
-			// currentUser.setSession(session);
-			SessionScope sessionScope = new SessionScope(session);
-
-			sessionScope.setCurrentUser(currentUser);
-			response.sendRedirect("." + sessionScope.getPreviousPage());
-			return;
-		} catch (Exception e) {
-			throw new ApiException(e);
-		}
-
-		// if (new PopChecker().isGmailAccount(account +
-		// "@stu.nknush.kh.edu.tw",
-		// passwd)) {
-		// } else {
-		// request.getRequestDispatcher(VIEW).forward(request, response);
+		// HttpSession session = request.getSession(false);
+		// String account = request.getParameter("account");
+		// String passwd = request.getParameter("passwd");
+		//
+		// try {
+		// new PopChecker().isGmailAccount(account + "@" +
+		// ApplicationScope.getAppConfig().getCheckhost(), passwd);
+		// CurrentUser currentUser = new CurrentUser();
+		// currentUser.setAccount(account);
+		// currentUser.setPasswd(passwd);
+		// currentUser.setName(account);
+		// currentUser.setRole(User.ROLE.USER);
+		// // currentUser.setSession(session);
+		// SessionScope sessionScope = new SessionScope(session);
+		//
+		// sessionScope.setCurrentUser(currentUser);
+		// response.sendRedirect("." + sessionScope.getPreviousPage());
 		// return;
+		// } catch (Exception e) {
+		// throw new ApiException(e);
 		// }
+
 	}
 
 }
