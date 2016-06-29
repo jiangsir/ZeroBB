@@ -66,10 +66,6 @@ public class InsertArticle extends HttpServlet implements IAccessFilter {
 			throws ServletException, IOException {
 		request.setAttribute("article", new Article());
 		request.setAttribute("tags", new TagDAO().getTags());
-		// HttpSession session = request.getSession(false);
-		// String session_account = (String) session
-		// .getAttribute("session_account");
-		// request.setAttribute("userBean", new UserBean(session_account));
 		request.getRequestDispatcher("InsertArticle.jsp").forward(request, response);
 	}
 
@@ -77,10 +73,7 @@ public class InsertArticle extends HttpServlet implements IAccessFilter {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
-		// String session_account = (String) session
-		// .getAttribute("session_account");
 		CurrentUser currentUser = new SessionScope(session).getCurrentUser();
-		// Uploader uploader = new Uploader(request, response);
 		FileUploader uploader = new FileUploader();
 		try {
 			uploader.parse(request, "UTF-8");
@@ -92,10 +85,6 @@ public class InsertArticle extends HttpServlet implements IAccessFilter {
 		newarticle.setInfo(uploader.getParameter("info"));
 		newarticle.setType(uploader.getParameter("type"));
 		newarticle.setHyperlink(uploader.getParameter("hyperlink"));
-		// newarticle.setPostdate(new Date(Utils.parseDatetime(
-		// uploader.getParameter("postdate")).getTime()));
-		// newarticle.setOutdate(new Date(Utils.parseDatetime(
-		// uploader.getParameter("outdate")).getTime()));
 		newarticle.setTitle(uploader.getParameter("title"));
 		newarticle.setPostdate(uploader.getParameter("postdate"));
 		newarticle.setOutdate(uploader.getParameter("outdate"));
@@ -132,17 +121,11 @@ public class InsertArticle extends HttpServlet implements IAccessFilter {
 				// newupfile.setBinary(item.getInputStream());
 				int upfileid = new UpfileDAO().insert(newupfile);
 				newupfile.setId(upfileid);
-				// 檔案是否就不用上傳了。
-				// FileUploader.write2file(item, new
-				// File(newupfile.getINNER_PATH(),
-				// newupfile.getINNER_FILENAME()));
-
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new DataException(e);
 		}
-
 		response.sendRedirect("./?account=" + currentUser.getAccount());
 	}
 }

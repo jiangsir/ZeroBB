@@ -12,8 +12,18 @@
 
 <jsp:include page="CommonHead.jsp" />
 
+<!-- <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+ -->
+<script src="jscripts/tinymce_4.3.13/js/tinymce/tinymce.min.js"></script>
+<script>
+	tinymce.init({
+		selector : 'textarea'
+	});
+</script>
+
+<!-- 
 <script language="javascript" type="text/javascript"
-	src="./jscripts/tiny_mce/tiny_mce.js"></script>
+    src="./jscripts/tiny_mce/tiny_mce.js"></script>
 
 <script language="javascript" type="text/javascript">
 	tinyMCE
@@ -41,7 +51,7 @@
 				language : "zh_tw_utf8"
 			})
 </script>
-
+ -->
 <link href="jscripts/datetimepicker/jquery-ui-timepicker-addon.css"
 	rel="stylesheet" />
 <script src="jscripts/datetimepicker/jquery-ui-timepicker-addon.js"></script>
@@ -101,7 +111,7 @@
 					</div>
 					<div>
 						內容： <br />
-						<textarea name="content" cols="80" rows="20" id="content">
+						<textarea rows="20">
                             ${article.content}
                           </textarea>
 					</div>
