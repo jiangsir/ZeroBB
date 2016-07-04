@@ -22,7 +22,7 @@ import jiangsir.zerobb.Scopes.SessionScope;
 /**
  * Servlet Filter implementation class EncodingFilter
  */
-@WebFilter(filterName = "ExceptionHandlerFilter", urlPatterns = { "/*" }, asyncSupported = true)
+@WebFilter(filterName = "ExceptionHandlerFilter", urlPatterns = {"/*"}, asyncSupported = true)
 public class ExceptionHandlerFilter implements Filter {
 
 	/**
@@ -40,8 +40,8 @@ public class ExceptionHandlerFilter implements Filter {
 	/**
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
-	public void doFilter(ServletRequest req, ServletResponse resp,
-			FilterChain chain) throws IOException, ServletException {
+	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
+			throws IOException, ServletException {
 		try {
 			chain.doFilter(req, resp);
 		} catch (Exception e) {
@@ -52,27 +52,20 @@ public class ExceptionHandlerFilter implements Filter {
 
 			Throwable rootCause = e;
 			Alert alert = new Alert(e);
-			alert.getDebugs().add(
-					"由 " + this.getClass().getSimpleName() + " 所捕捉");
+			alert.getDebugs().add("由 " + this.getClass().getSimpleName() + " 所捕捉");
 			ArrayList<String> list = alert.getList();
 			while (rootCause.getCause() != null) {
-				list.add(rootCause.getClass().getSimpleName() + ": "
-						+ rootCause.getLocalizedMessage());
+				list.add(rootCause.getClass().getSimpleName() + ": " + rootCause.getLocalizedMessage());
 				rootCause = rootCause.getCause();
 			}
 			try {
-				alert.getUris().put(
-						"回前頁",
-						new URI(request.getContextPath()
-								+ new SessionScope(session).getHistories().get(
-										1)));
+				alert.getUris().put("回前頁", new URI("./" + new SessionScope(session).getPreviousPage()));
 			} catch (URISyntaxException e1) {
 				e1.printStackTrace();
 			}
 
 			request.setAttribute("alert", alert);
-			request.getRequestDispatcher("/Alert.jsp").forward(request,
-					response);
+			request.getRequestDispatcher("/Alert.jsp").forward(request, response);
 			return;
 		}
 	}

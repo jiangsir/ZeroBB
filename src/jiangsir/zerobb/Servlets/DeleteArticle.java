@@ -16,7 +16,7 @@ import jiangsir.zerobb.Tables.CurrentUser;
 import jiangsir.zerobb.Tables.User;
 import jiangsir.zerobb.Tools.ENV;
 
-@WebServlet(urlPatterns = { "/DeleteArticle" })
+@WebServlet(urlPatterns = {"/DeleteArticle"})
 @RoleSetting(allowHigherThen = User.ROLE.USER)
 public class DeleteArticle extends HttpServlet implements IAccessFilter {
 
@@ -41,16 +41,14 @@ public class DeleteArticle extends HttpServlet implements IAccessFilter {
 	public void AccessFilter(HttpServletRequest request) throws AccessException {
 		HttpSession session = request.getSession(false);
 		CurrentUser currentUser = new SessionScope(session).getCurrentUser();
-		Article article = new ArticleDAO().getArticleById(request
-				.getParameter("articleid"));
+		Article article = new ArticleDAO().getArticleById(request.getParameter("articleid"));
 		if (!article.isUpdatable(currentUser)) {
-			throw new AccessException("您(" + currentUser.getAccount()
-					+ ") 不能刪除本題目。");
+			throw new AccessException("您(" + currentUser.getAccount() + ") 不能刪除本題目。");
 		}
 	}
 
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		ArticleDAO articleDao = new ArticleDAO();
 		Article_TagDAO article_TagDao = new Article_TagDAO();
@@ -64,8 +62,7 @@ public class DeleteArticle extends HttpServlet implements IAccessFilter {
 		}
 		article_TagDao.delete(articleid);
 
-		response.sendRedirect("."
-				+ new SessionScope(session).getHistories().get(0));
+		response.sendRedirect("./" + new SessionScope(session).getCurrentPage());
 	}
 
 }

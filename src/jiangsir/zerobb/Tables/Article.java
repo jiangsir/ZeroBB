@@ -40,7 +40,7 @@ public class Article {
 
 	private INFO info = INFO.一般;
 
-	public static final String[] types = { "default", "hyperlink" };
+	public static final String[] types = {"default", "hyperlink"};
 	public static final int type_DEFAULT = 0;
 	public static final int type_HYPERLINK = 1;
 	private String type = Article.types[type_DEFAULT];
@@ -134,7 +134,10 @@ public class Article {
 	}
 
 	public void setContent(String content) {
-		this.content = content == null ? this.content : content;
+		if (content == null) {
+			return;
+		}
+		this.content = content;
 	}
 
 	public Integer getHitnum() {
@@ -175,8 +178,7 @@ public class Article {
 	}
 
 	public void setOutdate(Timestamp outdate) {
-		if (Math.abs(outdate.getTime() - new java.util.Date().getTime()) < 20
-				* 60 * 1000) {
+		if (Math.abs(outdate.getTime() - new java.util.Date().getTime()) < 20 * 60 * 1000) {
 			Calendar now = Calendar.getInstance();
 			now.set(Calendar.DATE, now.get(Calendar.DATE) + 7);
 			// 如果時間有誤，就直接預設 7 天後即可。
@@ -190,8 +192,7 @@ public class Article {
 	 * 顯示有效期限還有多久
 	 */
 	public String getAvailable() {
-		long countdown = this.getOutdate().getTime()
-				- new java.util.Date().getTime();
+		long countdown = this.getOutdate().getTime() - new java.util.Date().getTime();
 		long min = (countdown - (countdown % 60000)) / 60000;
 		long hour = (min - (min % 60)) / 60;
 		long day = (hour - (hour % 24)) / 24;
@@ -236,8 +237,7 @@ public class Article {
 
 	public boolean isNullArticle() {
 		Article newarticle = new Article();
-		if (this.getId().equals(newarticle.getId())
-				&& this.getAccount().equals(newarticle.getAccount())
+		if (this.getId().equals(newarticle.getId()) && this.getAccount().equals(newarticle.getAccount())
 				&& this.getTitle().equals(newarticle.getTitle())) {
 			return true;
 		}
@@ -251,8 +251,7 @@ public class Article {
 		if (this.isNullArticle()) {
 			throw new DataException("找不到這個文章！");
 		}
-		if ((currentUser.getRole() == User.ROLE.ADMIN
-				|| currentUser.getAccount().equals(getAccount()))) {
+		if ((currentUser.getRole() == User.ROLE.ADMIN || currentUser.getAccount().equals(getAccount()))) {
 			return true;
 		}
 		return false;

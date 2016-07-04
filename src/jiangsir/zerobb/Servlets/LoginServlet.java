@@ -18,7 +18,7 @@ import jiangsir.zerobb.Tables.Parameter;
 import jiangsir.zerobb.Tables.User;
 import jiangsir.zerobb.Tools.*;
 
-@WebServlet(urlPatterns = { "/Login" }, name = "Login", initParams = { @WebInitParam(name = "VIEW", value = "/Login.jsp") })
+@WebServlet(urlPatterns = {"/Login"}, name = "Login", initParams = {@WebInitParam(name = "VIEW", value = "/Login.jsp")})
 public class LoginServlet extends HttpServlet {
 	/**
 	 * 
@@ -39,23 +39,21 @@ public class LoginServlet extends HttpServlet {
 		ENV.putServlet(this.getClass());
 	}
 
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		request.getRequestDispatcher("Login.jsp").forward(request, response);
 	}
 
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		String account = request.getParameter("account");
 		String passwd = request.getParameter("passwd");
 		User user = new UserDAO().getUserByAccountPasswd(account, passwd);
 		if (!user.isNullUser()) {
 			SessionScope sessionScope = new SessionScope(session);
-			sessionScope.setCurrentUser(new CurrentUserDAO()
-					.getCurrentUserById(user.getId(), session));
-			response.sendRedirect(request.getContextPath()
-					+ sessionScope.getHistories().get(0));
+			sessionScope.setCurrentUser(new CurrentUserDAO().getCurrentUserById(user.getId(), session));
+			response.sendRedirect("./" + sessionScope.getPreviousPage());
 			return;
 		} else {
 			request.setAttribute("users", new UserDAO().getUsers());

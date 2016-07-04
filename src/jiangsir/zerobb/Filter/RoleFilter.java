@@ -27,7 +27,7 @@ import jiangsir.zerobb.Tables.User;
 /**
  * Servlet Filter implementation class RoleFilter
  */
-@WebFilter(filterName = "RoleFilter", urlPatterns = { "/*" }, asyncSupported = true)
+@WebFilter(filterName = "RoleFilter", urlPatterns = {"/*"}, asyncSupported = true)
 public class RoleFilter implements Filter {
 
 	/**
@@ -47,17 +47,15 @@ public class RoleFilter implements Filter {
 	/**
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
-	public void doFilter(ServletRequest req, ServletResponse resp,
-			FilterChain chain) throws IOException, ServletException {
+	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
+			throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) resp;
 		String servletPath = request.getServletPath();
 		System.out.println("RoleFilter: " + servletPath);
 
-		HttpServlet httpServlet = ApplicationScope.getUrlpatterns().get(
-				servletPath);
-		if (httpServlet == null
-				|| httpServlet.getClass().getAnnotation(RoleSetting.class) == null) {
+		HttpServlet httpServlet = ApplicationScope.getUrlpatterns().get(servletPath);
+		if (httpServlet == null || httpServlet.getClass().getAnnotation(RoleSetting.class) == null) {
 			chain.doFilter(request, response);
 			return;
 		}
@@ -67,16 +65,13 @@ public class RoleFilter implements Filter {
 		// UserService userService = new UserService();
 		CurrentUser currentUser = new SessionScope(session).getCurrentUser();
 		if (currentUser == null || currentUser.isNullUser()) {
-			request.setAttribute("defaultLogin", LoginServlet.class
-					.getAnnotation(WebServlet.class).urlPatterns()[0]);
+			request.setAttribute("defaultLogin", LoginServlet.class.getAnnotation(WebServlet.class).urlPatterns()[0]);
 			request.setAttribute("users", new UserDAO().getUsers());
-			request.getRequestDispatcher("/Login.jsp").forward(request,
-					response);
+			request.getRequestDispatcher("/Login.jsp").forward(request, response);
 			return;
 		}
 		// CurrentUser currentUser = new SessionScope(session).getCurrentUser();
-		if (!this.isUserInRoles(currentUser, httpServlet.getClass()
-				.getAnnotation(RoleSetting.class))) {
+		if (!this.isUserInRoles(currentUser, httpServlet.getClass().getAnnotation(RoleSetting.class))) {
 			throw new RoleException("您沒有權限瀏覽這個頁面。");
 		}
 		chain.doFilter(request, response);

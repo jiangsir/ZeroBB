@@ -111,7 +111,7 @@
 					</div>
 					<div>
 						內容： <br />
-						<textarea rows="20">
+						<textarea rows="20" name="content">
                             ${article.content}
                           </textarea>
 					</div>

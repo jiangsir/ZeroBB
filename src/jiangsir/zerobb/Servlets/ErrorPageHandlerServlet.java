@@ -18,48 +18,38 @@ import jiangsir.zerobb.Scopes.SessionScope;
 /**
  * Servlet implementation class ErrorHandlerServlet
  */
-@WebServlet(urlPatterns = { "/ErrorPageHandler" })
+@WebServlet(urlPatterns = {"/ErrorPageHandler"})
 public class ErrorPageHandlerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	protected void service(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void service(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
-		Integer statusCode = (Integer) request
-				.getAttribute("javax.servlet.error.status_code");
-		String servletName = (String) request
-				.getAttribute("javax.servlet.error.servlet_name");
+		Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
+		String servletName = (String) request.getAttribute("javax.servlet.error.servlet_name");
 		if (servletName == null) {
 			servletName = "Unknown";
 		}
-		String requestUri = (String) request
-				.getAttribute("javax.servlet.error.request_uri");
+		String requestUri = (String) request.getAttribute("javax.servlet.error.request_uri");
 		if (requestUri == null) {
 			requestUri = "Unknown";
 		}
 
-		Throwable throwable = (Throwable) request
-				.getAttribute("javax.servlet.error.exception");
+		Throwable throwable = (Throwable) request.getAttribute("javax.servlet.error.exception");
 
 		if (throwable != null) {
 			Alert alert = new Alert(throwable);
 
 			Throwable rootCause = throwable;
-			alert.getDebugs().add(
-					"由 " + this.getClass().getSimpleName() + " 處理");
+			alert.getDebugs().add("由 " + this.getClass().getSimpleName() + " 處理");
 			ArrayList<String> list = alert.getList();
 			while (rootCause.getCause() != null) {
-				list.add(rootCause.getClass().getSimpleName() + ": "
-						+ rootCause.getLocalizedMessage());
+				list.add(rootCause.getClass().getSimpleName() + ": " + rootCause.getLocalizedMessage());
 				rootCause = rootCause.getCause();
 			}
 			try {
-				alert.getUris().put(
-						"回前頁",
-						new URI(request.getContextPath()
-								+ new SessionScope(session).getHistories().get(
-										1)));
+				alert.getUris().put("回前頁", new URI("./" + new SessionScope(session).getPreviousPage()));
 			} catch (URISyntaxException e1) {
 				e1.printStackTrace();
 			}
@@ -67,8 +57,7 @@ public class ErrorPageHandlerServlet extends HttpServlet {
 			// " 所處理");
 			// alert.setList(list);
 			request.setAttribute("alert", alert);
-			request.getRequestDispatcher("/Alert.jsp").forward(request,
-					response);
+			request.getRequestDispatcher("/Alert.jsp").forward(request, response);
 			return;
 		} else {
 			Alert alert = new Alert();
@@ -76,8 +65,7 @@ public class ErrorPageHandlerServlet extends HttpServlet {
 			alert.setTitle("網頁錯誤！");
 			alert.setSubtitle(statusCode + ": " + requestUri);
 			request.setAttribute("alert", alert);
-			request.getRequestDispatcher("/Alert.jsp").forward(request,
-					response);
+			request.getRequestDispatcher("/Alert.jsp").forward(request, response);
 			return;
 		}
 	}
