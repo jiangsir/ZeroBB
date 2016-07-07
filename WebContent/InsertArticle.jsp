@@ -4,10 +4,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page isELIgnored="false"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
 
 <jsp:include page="CommonHead.jsp" />
@@ -15,7 +13,7 @@
 <!-- <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
  -->
 <script src="jscripts/tinymce_4.3.13/js/tinymce/tinymce.min.js"></script>
-<script>
+<script type="text/javascript">
 	tinymce.init({
 		selector : 'textarea'
 	});
