@@ -13,12 +13,12 @@
 	</c:if>
 	<div style="font-size: 1.5em;">
 		<a
-			href="http://${pageContext.request.localAddr}${pageContext.servletContext.contextPath}/ShowArticle?id=${article.id}"
+			href="http://${pageContext.request.serverName}${pageContext.servletContext.contextPath}/ShowArticle?id=${article.id}"
 			target="_blank" style="${color}">${article.title}</a>
 	</div>
 </c:forEach>
 <div style="text-align: right">
 	<a
-		href="http://${pageContext.request.localAddr}${pageContext.servletContext.contextPath}/?info=${info}&${pageContext.request.queryString}"
+		href="http://${pageContext.request.serverName}${pageContext.servletContext.contextPath}/?info=${info}&${pageContext.request.queryString}"
 		target="_blank">更多...</a>
 </div>

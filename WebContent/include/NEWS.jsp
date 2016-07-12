@@ -7,14 +7,14 @@
 <ul>
 	<c:forEach var="article" items="${articles}" varStatus="varstatus">
 		<li><a
-			href="http://${pageContext.request.localAddr}${pageContext.servletContext.contextPath}/ShowArticle?id=${article.id}"
+			href="http://${pageContext.request.serverName}${pageContext.servletContext.contextPath}/ShowArticle?id=${article.id}"
 			target="_blank" style="">${article.title}</a></li>
 	</c:forEach>
 </ul>
 <br />
 <div style="text-align: right">
 	<a
-		href="http://${pageContext.request.localAddr}${pageContext.servletContext.contextPath}/?${pageContext.request.queryString}"
+		href="http://${pageContext.request.serverName}${pageContext.servletContext.contextPath}/?${pageContext.request.queryString}"
 		target="_blank">更多...</a>
 </div>
 

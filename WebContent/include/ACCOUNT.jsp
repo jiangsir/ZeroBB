@@ -11,7 +11,7 @@
 			target="_blank">${article.title}</a>
 		<c:forEach var="upfile" items="${article.upfiles}">
 			<img
-				src="http://${pageContext.request.localAddr}${pageContext.servletContext.contextPath}/images/paperclip.png" />
+				src="http://${pageContext.request.serverName}${pageContext.servletContext.contextPath}/images/paperclip.png" />
 		</c:forEach>
 		(${article.user.division.value})<br />
 		<fmt:formatDate value="${article.postdate}" pattern="yyyy-MM-dd HH:mm" />
@@ -19,6 +19,6 @@
 </c:forEach>
 <div style="text-align: right">
 	<a
-		href="http://${pageContext.request.localAddr}${pageContext.servletContext.contextPath}/?${pageContext.request.queryString}"
+		href="http://${pageContext.request.serverName}${pageContext.servletContext.contextPath}/?${pageContext.request.queryString}"
 		target="_blank">更多...</a>
 </div>
