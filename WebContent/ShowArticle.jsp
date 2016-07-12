@@ -89,7 +89,7 @@
 								href="./Download?upfileid=${upfile.id}">下載</a>
 							<c:if test="${upfile.isGoogleViewer}">
 								<a
-									href="https://docs.google.com/viewer?url=http://${pageContext.request.serverName}:${pageContext.request.localPort}${pageContext.request.contextPath}/Download?upfileid=${upfile.id}"
+									href="https://docs.google.com/viewer?url=http://${pageContext.request.serverName}${pageContext.request.contextPath}/Download?upfileid=${upfile.id}"
 									target="_blank">檢視</a>
 								<!--		
 		<a href="http://docs.google.com/viewer?url=http://${pageContext.request.serverName}${pageContext.request.contextPath}/upfiles/${article.id}_${upfile.id}_${article.account}.${fn:split(upfile.filename, '.')[1]}">檢視</a>

@@ -6,14 +6,14 @@
 <%@ page isELIgnored="false"%>
 <div style="text-align: right">
 	<a
-		href="http://${pageContext.request.localAddr}:${pageContext.request.localPort}${pageContext.servletContext.contextPath}/?${pageContext.request.queryString}"
+		href="http://${pageContext.request.localAddr}${pageContext.servletContext.contextPath}/?${pageContext.request.queryString}"
 		target="_blank">更多...</a>
 </div>
 <ul>
 	<c:forEach var="article" items="${articles}">
 		<div class="article" style="height: auto">
 			[${article.info}] <a
-				href="http://${pageContext.request.localAddr}:${pageContext.request.localPort}${pageContext.servletContext.contextPath}/ShowArticle?id=${article.id}"
+				href="http://${pageContext.request.localAddr}${pageContext.servletContext.contextPath}/ShowArticle?id=${article.id}"
 				target="_blank">${article.title}</a><br />
 			<fmt:formatDate value="${article.postdate}"
 				pattern="yyyy-MM-dd HH:mm" />
@@ -22,7 +22,7 @@
 </ul>
 <div style="text-align: right">
 	<a
-		href="http://${pageContext.request.localAddr}:${pageContext.request.localPort}${pageContext.servletContext.contextPath}/?${pageContext.request.queryString}"
+		href="http://${pageContext.request.localAddr}${pageContext.servletContext.contextPath}/?${pageContext.request.queryString}"
 		target="_blank">更多...</a>
 </div>
 
