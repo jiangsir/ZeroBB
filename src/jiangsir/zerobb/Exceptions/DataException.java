@@ -32,12 +32,4 @@ public class DataException extends RuntimeException {
 		super(message);
 	}
 
-	public DataException(String session_account, String message) {
-		super(message);
-		System.out.println("session_account=" + session_account);
-	}
-
-	public DataException(Throwable cause, String session_account) {
-		super(cause);
-	}
 }
