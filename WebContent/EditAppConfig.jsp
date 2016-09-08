@@ -11,10 +11,10 @@
 <jsp:include page="CommonHead.jsp" />
 <script type="text/javascript"
 	src="EditAppConfig.js?${applicationScope.built}"></script>
-<script type="text/javascript" src="jscripts/tinymce/tinymce.min.js"></script>
+<script src="jscripts/tinymce_4.3.13/js/tinymce/tinymce.min.js"></script>
 <!-- 使用 TinyMCE  -->
 <script type="text/javascript">
-	tinymce
+/* 	tinymce
 			.init({
 				language : "zh_TW",
 				selector : ".mceAdvanced",
@@ -25,13 +25,19 @@
 						"save table contextmenu directionality emoticons template paste textcolor" ],
 				toolbar : "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons",
 
-			});
+			}); */
 	tinymce
 			.init({
 				language : "zh_TW",
-				selector : ".mceSimple",
-				plugins : "colorpicker textcolor",
-				toolbar : "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | forecolor backcolor emoticons",
+				selector : 'textarea',
+				plugins : [
+						'advlist autolink lists link image charmap print preview anchor',
+						'searchreplace visualblocks code fullscreen',
+						'insertdatetime media table contextmenu paste code' ],
+				toolbar : 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+				content_css : [
+						'//fast.fonts.net/cssapi/e6dc9b99-64fe-4292-ad98-6974f93cd2a2.css',
+						'//www.tinymce.com/css/codepen.min.css' ]
 			});
 </script>
 

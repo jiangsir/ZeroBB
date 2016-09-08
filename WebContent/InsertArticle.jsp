@@ -16,6 +16,7 @@
 <script type="text/javascript">
 	tinymce
 			.init({
+				language : "zh_TW",
 				selector : 'textarea',
 				plugins : [
 						'advlist autolink lists link image charmap print preview anchor',
