@@ -16,15 +16,13 @@ import jiangsir.zerobb.Tables.Tag;
  * @author jiangsir
  * 
  */
-public class TagDAO extends GeneralDAO<Tag> {
+public class TagDAO extends SuperDAO<Tag> {
 
 	public synchronized int insert(Tag tag) {
-		String sql = "INSERT INTO tags (tagname, tagtitle, descript, visible) "
-				+ "VALUES (?,?,?,?)";
+		String sql = "INSERT INTO tags (tagname, tagtitle, descript, visible) " + "VALUES (?,?,?,?)";
 		int id = 0;
 		try {
-			PreparedStatement pstmt = getConnection().prepareStatement(sql,
-					Statement.RETURN_GENERATED_KEYS);
+			PreparedStatement pstmt = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			pstmt.setString(1, tag.getTagname());
 			pstmt.setString(2, tag.getTagtitle());
 			pstmt.setString(3, tag.getDescript());
@@ -46,14 +44,27 @@ public class TagDAO extends GeneralDAO<Tag> {
 	 * 
 	 */
 	public ArrayList<Tag> getTags() {
-		String sql = "SELECT * FROM tags ORDER BY id ASC ";
-		return this.executeQuery(sql, Tag.class);
+		String sql = "SELECT * FROM tags WHERE visible=true ORDER BY id ASC ";
+		PreparedStatement pstmt;
+		try {
+			pstmt = this.getConnection().prepareStatement(sql);
+			return this.executeQuery(pstmt, Tag.class);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return new ArrayList<Tag>();
+		}
 	}
 
 	public Tag getTag(String tagname) {
 		String sql = "SELECT * FROM tags WHERE tagname='" + tagname + "'";
-		for (Tag tag : this.executeQuery(sql, Tag.class)) {
-			return tag;
+		PreparedStatement pstmt;
+		try {
+			pstmt = this.getConnection().prepareStatement(sql);
+			for (Tag tag : this.executeQuery(pstmt, Tag.class)) {
+				return tag;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		return new Tag();
 	}
@@ -64,7 +75,9 @@ public class TagDAO extends GeneralDAO<Tag> {
 	}
 
 	@Override
-	public boolean delete(int i) {
+	protected boolean delete(long i) throws SQLException {
+		// TODO Auto-generated method stub
 		return false;
 	}
+
 }

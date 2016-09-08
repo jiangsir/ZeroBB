@@ -2,6 +2,8 @@ package jiangsir.zerobb.Filter;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.logging.Logger;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -29,7 +31,7 @@ import jiangsir.zerobb.Tables.User;
  */
 @WebFilter(filterName = "RoleFilter", urlPatterns = {"/*"}, asyncSupported = true)
 public class RoleFilter implements Filter {
-
+	Logger logger = Logger.getAnonymousLogger();
 	/**
 	 * Default constructor.
 	 */
@@ -52,7 +54,7 @@ public class RoleFilter implements Filter {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) resp;
 		String servletPath = request.getServletPath();
-		System.out.println("RoleFilter: " + servletPath);
+		logger.info("RoleFilter: " + servletPath);
 
 		HttpServlet httpServlet = ApplicationScope.getUrlpatterns().get(servletPath);
 		if (httpServlet == null || httpServlet.getClass().getAnnotation(RoleSetting.class) == null) {

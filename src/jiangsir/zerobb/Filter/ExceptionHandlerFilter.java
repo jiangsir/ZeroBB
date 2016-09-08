@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -24,6 +27,7 @@ import jiangsir.zerobb.Scopes.SessionScope;
  */
 @WebFilter(filterName = "ExceptionHandlerFilter", urlPatterns = {"/*"}, asyncSupported = true)
 public class ExceptionHandlerFilter implements Filter {
+	Logger logger = Logger.getAnonymousLogger();
 
 	/**
 	 * Default constructor.
@@ -45,6 +49,7 @@ public class ExceptionHandlerFilter implements Filter {
 		try {
 			chain.doFilter(req, resp);
 		} catch (Exception e) {
+			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			e.printStackTrace();
 			HttpServletRequest request = (HttpServletRequest) req;
 			HttpServletResponse response = (HttpServletResponse) resp;

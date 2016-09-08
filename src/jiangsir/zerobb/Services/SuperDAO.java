@@ -21,6 +21,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import jiangsir.zerobb.Annotations.Persistent;
+import jiangsir.zerobb.Exceptions.DataException;
 
 abstract public class SuperDAO<T> {
 	private static Connection conn = null;
@@ -43,15 +44,17 @@ abstract public class SuperDAO<T> {
 					InitialContext icontext = new InitialContext();
 					source = (DataSource) icontext.lookup("java:comp/env/mysql");
 				}
-				logger.info("資料庫連結不存在或關閉了。嘗試重新取得連線");
+				logger.severe("資料庫連結不存在或關閉了。嘗試重新取得連線");
 				conn = source.getConnection();
 			} else {
 				return conn;
 			}
 		} catch (NamingException e) {
 			e.printStackTrace();
+			throw new DataException("資料庫名稱設定有誤！");
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new DataException("無法連接資料庫，請通知管理員！");
 		}
 		return conn;
 	}
