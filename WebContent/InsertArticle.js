@@ -1,6 +1,6 @@
 jQuery(document).ready(
 		function() {
-			$("input[name='postdate']").datetimepicker({
+			 $("input[name='postdate']").datetimepicker({
 				dateFormat : 'yy-mm-dd',
 				timeFormat : 'HH:mm:ss'
 			});
@@ -13,12 +13,12 @@ jQuery(document).ready(
 			// jQuery.trim(jQuery("input[name=postdate]").val()));
 			// jQuery("input[name=outdate]").val(
 			// jQuery.trim(jQuery("input[name=outdate]").val()));
-			jQuery("#addupfile").click(
+			jQuery("button[id='addupfile']").click(
 					function() {
-						jQuery("div[name=upfilelist]:last").clone(true)
-								.insertAfter("div[name=upfilelist]:last");
-						jQuery("div[name=upfilelist]:last #upfile").val("");
-						jQuery("div[name=upfilelist]:last").show();
+						jQuery("div[id=upfilelist]:last").clone(true)
+								.insertAfter("div[id=upfilelist]:last");
+						jQuery("div[id=upfilelist]:last #upfile").val("");
+						jQuery("div[id=upfilelist]:last").show();
 					}); // #addherb.click
 
 			jQuery("span[id='deleteupfile']").bind('click', function() {
@@ -43,7 +43,10 @@ jQuery(document).ready(
 
 			jQuery("span[id='cancelupfile']").bind('click', function() {
 				var index = jQuery("span[id='cancelupfile']").index(this);
-				jQuery("div[id='upfilelist']:eq(" + index + ")").remove();
+				var size = jQuery("div[id='upfilelist']").size();
+				if (size > 1) {
+					jQuery("div[id='upfilelist']:eq(" + index + ")").remove();
+				}
 			});
 
 			jQuery("input[name='info']").each(function() {

@@ -3,26 +3,34 @@ package jiangsir.zerobb.Scopes;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpSession;
 import org.apache.commons.io.FileUtils;
 
 import jiangsir.zerobb.Services.AppConfigService;
+import jiangsir.zerobb.Services.TagDAO;
+import jiangsir.zerobb.Services.UserDAO;
 import jiangsir.zerobb.Tables.AppConfig;
+import jiangsir.zerobb.Tables.Tag;
 import jiangsir.zerobb.Tables.User;
 
 public class ApplicationScope {
+	private static File appRoot = null;
+	private static AppConfig appConfig = null;
 	public static ServletContext servletContext = null;
 	private static String version = "Undefined Version";
 	private static String built = "Undefined BuiltNumber";
 	private static HashMap<String, HttpSession> onlineSessions = new HashMap<String, HttpSession>();
 	private static HashMap<String, User> onlineUsers = new HashMap<String, User>();
 	private static HashMap<String, HttpServlet> urlpatterns = new HashMap<String, HttpServlet>();
-	private static File appRoot = null;
-	private static AppConfig appConfig = null;
+	private static ArrayList<Tag> tags = new ArrayList<Tag>();
+	private static LinkedHashMap<String, String> divisions = new LinkedHashMap<String, String>();
 
 	public static void setAllAttributes(ServletContext servletContext) {
 		ApplicationScope.servletContext = servletContext;
@@ -34,6 +42,8 @@ public class ApplicationScope {
 		ApplicationScope.setOnlineUsers(onlineUsers);
 		ApplicationScope.setUrlpatterns(urlpatterns);
 		ApplicationScope.setAppConfig(new AppConfigService().getAppConfig());
+		ApplicationScope.setTags(new TagDAO().getTags());
+		ApplicationScope.setDivisions(new UserDAO().getDivisions());
 	}
 
 	public static HashMap<String, HttpSession> getOnlineSessions() {
@@ -127,6 +137,24 @@ public class ApplicationScope {
 	public static void setAppConfig(AppConfig appConfig) {
 		ApplicationScope.appConfig = appConfig;
 		servletContext.setAttribute("appConfig", appConfig);
+	}
+
+	public static ArrayList<Tag> getTags() {
+		return tags;
+	}
+
+	public static void setTags(ArrayList<Tag> tags) {
+		ApplicationScope.tags = tags;
+		servletContext.setAttribute("tags", tags);
+	}
+
+	public static LinkedHashMap<String, String> getDivisions() {
+		return divisions;
+	}
+
+	public static void setDivisions(LinkedHashMap<String, String> divisions) {
+		ApplicationScope.divisions = divisions;
+		servletContext.setAttribute("divisions", divisions);
 	}
 
 }

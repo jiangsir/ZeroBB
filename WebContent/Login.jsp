@@ -10,36 +10,30 @@
 <jsp:include page="CommonHead.jsp" />
 </head>
 <body>
-	<div id="container">
-		<!-- header -->
-		<jsp:include page="Header.jsp" />
-		<!--end header -->
-		<!-- main -->
-		<div id="main">
-			<div id="text">
+	<jsp:include page="Header.jsp" />
+	<div class="container">
 
-				<p style="font-size: large; font-weight: bold; color: red;">${sessionScope.LoginMessage}</p>
-				<form id="form1" name="form1" method="post" action="Login">
-					<p>
-						身份： <select name="account">
-							<c:forEach var="user" items="${users}">
-								<option value="${user.account}">${user.name}</option>
-							</c:forEach>
-						</select>
-					</p>
-					<p>
-						密碼： <input type="password" name="passwd" />
-					</p>
-					<p>
-						<input type="submit" name="Submit" value="送出" />
-					</p>
-				</form>
+		<%-- <p style="font-size: large; font-weight: bold; color: red;">${sessionScope.LoginMessage}</p> --%>
+		<form method="post" action="Login">
+			<div class="form-group">
+				<label for="Select">身分</label> <select class="form-control"
+					name="account">
+					<c:forEach var="user" items="${users}">
+						<option value="${user.account}">${user.name}</option>
+					</c:forEach>
+				</select>
 			</div>
-		</div>
-		<!-- end main -->
-		<!-- footer -->
-		<jsp:include page="Footer.jsp" />
-		<!-- end footer -->
+			<div class="form-group">
+				<label for="exampleInputPassword1">密碼</label> <input type="password"
+					class="form-control" id="exampleInputPassword1"
+					placeholder="Password" name="passwd">
+			</div>
+			<!-- 			<button type="submit" class="btn btn-default">登入</button>
+ -->
+			<button type="submit" value="Send" class="btn btn-success"
+				id="submit">登入</button>
+		</form>
 	</div>
+	<jsp:include page="Footer.jsp" />
 </body>
 </html>

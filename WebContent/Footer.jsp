@@ -5,9 +5,12 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page isELIgnored="false"%>
 
-<div id="footer_menu">ZeroBB for Servlet3.0
-	${applicationScope.version} Built${applicationScope.built}</div>
-<div id="footer">
-	<!-- <a href="./GoogleLogin">登入</a> | --> Designed &amp; <a href="./Admin">管理</a>
-	by <a href="mailto:jiangsir@tea.nknush.kh.edu.tw">jiangsir@高師大附中</a>.
+<hr>
+<div class="container">
+	<div class="text-right">ZeroBB for Servlet3.0
+		${applicationScope.version} Built${applicationScope.built}</div>
+	<div class="text-right">
+		Designed &amp; <a href="./Admin">管理</a> by <a
+			href="mailto:jiangsir@tea.nknush.kh.edu.tw">jiangsir@高師大附中 
+	</div>
 </div>

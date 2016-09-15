@@ -178,7 +178,7 @@ public class Article {
 	}
 
 	public void setOutdate(Timestamp outdate) {
-		if (Math.abs(outdate.getTime() - new java.util.Date().getTime()) < 20 * 60 * 1000) {
+		if (Math.abs(outdate.getTime() - System.currentTimeMillis()) < 20 * 60 * 1000) {
 			Calendar now = Calendar.getInstance();
 			now.set(Calendar.DATE, now.get(Calendar.DATE) + 7);
 			// 如果時間有誤，就直接預設 7 天後即可。

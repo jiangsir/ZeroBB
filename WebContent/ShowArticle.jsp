@@ -44,70 +44,59 @@
 <jsp:useBean id="now" class="java.util.Date" />
 
 <body>
-	<div id="container">
-		<!-- header -->
-		<jsp:include page="Header.jsp" />
-		<!--end header -->
-		<!-- main -->
-		<div id="main">
-			<div id="text">
-				<p style="text-align: right; margin-right: 100px;">
-					發佈人員：${article.user.name}，發佈單位:${article.user.division.value}，瀏覽次數：
-					${article.hitnum}<br /> 發布自： <span id="postdate"><fmt:formatDate
-							value="${article.postdate}" pattern="yyyy-MM-dd HH:mm:ss" /></span><br />
-					至： <span id="outdate"><fmt:formatDate
-							value="${article.outdate}" pattern="yyyy-MM-dd HH:mm:ss" /></span><br />
-					<c:forEach var="tag" items="${article.tags}">
-						<span title="${tag.descript}">${tag.tagtitle} | </span>
-					</c:forEach>
-					<span title="${article.user.account}">${userBean.user.division.value}
-					</span>
-					<c:if
-						test="${article:isUpdatable(article, sessionScope.currentUser)}"> | <img
-							src="images/touch.png" id="touch" articleid="${article.id}"
-							border="0" title="碰一下，將排序在最上方" style="cursor: pointer;" /> | <a
-							href="./UpdateArticle?id=${article.id}"><img
-							src="images/edit18.png" alt="編輯" title="編輯" border="0" /></a> | <a
-							href="./DeleteArticle?articleid=${article.id}"><img
-							src="images/delete18.png" alt="強制過期" title="強制過期" border="0" /></a>
-					</c:if>
-				</p>
-				<h2>[${article.info}] ${article.title}</h2>
-				<div id="text">${article.content}</div>
-				<hr />
-				<c:if test="${fn:length(article.upfiles)>0}">
-					<h3>附件：</h3>
+	<jsp:include page="Header.jsp" />
+	<div class="container">
+		<p style="text-align: right;">
+			發佈人員：${article.user.name}，發佈單位:${article.user.division.value}，瀏覽次數：
+			${article.hitnum}<br /> 發布自： <span id="postdate"><fmt:formatDate
+					value="${article.postdate}" pattern="yyyy-MM-dd HH:mm:ss" /></span><br />
+			至： <span id="outdate"><fmt:formatDate
+					value="${article.outdate}" pattern="yyyy-MM-dd HH:mm:ss" /></span><br />
+			<c:forEach var="tag" items="${article.tags}">
+				<span title="${tag.descript}">${tag.tagtitle} | </span>
+			</c:forEach>
+			<span title="${article.user.account}">${userBean.user.division.value}
+			</span>
+			<c:if
+				test="${article:isUpdatable(article, sessionScope.currentUser)}"> | <img
+					src="images/touch.png" id="touch" articleid="${article.id}"
+					border="0" title="碰一下，將排序在最上方" style="cursor: pointer;" /> | <a
+					href="./UpdateArticle?id=${article.id}"><img
+					src="images/edit18.png" alt="編輯" title="編輯" border="0" /></a> | <a
+					href="./DeleteArticle?articleid=${article.id}"><img
+					src="images/delete18.png" alt="強制過期" title="強制過期" border="0" /></a>
+			</c:if>
+		</p>
+		<h2>[${article.info}] ${article.title}</h2>
+		<div id="text">${article.content}</div>
+		<hr />
+		<c:if test="${fn:length(article.upfiles)>0}">
+			<h3>附件：</h3>
+		</c:if>
+		<c:forEach var="upfile" items="${article.upfiles}">
+			<h3>
+				<c:if test="${upfile.isImage}">
+					<img src="./Download?upfileid=${upfile.id}" style="max-width: 90%" />
 				</c:if>
-				<c:forEach var="upfile" items="${article.upfiles}">
-					<h3>
-						<c:if test="${upfile.isImage}">
-							<img src="./Download?upfileid=${upfile.id}"
-								style="max-width: 90%" />
-						</c:if>
-						<c:if test="${!upfile.isImage}">
-							<img src="images/paperclip.png" /> ${upfile.filename} <a
-								href="./Download?upfileid=${upfile.id}">下載</a>
-							<c:if test="${upfile.isGoogleViewer}">
-								<a
-									href="https://docs.google.com/viewer?url=http://${pageContext.request.serverName}${pageContext.request.contextPath}/Download?upfileid=${upfile.id}"
-									target="_blank">檢視</a>
-								<!--		
+				<c:if test="${!upfile.isImage}">
+					<img src="images/paperclip.png" /> ${upfile.filename} <a
+						href="./Download?upfileid=${upfile.id}">下載</a>
+					<c:if test="${upfile.isGoogleViewer}">
+						<a
+							href="https://docs.google.com/viewer?url=http://${pageContext.request.serverName}${pageContext.request.contextPath}/Download?upfileid=${upfile.id}"
+							target="_blank">檢視</a>
+						<!--		
 		<a href="http://docs.google.com/viewer?url=http://${pageContext.request.serverName}${pageContext.request.contextPath}/upfiles/${article.id}_${upfile.id}_${article.account}.${fn:split(upfile.filename, '.')[1]}">檢視</a>
 <a href="http://${pageContext.request.serverName}${pageContext.request.contextPath}/upfiles/${article.id}_${upfile.id}_${article.account}.${fn:split(upfile.filename, '.')[1]}">檢視</a>
 -->
 
-							</c:if>
-						</c:if>
-						<span style="font-size: 10px">(${upfile.hitnum}次)</span>
-					</h3>
-				</c:forEach>
-				<p></p>
-			</div>
-		</div>
-		<!-- end main -->
-		<!-- footer -->
-		<jsp:include page="Footer.jsp" />
-		<!-- end footer -->
+					</c:if>
+				</c:if>
+				<span style="font-size: 10px">(${upfile.hitnum}次)</span>
+			</h3>
+		</c:forEach>
+		<p></p>
 	</div>
+	<jsp:include page="Footer.jsp" />
 </body>
 </html>

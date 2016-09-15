@@ -17,98 +17,58 @@
 	});
 </script>
 </head>
-<jsp:useBean id="now" class="java.util.Date" />
 <body>
-	<div id="container">
-		<!-- header -->
-		<jsp:include page="Header.jsp" />
-		<!--end header -->
-		<!-- main -->
-		<div id="main">
-			<div id="text">
-				<div class="landscape">
-					<ul>
-						<c:forEach var="tag" items="${tags}">
-							<li><a href="?tagname=${tag.tagname}"
-								title="${tag.descript}">${tag.tagtitle }</a></li>
-						</c:forEach>
-					</ul>
-				</div>
-				<br></br>
+	<jsp:include page="Header.jsp" />
+	<div class="container">
+		<table class="table table-hover">
+			<tr>
+				<th>編號</th>
+				<th width="50%">標題</th>
+				<th>發布單位</th>
+				<th>發布時間</th>
+				<th>有效期限</th>
+				<th>點閱數</th>
+			</tr>
+			<c:forEach var="article" items="${articles}">
+				<tr>
+					<td>${article.id}</td>
+					<td>[${article.info}] <a href="./ShowArticle?id=${article.id}">${article.title}&nbsp;</a>
+						<c:forEach var="upfile" items="${article.upfiles}">
+							<a href="./Download?upfileid=${upfile.id}"
+								title="${upfile.filename}"><img src="images/paperclip.png"
+								border="0" /></a>
+						</c:forEach></td>
+					<td>${article.user.division.value}</td>
+					<td><fmt:formatDate value="${article.postdate}"
+							pattern="yyyy-MM-dd HH:mm" /></td>
+					<td><c:if test="${article.outdate.time<now.time}">
+            [已過期]           </c:if> ${article.available}</td>
+					<td>${article.hitnum}</td>
+				</tr>
+			</c:forEach>
+		</table>
 
-				<form id="form1" name="form1" method="get" action="">
-					查詢公告單位： <select id="division" name="division">
-						<option>請選擇...</option>
-						<c:forEach var="division" items="${divisions}">
-							<option value="${division.key}">${division.value}</option>
-						</c:forEach>
-					</select>
-				</form>
-				<br />
-				<c:forEach var="article" items="${articles}">
-					<c:if
-						test="${article.outdate.time>now.time && (article.info=='重要' || article.info=='頭條')}">
-						<div style="color: red; font-size: 1.4em;">
-							[${article.info}] <a href="./ShowArticle?id=${article.id}">${article.title}</a>
-							<c:forEach var="upfile" items="${article.upfiles}">
-								<a href="./Download?upfileid=${upfile.id}"
-									title="${upfile.filename}"><img src="images/paperclip.png"
-									border="0" /></a>
-							</c:forEach>
-							<br />
-						</div>
-					</c:if>
-				</c:forEach>
-				<br />
-
-				<table style="width: 100%;">
-					<tr>
-						<th>編號</th>
-						<th width="50%">標題</th>
-						<th>發布單位</th>
-						<th>發布時間</th>
-						<th>有效期限</th>
-						<th>點閱數</th>
-					</tr>
-					<c:forEach var="article" items="${articles}">
-						<tr>
-							<td>${article.id}</td>
-							<td>[${article.info}] <a
-								href="./ShowArticle?id=${article.id}">${article.title}&nbsp;</a>
-								<c:forEach var="upfile" items="${article.upfiles}">
-									<a href="./Download?upfileid=${upfile.id}"
-										title="${upfile.filename}"><img src="images/paperclip.png"
-										border="0" /></a>
-								</c:forEach></td>
-							<td>${article.user.division.value}</td>
-							<td style="text-align: right; font-size: 10px;"><fmt:formatDate
-									value="${article.postdate}" pattern="yyyy-MM-dd HH:mm" /></td>
-							<td style="text-align: left"><c:if
-									test="${article.outdate.time<now.time}">
-			[已過期]			</c:if> ${article.available}</td>
-							<td>${article.hitnum}</td>
-						</tr>
-					</c:forEach>
-				</table>
-				<p align="center">
-					<a href="?${querystring}&page=1">第一頁</a>&nbsp; | &nbsp;
-					<c:if test="${page<=1}">上一頁</c:if>
-					<c:if test="${page>1}">
-						<a href="?${querystring}&page=${page-1}">上一頁</a>
-					</c:if>
-					&nbsp; | &nbsp;第 ${page} 頁&nbsp; | &nbsp;
-					<c:if test="${fn:length(articles)==0}">下一頁</c:if>
-					<c:if test="${fn:length(articles)!=0}">
-						<a href="?${querystring}&page=${page+1}">下一頁</a>
-					</c:if>
-					&nbsp;
-				</p>
-			</div>
-		</div>
-		<!-- end main -->
-		<!-- footer -->
-		<jsp:include page="Footer.jsp" />
-		<!-- end footer -->
+		<nav>
+			<ul class="pagination">
+				<li><a href="?${querystring}&page=${page-1}"><span
+						aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li>
+				<li><a href="?${querystring}&page=1">1 <span
+						class="sr-only">(current)</span></a></li>
+				<li><a href="?${querystring}&page=2">2 <span
+						class="sr-only">(current)</span></a></li>
+				<li><a href="?${querystring}&page=3">3 <span
+						class="sr-only">(current)</span></a></li>
+				<li><a href="?${querystring}&page=4">4 <span
+						class="sr-only">(current)</span></a></li>
+				<li><a href="?${querystring}&page=5">5 <span
+						class="sr-only">(current)</span></a></li>
+				<li><a href="?${querystring}&page=${page+1}"><span
+						aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>
+			</ul>
+		</nav>
 	</div>
+
+	<jsp:include page="Footer.jsp" />
+
 </body>
 </html>

@@ -10,11 +10,8 @@
 <jsp:include page="CommonHead.jsp" />
 </head>
 <body>
-	<div id="container">
-		<!-- header -->
-		<jsp:include page="Header.jsp" />
-		<!--end header -->
-		<!-- main -->
+	<jsp:include page="Header.jsp" />
+	<div class="container">
 		<div id="main">
 			<div id="text">
 				<p>
@@ -31,7 +28,7 @@
 				</p>
 				<p>管理 tag</p>
 				<c:forEach var="tag" items="${tags}">
-					<div>${tag.tagname}: ${tag.tagtitle} (${tag.descript })</div>
+					<div>${tag.tagname}:${tag.tagtitle}(${tag.descript })</div>
 				</c:forEach>
 				<p></p>
 				<form id="form2" name="form2" method="post" action="UpfileToBlob">
@@ -95,8 +92,7 @@
 					<c:forEach var="i" begin="1" end="9" step="1">${i}</c:forEach>
 				</p>
 				<p>
-					<a
-						href="http://127.0.0.1:8080/ZeroBB7/Include?p=HEADLINE">http://127.0.0.1:8080/ZeroBB7/Include?p=HEADLINE</a>
+					<a href="http://127.0.0.1:8080/ZeroBB7/Include?p=HEADLINE">http://127.0.0.1:8080/ZeroBB7/Include?p=HEADLINE</a>
 					// info 0=一般 1=重要 2=頭條
 				</p>
 				<p>
@@ -110,10 +106,7 @@
 				<p>&nbsp;</p>
 			</div>
 		</div>
-		<!-- end main -->
-		<!-- footer -->
-		<jsp:include page="Footer.jsp" />
-		<!-- end footer -->
 	</div>
+	<jsp:include page="Footer.jsp" />
 </body>
 </html>
