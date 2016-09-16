@@ -114,7 +114,7 @@
 					</tr>
 				</table>
 			</div>
-			<input type="submit" value="送出" />
+			<input type="submit" value="送出" class="btn btn-success" />
 		</form>
 	</div>
 	<jsp:include page="Footer.jsp" />

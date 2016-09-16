@@ -1,6 +1,6 @@
 jQuery(document).ready(
 		function() {
-			 $("input[name='postdate']").datetimepicker({
+			$("input[name='postdate']").datetimepicker({
 				dateFormat : 'yy-mm-dd',
 				timeFormat : 'HH:mm:ss'
 			});

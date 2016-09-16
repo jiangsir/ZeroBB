@@ -19,14 +19,15 @@
 				type : "GET",
 				url : "./Touch.api",
 				data : "articleid=" + $(this).attr("articleid"),
-				async : true,
+				async : false,
 				timeout : 5000,
 				success : function(result) {
 					if (result == "" || result == null) {
 						result = "";
 					}
 					//jQuery("#postdate").text(result);
-					alert("順序調整成功！ (" + result + ")");
+					//alert("順序調整成功！ (" + result + ")");
+					BootstrapDialog.alert("順序調整成功！ (" + result + ")");
 				}
 			}); // jQusery ajax
 		});
@@ -39,6 +40,15 @@
 		return formatDate(nowdate, "y-MM-dd HH:mm:ss");
 		//jQuery("#postdate").text( formatDate( nowdate, "y-MM-dd HH:mm:ss") );
 	}
+	function test() {
+		BootstrapDialog.confirm('确认删除当前选中的记录吗?', function(result) {
+			if (result) {
+				BootstrapDialog.alert('I want 删除!');
+			} else {
+				BootstrapDialog.alert('I want 不删除!');
+			}
+		});
+	}
 </script>
 </head>
 <jsp:useBean id="now" class="java.util.Date" />
@@ -46,27 +56,38 @@
 <body>
 	<jsp:include page="Header.jsp" />
 	<div class="container">
-		<p style="text-align: right;">
+		<div style="text-align: right;">
 			發佈人員：${article.user.name}，發佈單位:${article.user.division.value}，瀏覽次數：
 			${article.hitnum}<br /> 發布自： <span id="postdate"><fmt:formatDate
 					value="${article.postdate}" pattern="yyyy-MM-dd HH:mm:ss" /></span><br />
 			至： <span id="outdate"><fmt:formatDate
 					value="${article.outdate}" pattern="yyyy-MM-dd HH:mm:ss" /></span><br />
 			<c:forEach var="tag" items="${article.tags}">
-				<span title="${tag.descript}">${tag.tagtitle} | </span>
+				<button type="button" class="btn btn-default btn-xs">
+					<span class="glyphicon glyphicon-tag"></span> ${tag.tagtitle}
+				</button>
 			</c:forEach>
-			<span title="${article.user.account}">${userBean.user.division.value}
-			</span>
+			<br /> <br />
 			<c:if
-				test="${article:isUpdatable(article, sessionScope.currentUser)}"> | <img
-					src="images/touch.png" id="touch" articleid="${article.id}"
-					border="0" title="碰一下，將排序在最上方" style="cursor: pointer;" /> | <a
-					href="./UpdateArticle?id=${article.id}"><img
-					src="images/edit18.png" alt="編輯" title="編輯" border="0" /></a> | <a
-					href="./DeleteArticle?articleid=${article.id}"><img
-					src="images/delete18.png" alt="強制過期" title="強制過期" border="0" /></a>
+				test="${article:isUpdatable(article, sessionScope.currentUser)}">
+
+				<div class="btn-group">
+					<button type="button" class="btn btn-default">
+						<span class="glyphicon glyphicon-hand-up" id="touch"
+							articleid="${article.id}" title="碰一下，將排序在最上方"
+							style="cursor: pointer;"></span>
+					</button>
+					<button type="button" class="btn btn-default">
+						<a href="./UpdateArticle?id=${article.id}"><span
+							class="glyphicon glyphicon-pencil"></span></a>
+					</button>
+					<button type="button" class="btn btn-default">
+						<a href="./DeleteArticle?articleid=${article.id}"><span
+							class="glyphicon glyphicon-remove"></span></a>
+					</button>
+				</div>
 			</c:if>
-		</p>
+		</div>
 		<h2>[${article.info}] ${article.title}</h2>
 		<div id="text">${article.content}</div>
 		<hr />

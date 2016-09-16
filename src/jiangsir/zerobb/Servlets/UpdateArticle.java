@@ -3,6 +3,7 @@ package jiangsir.zerobb.Servlets;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.*;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
@@ -19,11 +20,9 @@ import jiangsir.zerobb.Tables.Article_Tag;
 import jiangsir.zerobb.Tables.CurrentUser;
 import jiangsir.zerobb.Tables.Upfile;
 import jiangsir.zerobb.Tools.ENV;
-import jiangsir.zerobb.Tools.FileUploader;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
 
-@WebServlet(urlPatterns = { "/UpdateArticle" }, name = "UpdateArticle.do")
+@MultipartConfig(maxFileSize = 20 * 1024 * 1024, maxRequestSize = 50 * 1024 * 1024)
+@WebServlet(urlPatterns = {"/UpdateArticle"}, name = "UpdateArticle.do")
 public class UpdateArticle extends HttpServlet implements IAccessFilter {
 	/**
 	 * 
@@ -39,77 +38,50 @@ public class UpdateArticle extends HttpServlet implements IAccessFilter {
 	public void AccessFilter(HttpServletRequest request) throws AccessException {
 		HttpSession session = request.getSession(false);
 		CurrentUser currentUser = new SessionScope(session).getCurrentUser();
-		Article article = new ArticleDAO().getArticleById(request
-				.getParameter("id"));
+		Article article = new ArticleDAO().getArticleById(request.getParameter("id"));
 		if (!article.isUpdatable(currentUser)) {
-			throw new AccessException("您(" + currentUser.getAccount()
-					+ ") 不能編輯本題目。");
+			throw new AccessException("您(" + currentUser.getAccount() + ") 不能編輯本題目。");
 		}
 	}
 
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		Article article = new ArticleDAO().getArticleById(request
-				.getParameter("id"));
+	public String getFilename(Part part) {
+		String header = part.getHeader("Content-Disposition");
+		String filename = header.substring(header.indexOf("filename=\"") + 10, header.lastIndexOf("\""));
+		return filename;
+	}
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		Article article = new ArticleDAO().getArticleById(request.getParameter("id"));
 
 		request.setAttribute("tags", new TagDAO().getTags());
-		// request.setAttribute("userBean", new
-		// UserBean_Deprecated(article.getAccount()));
 		request.setAttribute("article", article);
-		// request.setAttribute("article_tags",
-		// new Article_TagDAO().getArticle_TagNames(article.getId()));
-		request.getRequestDispatcher("InsertArticle.jsp").forward(request,
-				response);
+		request.setAttribute("maxFileSize", this.getClass().getAnnotation(MultipartConfig.class).maxFileSize());
+		request.getRequestDispatcher("InsertArticle.jsp").forward(request, response);
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		CurrentUser currentUser = new SessionScope(session).getCurrentUser();
-
-		// Uploader uploader = new Uploader(request, response);
-		FileUploader uploader = new FileUploader();
-		try {
-			uploader.parse(request, "UTF-8");
-		} catch (FileUploadException e) {
-			e.printStackTrace();
-		}
-		int articleid = Integer.parseInt(uploader.getParameter("articleid"));
+		int articleid = Integer.parseInt(request.getParameter("articleid"));
 		Article article = new ArticleDAO().getArticleById(articleid);
-		// if (!this.isAccessable(session_account, article)) {
-		// Message message = new Message();
-		// message.setType(Message.MessageType_ERROR);
-		// message.setPlainTitle("您不能編輯此文件！");
-		// request.setAttribute("message", message);
-		// ExceptionDAO exceptionDao = new ExceptionDAO();
-		// exceptionDao.insert(request.getMethod() + ": "
-		// + request.getRequestURL().toString(), session_account,
-		// request.getRemoteAddr(), "您不能編輯此文件！", "id=" + articleid
-		// + ", 擁有者：" + article.getAccount());
-		// request.getRequestDispatcher("Message.jsp").forward(request,
-		// response);
-		// return;
-		// }
-		article.setInfo(uploader.getParameter("info"));
-		article.setType(uploader.getParameter("type"));
-		article.setHyperlink(uploader.getParameter("hyperlink"));
-		// article.setPostdate(new Timestamp(Utils.parseDatetime(
-		// uploader.getParameter("postdate")).getTime()));
-		// article.setOutdate(new Timestamp(Utils.parseDatetime(
-		// uploader.getParameter("outdate")).getTime()));
+		article.setInfo(request.getParameter("info"));
+		article.setType(request.getParameter("type"));
+		article.setHyperlink(request.getParameter("hyperlink"));
 		try {
-			article.setTitle(uploader.getParameter("title"));
-			article.setPostdate(uploader.getParameter("postdate"));
-			article.setOutdate(uploader.getParameter("outdate"));
+			article.setTitle(request.getParameter("title"));
+			article.setPostdate(request.getParameter("postdate"));
+			article.setOutdate(request.getParameter("outdate"));
 		} catch (DataException e) {
 			e.printStackTrace();
 		}
 
-		article.setContent(uploader.getParameter("content"));
+		article.setContent(request.getParameter("content"));
 		try {
 			new ArticleDAO().update(article);
-			String[] tagnames = uploader.getParameterValues("tagname");
+			String[] tagnames = request.getParameterValues("tagname");
 			Article_TagDAO tagDao = new Article_TagDAO();
 			tagDao.removeArticle_Tags(articleid);
 			for (int i = 0; tagnames != null && i < tagnames.length; i++) {
@@ -119,32 +91,23 @@ public class UpdateArticle extends HttpServlet implements IAccessFilter {
 				tag.setTagname(tagnames[i]);
 				tagDao.insert(tag);
 			}
-			for (FileItem item : uploader.getFileItemList("upfile")) {
-				if (item.getName() == null || item.getName().equals("")) {
-					continue;
+
+			for (Part part : request.getParts()) {
+				if ("upfile".equals(part.getName())) {
+					if (part.getName() == null || part.getName().equals("")) {
+						continue;
+					}
+					String filename = this.getFilename(part);
+					Upfile newupfile = new Upfile();
+					newupfile.setArticleid(articleid);
+					newupfile.setFilename(filename);
+					newupfile.setFiletype(part.getContentType());
+					newupfile.setFilesize(part.getSize());
+					newupfile.setBinary(part.getInputStream());
+
+					int upfileid = new UpfileDAO().insert(newupfile);
+					newupfile.setId(upfileid);
 				}
-				// IE 會傳上完整的路徑，不好
-				String filename = item.getName();
-				filename = filename.substring(filename.lastIndexOf("\\") + 1);
-
-				// 再 加入資料庫記錄
-				Upfile newupfile = new Upfile();
-				newupfile.setArticleid(articleid);
-				newupfile.setFilename(filename);
-				newupfile.setFiletype(item.getContentType());
-				newupfile.setFilesize((long) item.getSize());
-
-				newupfile.setBinary(item.getInputStream());
-
-				int upfileid = new UpfileDAO().insert(newupfile);
-				newupfile.setId(upfileid);
-				// 先將檔案上傳
-				// FileUploader.write2file(item, new
-				// File(newupfile.getINNER_PATH(),
-				// newupfile.getINNER_FILENAME()));
-				// uploader.uploadFile(item, newupfile.getINNER_PATH(),
-				// newupfile
-				// .getINNER_FILENAME());
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

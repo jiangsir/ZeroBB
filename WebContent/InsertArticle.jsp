@@ -87,7 +87,7 @@
                             ${article.content}
                           </textarea>
 			</div>
-			<br /> * 檔案上載上限 10 MB <br />
+			<br /> * 檔案上載上限 ${ maxFileSize} MB <br />
 			<c:forEach var="upfile" items="${article.upfiles}">
 				<h3 id="upfiles">
 					<img src="images/paperclip.png" /> <a
@@ -119,7 +119,8 @@
 				<span class="glyphicon glyphicon-plus"></span> 增加附件
 			</button>
 			<input name="articleid" type="hidden" value="${article.id}" /> <br />
-			<br /> <br /> <input type="submit" value="送出" /> <br />
+			<br /> <br /> <input type="submit" value="送出"
+				class="btn btn-success" /> <br />
 		</form>
 	</div>
 	<jsp:include page="Footer.jsp" />
