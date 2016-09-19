@@ -61,6 +61,7 @@ public class InsertArticle extends HttpServlet implements IAccessFilter {
 		Article newarticle = new Article();
 		CurrentUser currentUser = new SessionScope(request).getCurrentUser();
 		newarticle.setAccount(currentUser.getAccount());
+		newarticle.setVisible(false);
 		int articleid = 0;
 		try {
 			articleid = new ArticleDAO().insert(newarticle);

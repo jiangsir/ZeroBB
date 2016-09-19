@@ -73,8 +73,9 @@ public class UpdateArticle extends HttpServlet implements IAccessFilter {
 		article.setTitle(request.getParameter("title"));
 		article.setPostdate(request.getParameter("postdate"));
 		article.setOutdate(request.getParameter("outdate"));
-
 		article.setContent(request.getParameter("content"));
+		article.setVisible(true);
+
 		try {
 			new ArticleDAO().update(article);
 			String[] tagnames = request.getParameterValues("tagname");
