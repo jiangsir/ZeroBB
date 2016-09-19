@@ -88,7 +88,7 @@
 				</div>
 			</c:if>
 		</div>
-		<h2>[${article.info}] ${article.title}</h2>
+		<h2>[${article.info.value}] ${article.title}</h2>
 		<div id="text">${article.content}</div>
 		<hr />
 		<c:if test="${fn:length(article.upfiles)>0}">

@@ -13,3 +13,7 @@ CREATE TABLE IF NOT EXISTS `appconfigs` (
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+UPDATE articles SET info='STANDARD' WHERE info ='一般';
+UPDATE articles SET info='IMPORTANT' WHERE info ='重要';
+UPDATE articles SET info='HEADLINE' WHERE info ='頭條';

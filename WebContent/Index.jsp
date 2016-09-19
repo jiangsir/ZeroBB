@@ -32,7 +32,7 @@
 			<c:forEach var="article" items="${articles}">
 				<tr>
 					<td>${article.id}</td>
-					<td>[${article.info}] <a href="./ShowArticle?id=${article.id}">${article.title}&nbsp;</a>
+					<td>[${article.info.value}] <a href="./ShowArticle?id=${article.id}">${article.title}&nbsp;</a>
 						<c:forEach var="upfile" items="${article.upfiles}">
 							<a href="./Download?upfileid=${upfile.id}"
 								title="${upfile.filename}"><span

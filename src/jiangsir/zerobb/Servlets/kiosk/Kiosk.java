@@ -31,9 +31,9 @@ public class Kiosk extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		ArrayList<Article> articles = new ArticleService().getArticlesByInfo(new Article.INFO[]{Article.INFO.頭條}, 1,
-				10);
-		
+		ArrayList<Article> articles = new ArticleService().getArticlesByInfo(new Article.INFO[]{Article.INFO.HEADLINE},
+				1, 10);
+
 		request.getRequestDispatcher("Kiosk.jsp").forward(request, response);
 	}
 }

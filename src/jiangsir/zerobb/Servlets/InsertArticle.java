@@ -13,9 +13,11 @@ import jiangsir.zerobb.Exceptions.AccessException;
 import jiangsir.zerobb.Exceptions.DataException;
 import jiangsir.zerobb.Interfaces.IAccessFilter;
 import jiangsir.zerobb.Scopes.ApplicationScope;
+import jiangsir.zerobb.Scopes.SessionScope;
 import jiangsir.zerobb.Services.ArticleDAO;
 import jiangsir.zerobb.Tables.AppConfig;
 import jiangsir.zerobb.Tables.Article;
+import jiangsir.zerobb.Tables.CurrentUser;
 import jiangsir.zerobb.Tables.User;
 import jiangsir.zerobb.Tools.ENV;
 import jiangsir.zerobb.Tools.IpAddress;
@@ -57,6 +59,8 @@ public class InsertArticle extends HttpServlet implements IAccessFilter {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		Article newarticle = new Article();
+		CurrentUser currentUser = new SessionScope(request).getCurrentUser();
+		newarticle.setAccount(currentUser.getAccount());
 		int articleid = 0;
 		try {
 			articleid = new ArticleDAO().insert(newarticle);

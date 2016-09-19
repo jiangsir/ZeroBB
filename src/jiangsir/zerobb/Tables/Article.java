@@ -24,7 +24,7 @@ public class Article {
 
 	private Integer id = 0;
 	private String account = "";
-	private String title = "";
+	private String title = "Untitled!";
 	private User.DIVISION division = User.DIVISION.none;
 
 	// public static final String infos[] = { "一般", "重要", "頭條" };
@@ -33,12 +33,22 @@ public class Article {
 	// public static final String info_HEADLINE = infos[2];
 
 	public enum INFO {
-		一般, //
-		重要, //
-		頭條; //
+		STANDARD("一般"), // 一般
+		IMPORTANT("重要"), // 重要
+		HEADLINE("頭條"); // 頭條
+
+		private String value;
+
+		INFO(final String value) {
+			this.value = value;
+		}
+
+		public String getValue() {
+			return this.value;
+		}
 	}
 
-	private INFO info = INFO.一般;
+	private INFO info = INFO.STANDARD;
 
 	public static final String[] types = {"default", "hyperlink"};
 	public static final int type_DEFAULT = 0;
@@ -83,10 +93,10 @@ public class Article {
 	}
 
 	public void setTitle(String title) throws DataException {
-		if (title == null || "".equals(title)) {
+		if (title == null || "".equals(title.trim())) {
 			throw new DataException("標題必須填寫，不可空白。");
 		}
-		this.title = title;
+		this.title = title.trim();
 	}
 
 	public User.DIVISION getDivision() {

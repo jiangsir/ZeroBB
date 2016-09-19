@@ -51,8 +51,7 @@ public class ArticleDAO extends SuperDAO<Article> {
 	public int delete(int articleid) {
 		String sql = "UPDATE articles SET visible=0 WHERE id=?";
 		try {
-			PreparedStatement pstmt = this.getConnection()
-					.prepareStatement(sql);
+			PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 			pstmt.setInt(1, articleid);
 			return this.executeUpdate(pstmt);
 		} catch (SQLException e) {
@@ -61,12 +60,10 @@ public class ArticleDAO extends SuperDAO<Article> {
 		return -1;
 	}
 
-	public ArrayList<Article> searchArticles(String keyword, int page,
-			int pagesize) {
+	public ArrayList<Article> searchArticles(String keyword, int page, int pagesize) {
 		String SQL = "SELECT * FROM articles WHERE visible=? AND (id LIKE ? OR title LIKE ? "
 				+ " OR content LIKE ?) ORDER BY id DESC LIMIT "
-				+ ((page - 1) * pagesize < 0 ? 0 : (int) (page - 1) * pagesize)
-				+ "," + pagesize;
+				+ ((page - 1) * pagesize < 0 ? 0 : (int) (page - 1) * pagesize) + "," + pagesize;
 		try {
 			PreparedStatement pstmt = getConnection().prepareStatement(SQL);
 			pstmt.setBoolean(1, Article.visible_TRUE);
@@ -89,12 +86,11 @@ public class ArticleDAO extends SuperDAO<Article> {
 		String sql = "SELECT * FROM articles WHERE visible=?"
 				+ " AND postdate<=? AND  outdate>=? AND info=? ORDER BY postdate DESC LIMIT 0,10";
 		try {
-			PreparedStatement pstmt = this.getConnection()
-					.prepareStatement(sql);
+			PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 			pstmt.setBoolean(1, true);
-			pstmt.setTimestamp(2, new Timestamp(new Date().getTime()));
-			pstmt.setTimestamp(3, new Timestamp(new Date().getTime()));
-			pstmt.setString(4, Article.INFO.頭條.name());
+			pstmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+			pstmt.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+			pstmt.setString(4, Article.INFO.HEADLINE.name());
 
 			return this.executeQuery(pstmt, Article.class);
 		} catch (SQLException e) {
@@ -110,8 +106,7 @@ public class ArticleDAO extends SuperDAO<Article> {
 	 * @param page
 	 * @return
 	 */
-	protected ArrayList<Article> getArticles(Article.INFO[] infos,
-			DIVISION division, int page, int pagesize) {
+	protected ArrayList<Article> getArticles(Article.INFO[] infos, DIVISION division, int page, int pagesize) {
 		String info = "";
 		for (int i = 0; infos != null && i < infos.length; i++) {
 			// try {
@@ -144,17 +139,13 @@ public class ArticleDAO extends SuperDAO<Article> {
 			}
 		}
 		String by = info + account;
-		String sql = "SELECT * FROM articles WHERE visible="
-				+ Article.visible_TRUE + " AND postdate<='"
-				+ Utils.parseDatetime(Calendar.getInstance().getTimeInMillis())
-				+ "' AND  outdate>='"
-				+ Utils.parseDatetime(Calendar.getInstance().getTimeInMillis())
-				+ "' " + by + " ORDER BY sortable DESC, postdate DESC LIMIT "
-				+ ((page - 1) * pagesize < 0 ? 0 : (int) (page - 1) * pagesize)
-				+ "," + pagesize;
+		String sql = "SELECT * FROM articles WHERE visible=" + Article.visible_TRUE + " AND postdate<='"
+				+ Utils.parseDatetime(Calendar.getInstance().getTimeInMillis()) + "' AND  outdate>='"
+				+ Utils.parseDatetime(Calendar.getInstance().getTimeInMillis()) + "' " + by
+				+ " ORDER BY sortable DESC, postdate DESC LIMIT "
+				+ ((page - 1) * pagesize < 0 ? 0 : (int) (page - 1) * pagesize) + "," + pagesize;
 		try {
-			PreparedStatement pstmt = this.getConnection()
-					.prepareStatement(sql);
+			PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 			return this.executeQuery(pstmt, Article.class);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -170,8 +161,8 @@ public class ArticleDAO extends SuperDAO<Article> {
 	 * @param pagesize
 	 * @return
 	 */
-	protected ArrayList<Article> getArticlesByTagnames(Article.INFO[] infos,
-			String[] tagnames, int page, int pagesize) {
+	protected ArrayList<Article> getArticlesByTagnames(Article.INFO[] infos, String[] tagnames, int page,
+			int pagesize) {
 		String sql_infos = "";
 		if (infos != null && infos.length > 0) {
 			sql_infos += " AND (";
@@ -199,13 +190,10 @@ public class ArticleDAO extends SuperDAO<Article> {
 			}
 			sql_tagnames += ")";
 		}
-		String sql = "SELECT * FROM articles, article_tags WHERE "
-				+ "articles.id=article_tags.articleid " + sql_infos
-				+ sql_tagnames + " ORDER BY sortable DESC LIMIT "
-				+ (page - 1) * pagesize + "," + pagesize;
+		String sql = "SELECT * FROM articles, article_tags WHERE " + "articles.id=article_tags.articleid " + sql_infos
+				+ sql_tagnames + " ORDER BY sortable DESC LIMIT " + (page - 1) * pagesize + "," + pagesize;
 		try {
-			return this.executeQuery(this.getConnection().prepareStatement(sql),
-					Article.class);
+			return this.executeQuery(this.getConnection().prepareStatement(sql), Article.class);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return new ArrayList<Article>();
@@ -221,14 +209,12 @@ public class ArticleDAO extends SuperDAO<Article> {
 		// return articles;
 	}
 
-	protected ArrayList<Article> getArticlesByRules(TreeSet<String> rules,
-			String orderby, int page) {
+	protected ArrayList<Article> getArticlesByRules(TreeSet<String> rules, String orderby, int page) {
 		StringBuffer sql = new StringBuffer(5000);
 		sql.append("SELECT * FROM articles ");
 		sql.append(this.makeRules(rules, orderby, page));
 		try {
-			PreparedStatement pstmt = this.getConnection()
-					.prepareStatement(sql.toString());
+			PreparedStatement pstmt = this.getConnection().prepareStatement(sql.toString());
 			return this.executeQuery(pstmt, Article.class);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -239,8 +225,7 @@ public class ArticleDAO extends SuperDAO<Article> {
 	protected ArrayList<Article> getAllArticles() {
 		String sql = "SELECT * FROM articles";
 		try {
-			PreparedStatement pstmt = this.getConnection()
-					.prepareStatement(sql);
+			PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 			return this.executeQuery(pstmt, Article.class);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -255,19 +240,16 @@ public class ArticleDAO extends SuperDAO<Article> {
 	 * @param page
 	 * @return
 	 */
-	public ArrayList<Article> getAllArticles(String by, int page,
-			int pagesize) {
+	public ArrayList<Article> getAllArticles(String by, int page, int pagesize) {
 		if (by == null || by.equals("") || by.equals("all")) {
 			by = " ";
 		} else {
 			by = " AND account='" + by + "'";
 		}
-		String sql = "SELECT * FROM articles WHERE visible="
-				+ Article.visible_TRUE + by + " ORDER BY id DESC LIMIT "
+		String sql = "SELECT * FROM articles WHERE visible=" + Article.visible_TRUE + by + " ORDER BY id DESC LIMIT "
 				+ (page - 1) * pagesize + "," + pagesize;
 		try {
-			PreparedStatement pstmt = this.getConnection()
-					.prepareStatement(sql);
+			PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 			return executeQuery(pstmt, Article.class);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -282,8 +264,7 @@ public class ArticleDAO extends SuperDAO<Article> {
 	 * @param page
 	 * @return
 	 */
-	public ArrayList<Article> getOutdateArticles(Article.INFO[] infos,
-			User.DIVISION division, int page) {
+	public ArrayList<Article> getOutdateArticles(Article.INFO[] infos, User.DIVISION division, int page) {
 		String info = "";
 		for (int i = 0; infos != null && i < infos.length; i++) {
 			if (i == 0) {
@@ -314,14 +295,11 @@ public class ArticleDAO extends SuperDAO<Article> {
 
 		String by = info + account;
 		System.out.println("by=" + by);
-		String sql = "SELECT * FROM articles WHERE visible="
-				+ Article.visible_TRUE + " AND  outdate<'"
-				+ Utils.parseDatetime(Calendar.getInstance().getTimeInMillis())
-				+ "'" + by + " ORDER BY id DESC LIMIT "
+		String sql = "SELECT * FROM articles WHERE visible=" + Article.visible_TRUE + " AND  outdate<'"
+				+ Utils.parseDatetime(Calendar.getInstance().getTimeInMillis()) + "'" + by + " ORDER BY id DESC LIMIT "
 				+ (page - 1) * ENV.getPAGESIZE() + "," + ENV.getPAGESIZE();
 		try {
-			PreparedStatement pstmt = this.getConnection()
-					.prepareStatement(sql);
+			PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 			return executeQuery(pstmt, Article.class);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -332,8 +310,7 @@ public class ArticleDAO extends SuperDAO<Article> {
 	public Article getArticleById(int articleid) {
 		String sql = "SELECT * FROM articles WHERE id=" + articleid;
 		try {
-			PreparedStatement pstmt = this.getConnection()
-					.prepareStatement(sql);
+			PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 			for (Article article : executeQuery(pstmt, Article.class)) {
 				return article;
 			}
@@ -356,8 +333,7 @@ public class ArticleDAO extends SuperDAO<Article> {
 	 * @return
 	 * @throws DataException
 	 */
-	public Article getArticle(CurrentUser currentUser, int articleid)
-			throws DataException {
+	public Article getArticle(CurrentUser currentUser, int articleid) throws DataException {
 		Article article = this.getArticleById(articleid);
 		// String sql = "SELECT * FROM articles WHERE id=" + articleid;
 		//
@@ -386,12 +362,9 @@ public class ArticleDAO extends SuperDAO<Article> {
 
 	@Override
 	public synchronized int insert(Article article) throws SQLException {
-		String sql = "INSERT INTO articles (account, title, "
-				+ "info, type, hyperlink, content, hitnum, "
-				+ "postdate, outdate, sortable, visible) VALUES"
-				+ "(?,?,?,?,?,?,?,?,?,?,?)";
-		PreparedStatement pstmt = getConnection().prepareStatement(sql,
-				Statement.RETURN_GENERATED_KEYS);
+		String sql = "INSERT INTO articles (account, title, " + "info, type, hyperlink, content, hitnum, "
+				+ "postdate, outdate, sortable, visible) VALUES" + "(?,?,?,?,?,?,?,?,?,?,?)";
+		PreparedStatement pstmt = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		pstmt.setString(1, article.getAccount());
 		pstmt.setString(2, article.getTitle());
 		pstmt.setString(3, article.getInfo().name());
@@ -408,8 +381,7 @@ public class ArticleDAO extends SuperDAO<Article> {
 
 	@Override
 	public int update(Article article) throws SQLException {
-		String SQL = "UPDATE articles SET account=?, title=?"
-				+ ", info=?, type=?, hyperlink=?, content=?, hitnum=?, "
+		String SQL = "UPDATE articles SET account=?, title=?" + ", info=?, type=?, hyperlink=?, content=?, hitnum=?, "
 				+ "postdate=?, outdate=?, sortable=?, visible=? WHERE id=?";
 		int result = -1;
 		PreparedStatement pstmt = getConnection().prepareStatement(SQL);

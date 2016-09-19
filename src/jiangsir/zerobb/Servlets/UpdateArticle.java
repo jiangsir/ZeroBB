@@ -40,7 +40,7 @@ public class UpdateArticle extends HttpServlet implements IAccessFilter {
 		CurrentUser currentUser = new SessionScope(session).getCurrentUser();
 		Article article = new ArticleDAO().getArticleById(request.getParameter("id"));
 		if (!article.isUpdatable(currentUser)) {
-			throw new AccessException("您(" + currentUser.getAccount() + ") 不能編輯本題目。");
+			throw new AccessException("您(" + currentUser.getAccount() + ") 不能編輯本公告。");
 		}
 	}
 
@@ -70,13 +70,9 @@ public class UpdateArticle extends HttpServlet implements IAccessFilter {
 		article.setInfo(request.getParameter("info"));
 		article.setType(request.getParameter("type"));
 		article.setHyperlink(request.getParameter("hyperlink"));
-		try {
-			article.setTitle(request.getParameter("title"));
-			article.setPostdate(request.getParameter("postdate"));
-			article.setOutdate(request.getParameter("outdate"));
-		} catch (DataException e) {
-			e.printStackTrace();
-		}
+		article.setTitle(request.getParameter("title"));
+		article.setPostdate(request.getParameter("postdate"));
+		article.setOutdate(request.getParameter("outdate"));
 
 		article.setContent(request.getParameter("content"));
 		try {
@@ -94,10 +90,10 @@ public class UpdateArticle extends HttpServlet implements IAccessFilter {
 
 			for (Part part : request.getParts()) {
 				if ("upfile".equals(part.getName())) {
-					if (part.getName() == null || part.getName().equals("")) {
+					String filename = this.getFilename(part);
+					if (filename == null || "".equals(filename.trim())) {
 						continue;
 					}
-					String filename = this.getFilename(part);
 					Upfile newupfile = new Upfile();
 					newupfile.setArticleid(articleid);
 					newupfile.setFilename(filename);
@@ -111,6 +107,7 @@ public class UpdateArticle extends HttpServlet implements IAccessFilter {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new DataException(e);
 		}
 
 		response.sendRedirect("./?account=" + currentUser.getAccount());

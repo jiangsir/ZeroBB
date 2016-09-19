@@ -23,14 +23,13 @@ import jiangsir.zerobb.Tools.ENV;
  * @author nknush-001
  * 
  */
-@WebServlet(urlPatterns = { "/GetCSV" }, name = "GetCSV.do")
+@WebServlet(urlPatterns = {"/GetCSV"}, name = "GetCSV.do")
 public class GetCSV extends HttpServlet {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public static String urlpattern = GetCSV.class.getAnnotation(
-			WebServlet.class).urlPatterns()[0];
+	public static String urlpattern = GetCSV.class.getAnnotation(WebServlet.class).urlPatterns()[0];
 
 	private String GET_HEADLINES = "headlines";
 
@@ -40,24 +39,21 @@ public class GetCSV extends HttpServlet {
 		ENV.putServlet(this.getClass());
 	}
 
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String action = request.getParameter("a");
 
 		if (this.GET_HEADLINES.equals(action)) {
 			StringBuffer csv = new StringBuffer(5000);
-			for (Article article : new ArticleService().getArticlesByInfo(
-					new Article.INFO[] { Article.INFO.頭條 }, 1, 10)) {
-				User user = new UserDAO()
-						.getUserByAccount(article.getAccount());
-				csv.append(article.getTitle() + ",ShowArticle?id="
-						+ article.getId() + "," + user.getName() + "\n");
+			for (Article article : new ArticleService().getArticlesByInfo(new Article.INFO[]{Article.INFO.HEADLINE}, 1,
+					10)) {
+				User user = new UserDAO().getUserByAccount(article.getAccount());
+				csv.append(article.getTitle() + ",ShowArticle?id=" + article.getId() + "," + user.getName() + "\n");
 				response.getWriter().print(csv.toString());
 			}
 		} else {
 			response.getWriter().println("parameter 有誤！");
-			response.getWriter().println(
-					"使用範例：/ZeroBB/api/get.csv?a={\"headlines\"}");
+			response.getWriter().println("使用範例：/ZeroBB/api/get.csv?a={\"headlines\"}");
 		}
 	}
 }

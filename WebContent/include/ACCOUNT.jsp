@@ -6,7 +6,7 @@
 <%@ page isELIgnored="false"%>
 <c:forEach var="article" items="${articles}">
 	<div class="article" style="height: auto">
-		[${article.info}] <a
+		[${article.info.value}] <a
 			href="http://${pageContext.request.serverName}${pageContext.servletContext.contextPath}/ShowArticle?id=${article.id}"
 			target="_blank">${article.title}</a>
 		<c:forEach var="upfile" items="${article.upfiles}">
