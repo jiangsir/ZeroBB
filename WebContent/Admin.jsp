@@ -75,7 +75,8 @@
 							<td>${article.id}</td>
 							<td><a href="./ShowArticle?id=${article.id}">${article.title}</a>
 								<c:forEach var="upfile" items="${article.upfiles}">
-									<img src="images/paperclip.png" />
+									<!-- <img src="images/paperclip.png" /> -->
+									<span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span>
 								</c:forEach></td>
 							<td>${article.user.division}</td>
 							<td><fmt:formatDate value="${article.postdate}"

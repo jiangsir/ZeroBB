@@ -17,34 +17,33 @@ public class MyProperties {
 
 	String path_propertiesxml;
 
-	public MyProperties() {
-		this.path_propertiesxml = ENV.APP_REAL_PATH
-				+ "/META-INF/properties.xml";
-		this.readProperties();
-	}
+	// public MyProperties() {
+	// this.path_propertiesxml = ENV.APP_REAL_PATH + "/META-INF/properties.xml";
+	// this.readProperties();
+	// }
 
-	public MyProperties(String APP_REAL_PATH) {
-		this.path_propertiesxml = APP_REAL_PATH + "/META-INF/properties.xml";
-		this.readProperties();
-	}
+	// public MyProperties(String APP_REAL_PATH) {
+	// this.path_propertiesxml = APP_REAL_PATH + "/META-INF/properties.xml";
+	// this.readProperties();
+	// }
 
-	private void readProperties() {
-		props = new Properties();
-		FileInputStream fis = null;
-		try {
-			// fis = new FileInputStream(ENV.APP_REAL_PATH + PropertiesFile);
-			fis = new FileInputStream(this.path_propertiesxml);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		try {
-			props.loadFromXML(fis);
-		} catch (InvalidPropertiesFormatException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+	// private void readProperties() {
+	// props = new Properties();
+	// FileInputStream fis = null;
+	// try {
+	// // fis = new FileInputStream(ENV.APP_REAL_PATH + PropertiesFile);
+	// fis = new FileInputStream(this.path_propertiesxml);
+	// } catch (FileNotFoundException e) {
+	// e.printStackTrace();
+	// }
+	// try {
+	// props.loadFromXML(fis);
+	// } catch (InvalidPropertiesFormatException e) {
+	// e.printStackTrace();
+	// } catch (IOException e) {
+	// e.printStackTrace();
+	// }
+	// }
 
 	@SuppressWarnings("unchecked")
 	/**

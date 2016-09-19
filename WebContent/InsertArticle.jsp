@@ -90,9 +90,9 @@
 			<br /> * 檔案上載上限 ${ maxFileSize} MB <br />
 			<c:forEach var="upfile" items="${article.upfiles}">
 				<h3 id="upfiles">
-					<img src="images/paperclip.png" /> <a
-						href="./Download?upfileid=${upfile.id}"> ${upfile.filename} </a> <span
-						style="font-size: 10px"> <input name="upfileid"
+					<span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span>
+					<a href="./Download?upfileid=${upfile.id}"> ${upfile.filename}
+					</a> <span style="font-size: 10px"> <input name="upfileid"
 						type="hidden" value="${upfile.id}" /> -- <span id="deleteupfile"
 						name="deleteupfile" upfileid="${upfile.id}"
 						style="text-decoration: underline; cursor: pointer;"> <img

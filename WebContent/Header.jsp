@@ -21,7 +21,8 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="./InsertArticle">發布公告</a>
+				<a class="navbar-brand" href="./InsertArticle"><span
+					class="glyphicon glyphicon-plus" aria-hidden="true"></span> 發布公告</a>
 			</div>
 
 			<!-- Collect the nav links, forms, and other content for toggling -->
@@ -34,18 +35,33 @@
 				</ul>
 				<form name="form1" class="navbar-form navbar-left" role="search"
 					method="get" action="./Search">
-					<div class="form-group">
+					<!-- 					<div class="form-group">
 						<input type="text" class="form-control" placeholder="搜尋關鍵字"
 							name="keyword">
+
 					</div>
-					<button type="submit" class="btn btn-default">查詢</button>
+					<button type="submit" class="btn btn-default">
+						<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+					</button> -->
+					<div class="input-group">
+						<input type="text" class="form-control" placeholder="搜尋關鍵字..."
+							name="keyword"> <span class="input-group-btn">
+							<button class="btn btn-default" type="submit">
+								<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+							</button>
+						</span>
+					</div>
 				</form>
 				<ul class="nav navbar-nav navbar-right">
 					<c:if test="${!user:isNullUser(sessionScope.currentUser)}">
 						<c:if test="${user:isAdmin(sessionScope.currentUser)}">
-							<li><a href="./EditAppConfig">管理頁</a></li>
+							<li><a href="./EditAppConfig"><span
+									class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+									管理頁</a></li>
 						</c:if>
-						<li><a href="./Logout">離開</a></li>
+						<li><a href="./Logout"><span
+								class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
+								離開</a></li>
 					</c:if>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">

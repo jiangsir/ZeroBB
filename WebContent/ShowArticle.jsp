@@ -100,7 +100,7 @@
 					<img src="./Download?upfileid=${upfile.id}" style="max-width: 90%" />
 				</c:if>
 				<c:if test="${!upfile.isImage}">
-					<img src="images/paperclip.png" /> ${upfile.filename} <a
+					<span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span> ${upfile.filename} <a
 						href="./Download?upfileid=${upfile.id}">下載</a>
 					<c:if test="${upfile.isGoogleViewer}">
 						<a
