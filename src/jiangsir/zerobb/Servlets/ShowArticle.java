@@ -8,12 +8,12 @@ import javax.servlet.http.*;
 import jiangsir.zerobb.Exceptions.DataException;
 import jiangsir.zerobb.Scopes.SessionScope;
 import jiangsir.zerobb.Services.ArticleDAO;
-import jiangsir.zerobb.Services.Article_TagDAO;
+import jiangsir.zerobb.Services.ArticleService;
 import jiangsir.zerobb.Tables.Article;
 import jiangsir.zerobb.Tables.CurrentUser;
 import jiangsir.zerobb.Tools.ENV;
 
-@WebServlet(urlPatterns = { "/ShowArticle" }, name = "ShowArticle.do")
+@WebServlet(urlPatterns = {"/ShowArticle"}, name = "ShowArticle.do")
 public class ShowArticle extends HttpServlet {
 
 	/**
@@ -27,12 +27,12 @@ public class ShowArticle extends HttpServlet {
 		ENV.putServlet(this.getClass());
 	}
 
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		int articleid = Integer.parseInt(request.getParameter("id"));
 		HttpSession session = request.getSession(false);
 		CurrentUser currentUser = new SessionScope(session).getCurrentUser();
-		Article article = new ArticleDAO().getArticle(currentUser, articleid);
+		Article article = new ArticleService().getArticle(currentUser, articleid);
 		request.setAttribute("article", article);
 		article.setHitnum(article.getHitnum() + 1);
 		try {
@@ -45,12 +45,11 @@ public class ShowArticle extends HttpServlet {
 		// new Article_TagDAO().getArticle_TagNames(articleid));
 		// request.setAttribute("tags", new
 		// Article_TagDAO().getTags(articleid));
-		request.getRequestDispatcher("ShowArticle.jsp").forward(request,
-				response);
+		request.getRequestDispatcher("ShowArticle.jsp").forward(request, response);
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 	}
 }

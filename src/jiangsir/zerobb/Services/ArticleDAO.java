@@ -87,7 +87,7 @@ public class ArticleDAO extends SuperDAO<Article> {
 				+ " AND postdate<=? AND  outdate>=? AND info=? ORDER BY postdate DESC LIMIT 0,10";
 		try {
 			PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
-			pstmt.setBoolean(1, true);
+			pstmt.setBoolean(1, Article.visible_TRUE);
 			pstmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
 			pstmt.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
 			pstmt.setString(4, Article.INFO.HEADLINE.name());
@@ -318,46 +318,6 @@ public class ArticleDAO extends SuperDAO<Article> {
 			e.printStackTrace();
 		}
 		return ArticleFactory.getNullArticle();
-	}
-
-	public Article getArticleById(String articleid) {
-		if (articleid == null || !articleid.matches("[0-9]+")) {
-			return ArticleFactory.getNullArticle();
-		}
-		return this.getArticleById(Integer.parseInt(articleid));
-	}
-
-	/**
-	 * 
-	 * @param articleid
-	 * @return
-	 * @throws DataException
-	 */
-	public Article getArticle(CurrentUser currentUser, int articleid) throws DataException {
-		Article article = this.getArticleById(articleid);
-		// String sql = "SELECT * FROM articles WHERE id=" + articleid;
-		//
-		// for (Article a : executeQuery(sql, Article.class)) {
-		// article = a;
-		// break;
-		// }
-
-		if (currentUser == null) {
-			if (article.getVisible() == false) {
-				throw new DataException("本公告已設定為不顯示！");
-			}
-			if (article.getOutdate().before(Calendar.getInstance().getTime())) {
-				throw new DataException("本公告已經過期，請登入發文者身份才能瀏覽。");
-			}
-			if (article.getPostdate().after(Calendar.getInstance().getTime())) {
-				throw new DataException("本公告尚未發佈。");
-			}
-		} else if (currentUser.getRole() == User.ROLE.USER) {
-			if (article.getVisible() == false) {
-				throw new DataException("本公告已設定為不顯示！");
-			}
-		}
-		return article;
 	}
 
 	@Override

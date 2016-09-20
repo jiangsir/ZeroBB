@@ -9,17 +9,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import jiangsir.zerobb.Exceptions.AccessException;
-import jiangsir.zerobb.Exceptions.DataException;
 import jiangsir.zerobb.Interfaces.IAccessFilter;
 import jiangsir.zerobb.Scopes.SessionScope;
 import jiangsir.zerobb.Services.ArticleDAO;
+import jiangsir.zerobb.Services.ArticleService;
 import jiangsir.zerobb.Tables.Article;
 import jiangsir.zerobb.Tables.CurrentUser;
 import jiangsir.zerobb.Tools.ENV;
 
-@WebServlet(urlPatterns = { "/Touch.api" })
+@WebServlet(urlPatterns = {"/Touch.api"})
 public class TouchServlet extends HttpServlet implements IAccessFilter {
 	/**
 	 * 
@@ -42,16 +41,14 @@ public class TouchServlet extends HttpServlet implements IAccessFilter {
 	public void AccessFilter(HttpServletRequest request) throws AccessException {
 		HttpSession session = request.getSession(false);
 		CurrentUser currentUser = new SessionScope(session).getCurrentUser();
-		Article article = new ArticleDAO().getArticleById(request
-				.getParameter("articleid"));
+		Article article = new ArticleService().getArticleById(request.getParameter("articleid"));
 		if (!article.isUpdatable(currentUser)) {
-			throw new AccessException("您(" + currentUser.getAccount()
-					+ ") 不能 touch 本題目。");
+			throw new AccessException("您(" + currentUser.getAccount() + ") 不能 touch 本題目。");
 		}
 	}
 
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		int articleid = Integer.parseInt(request.getParameter("articleid"));
 		ArticleDAO articleDao = new ArticleDAO();
 		Article article = articleDao.getArticleById(articleid);

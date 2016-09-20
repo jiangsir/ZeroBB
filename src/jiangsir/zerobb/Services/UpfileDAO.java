@@ -34,27 +34,24 @@ public class UpfileDAO extends GeneralDAO<Upfile> {
 			new LogDAO().insert(new Log(this.getClass(), e));
 			e.printStackTrace();
 		}
-		System.out.println("PSTMT_SQL=" + pstmt.toString() + " 共耗時 "
-				+ (System.currentTimeMillis() - starttime) + " ms");
+		System.out
+				.println("PSTMT_SQL=" + pstmt.toString() + " 共耗時 " + (System.currentTimeMillis() - starttime) + " ms");
 		return result;
 	}
 
-	public synchronized int insert(Upfile upfile) throws SQLException,
-			IOException {
+	public synchronized int insert(Upfile upfile) throws SQLException, IOException {
 		String sql = "INSERT INTO upfiles (articleid, filepath, "
-				+ "filename, filetmpname, filesize, filetype, `binary`, "
-				+ "hitnum, visible) VALUES" + "(?,?,?,?,?, ?,?,?,?)";
+				+ "filename, filetmpname, filesize, filetype, `binary`, " + "hitnum, visible) VALUES"
+				+ "(?,?,?,?,?, ?,?,?,?)";
 		int id = 0;
-		PreparedStatement pstmt = this.getConnection().prepareStatement(sql,
-				Statement.RETURN_GENERATED_KEYS);
+		PreparedStatement pstmt = this.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		pstmt.setInt(1, upfile.getArticleid());
 		pstmt.setString(2, upfile.getFilepath());
 		pstmt.setString(3, upfile.getFilename());
 		pstmt.setString(4, upfile.getFiletmpname());
 		pstmt.setLong(5, upfile.getFilesize());
 		pstmt.setString(6, upfile.getFiletype());
-		pstmt.setBinaryStream(7, upfile.getBinary(), upfile.getBinary()
-				.available());
+		pstmt.setBinaryStream(7, upfile.getBinary(), upfile.getBinary().available());
 		pstmt.setInt(8, upfile.getHitnum());
 		pstmt.setInt(9, upfile.getVisible());
 		pstmt.executeUpdate();
@@ -80,24 +77,20 @@ public class UpfileDAO extends GeneralDAO<Upfile> {
 
 		for (Upfile upfile : this.executeQuery(sql, Upfile.class)) {
 			String filepath = upfile.getFilepath();
-			System.out.println("upfileid=" + upfile.getId() + ", filepath="
-					+ upfile.getFilepath());
-			String[] old_prefix = { "/ZeroBB", "/zerobb_utf8",
-					"http://www.nknush.kh.edu.tw/zerobb_utf8" };
+			System.out.println("upfileid=" + upfile.getId() + ", filepath=" + upfile.getFilepath());
+			String[] old_prefix = {"/ZeroBB", "/zerobb_utf8", "http://www.nknush.kh.edu.tw/zerobb_utf8"};
 			for (int i = 0; i < old_prefix.length; i++) {
 				if (filepath.startsWith(old_prefix[i])) {
 					filepath = filepath.replace(old_prefix[i], "/zerobb");
 					System.out.println("replace!!! -> " + filepath);
-					this.execute("UPDATE upfiles SET filepath='" + filepath
-							+ "' WHERE id=" + upfile.getId());
+					this.execute("UPDATE upfiles SET filepath='" + filepath + "' WHERE id=" + upfile.getId());
 				}
 			}
 		}
 	}
 
 	public boolean delete(int upfileid) {
-		String sql = "UPDATE `upfiles` SET visible=0 WHERE id=" + upfileid
-				+ ";";
+		String sql = "UPDATE `upfiles` SET visible=0 WHERE id=" + upfileid + ";";
 		return this.execute(sql);
 	}
 
@@ -129,8 +122,8 @@ public class UpfileDAO extends GeneralDAO<Upfile> {
 			return new ArrayList<Upfile>();
 		}
 		// System.out.println("getupfile, articleid=" + articleid);
-		String sql = "SELECT id,articleid,filename,filetype,hitnum FROM upfiles WHERE visible="
-				+ Upfile.visible_OPEN + " AND articleid=" + articleid;
+		String sql = "SELECT id,articleid,filename,filetype,hitnum FROM upfiles WHERE visible=" + Upfile.visible_OPEN
+				+ " AND articleid=" + articleid;
 		// Iterator<?> it = new BaseDAO().executeQuery(sql, Upfile.class)
 		// .iterator();
 		return this.executeQuery(sql, Upfile.class);
@@ -148,8 +141,8 @@ public class UpfileDAO extends GeneralDAO<Upfile> {
 		if (end > 0) {
 			endsql = " AND id<" + end;
 		}
-		String sql = "SELECT * FROM upfiles WHERE LENGTH(`binary`)=0 AND id>"
-				+ begin + endsql + " AND visible=1 ORDER BY articleid DESC";
+		String sql = "SELECT * FROM upfiles WHERE LENGTH(`binary`)=0 AND id>" + begin + endsql
+				+ " AND visible=1 ORDER BY articleid DESC";
 		return this.executeQuery(sql, Upfile.class);
 	}
 
@@ -158,8 +151,7 @@ public class UpfileDAO extends GeneralDAO<Upfile> {
 		InputStream is = null;
 		ResultSet rs;
 		try {
-			PreparedStatement pstmt = this.getConnection()
-					.prepareStatement(sql);
+			PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				// upfile.setBinary(rs.getBlob(8).getBinaryStream());
@@ -181,16 +173,14 @@ public class UpfileDAO extends GeneralDAO<Upfile> {
 	 * @return
 	 * @throws DataException
 	 */
-	public Article getArticle(CurrentUser currentUser, int upfileid)
-			throws DataException {
+	public Article getArticle(CurrentUser currentUser, int upfileid) throws DataException {
 		Upfile upfile = this.getUpfile(upfileid);
-		return new ArticleDAO().getArticle(currentUser, upfile.getArticleid());
+		return new ArticleService().getArticle(currentUser, upfile.getArticleid());
 	}
 
 	@Override
 	public int update(Upfile upfile) throws SQLException, IOException {
-		String SQL = "UPDATE upfiles SET articleid=?, filename=?"
-				+ ", filesize=?, filetype=?, `binary`=?, hitnum=?, "
+		String SQL = "UPDATE upfiles SET articleid=?, filename=?" + ", filesize=?, filetype=?, `binary`=?, hitnum=?, "
 				+ "visible=? WHERE id=?";
 		int result = -1;
 		PreparedStatement pstmt = getConnection().prepareStatement(SQL);
@@ -198,8 +188,7 @@ public class UpfileDAO extends GeneralDAO<Upfile> {
 		pstmt.setString(2, upfile.getFilename());
 		pstmt.setLong(3, upfile.getFilesize());
 		pstmt.setString(4, upfile.getFiletype());
-		pstmt.setBinaryStream(5, upfile.getBinary(), upfile.getBinary()
-				.available());
+		pstmt.setBinaryStream(5, upfile.getBinary(), upfile.getBinary().available());
 		pstmt.setInt(6, upfile.getHitnum());
 		pstmt.setInt(7, upfile.getVisible());
 		pstmt.setInt(8, upfile.getId());

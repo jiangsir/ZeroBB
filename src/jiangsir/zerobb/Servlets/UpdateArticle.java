@@ -12,6 +12,7 @@ import jiangsir.zerobb.Exceptions.DataException;
 import jiangsir.zerobb.Interfaces.IAccessFilter;
 import jiangsir.zerobb.Scopes.SessionScope;
 import jiangsir.zerobb.Services.ArticleDAO;
+import jiangsir.zerobb.Services.ArticleService;
 import jiangsir.zerobb.Services.Article_TagDAO;
 import jiangsir.zerobb.Services.TagDAO;
 import jiangsir.zerobb.Services.UpfileDAO;
@@ -38,7 +39,7 @@ public class UpdateArticle extends HttpServlet implements IAccessFilter {
 	public void AccessFilter(HttpServletRequest request) throws AccessException {
 		HttpSession session = request.getSession(false);
 		CurrentUser currentUser = new SessionScope(session).getCurrentUser();
-		Article article = new ArticleDAO().getArticleById(request.getParameter("id"));
+		Article article = new ArticleService().getArticleById(request.getParameter("id"));
 		if (!article.isUpdatable(currentUser)) {
 			throw new AccessException("您(" + currentUser.getAccount() + ") 不能編輯本公告。");
 		}
@@ -52,7 +53,7 @@ public class UpdateArticle extends HttpServlet implements IAccessFilter {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		Article article = new ArticleDAO().getArticleById(request.getParameter("id"));
+		Article article = new ArticleService().getArticleById(request.getParameter("id"));
 
 		request.setAttribute("tags", new TagDAO().getTags());
 		request.setAttribute("article", article);

@@ -10,6 +10,7 @@ import jiangsir.zerobb.Exceptions.AccessException;
 import jiangsir.zerobb.Interfaces.IAccessFilter;
 import jiangsir.zerobb.Scopes.SessionScope;
 import jiangsir.zerobb.Services.ArticleDAO;
+import jiangsir.zerobb.Services.ArticleService;
 import jiangsir.zerobb.Services.Article_TagDAO;
 import jiangsir.zerobb.Tables.Article;
 import jiangsir.zerobb.Tables.CurrentUser;
@@ -41,7 +42,7 @@ public class DeleteArticle extends HttpServlet implements IAccessFilter {
 	public void AccessFilter(HttpServletRequest request) throws AccessException {
 		HttpSession session = request.getSession(false);
 		CurrentUser currentUser = new SessionScope(session).getCurrentUser();
-		Article article = new ArticleDAO().getArticleById(request.getParameter("articleid"));
+		Article article = new ArticleService().getArticleById(request.getParameter("articleid"));
 		if (!article.isUpdatable(currentUser)) {
 			throw new AccessException("您(" + currentUser.getAccount() + ") 不能刪除本題目。");
 		}
