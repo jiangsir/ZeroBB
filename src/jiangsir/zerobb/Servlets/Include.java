@@ -76,8 +76,7 @@ public class Include extends HttpServlet {
 				request.getRequestDispatcher("include/DIVISION.jsp").forward(request, response);
 				return;
 			case HEADLINE :
-				request.setAttribute("articles", new ArticleService()
-						.getArticlesByInfoDivision(new Article.INFO[]{Article.INFO.HEADLINE}, division, 1, 10));
+				request.setAttribute("articles", new ArticleService().getHeadLines());
 				request.getRequestDispatcher("include/HEADLINE.jsp").forward(request, response);
 				return;
 			case IMPORTANT :

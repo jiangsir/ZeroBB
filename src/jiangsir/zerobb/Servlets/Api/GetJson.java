@@ -55,7 +55,7 @@ public class GetJson extends HttpServlet {
 				JSONArray json_articles = new JSONArray();
 				int min = Calendar.getInstance().get(Calendar.MINUTE);
 				if (articles == null || min % 5 == 0) {
-					articles = new ArticleService().getArticlesByInfo(new Article.INFO[]{Article.INFO.HEADLINE}, 1, 10);
+					articles = new ArticleService().getHeadLines();
 				}
 				for (Article article : articles) {
 					JSONObject json_article = new JSONObject();

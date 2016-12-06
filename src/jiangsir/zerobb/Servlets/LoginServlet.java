@@ -14,7 +14,6 @@ import javax.servlet.http.HttpSession;
 import jiangsir.zerobb.Scopes.SessionScope;
 import jiangsir.zerobb.Services.CurrentUserDAO;
 import jiangsir.zerobb.Services.UserDAO;
-import jiangsir.zerobb.Tables.Parameter;
 import jiangsir.zerobb.Tables.User;
 import jiangsir.zerobb.Tools.*;
 

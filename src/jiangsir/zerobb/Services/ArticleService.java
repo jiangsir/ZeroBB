@@ -34,6 +34,11 @@ public class ArticleService {
 		return new ArticleDAO().getArticles(infos, division, page, pagesize);
 	}
 
+	public ArrayList<Article> getHeadLines() {
+		return new ArticleService().getArticlesByInfoDivision(new Article.INFO[]{Article.INFO.HEADLINE}, DIVISION.none,
+				1, 10);
+	}
+
 	public ArrayList<Article> getArticlesByInfo(Article.INFO[] infos, int page, int pagesize) {
 		if (page <= 0) {
 			page = 1;
