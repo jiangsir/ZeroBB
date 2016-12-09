@@ -86,6 +86,8 @@
 							class="glyphicon glyphicon-remove"></span></a>
 					</button>
 				</div>
+				<br />
+                    請注意，請勿使用 IE 瀏覽器。可能會有各種問題。
 			</c:if>
 		</div>
 		<h2>[${article.info.value}] ${article.title}</h2>
