@@ -17,7 +17,7 @@ import jiangsir.zerobb.Tables.CurrentUser;
 import jiangsir.zerobb.Tables.User;
 import jiangsir.zerobb.Tools.ENV;
 
-@WebServlet(urlPatterns = {"/DeleteArticle"})
+@WebServlet(urlPatterns = {"/DeleteArticle.api"})
 @RoleSetting(allowHigherThen = User.ROLE.USER)
 public class DeleteArticle extends HttpServlet implements IAccessFilter {
 
@@ -63,7 +63,7 @@ public class DeleteArticle extends HttpServlet implements IAccessFilter {
 		}
 		article_TagDao.delete(articleid);
 
-		response.sendRedirect("./" + new SessionScope(session).getCurrentPage());
+		response.sendRedirect("./" + new SessionScope(session).getPreviousPage());
 	}
 
 }

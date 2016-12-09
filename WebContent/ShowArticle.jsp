@@ -82,7 +82,7 @@
 							class="glyphicon glyphicon-pencil"></span></a>
 					</button>
 					<button type="button" class="btn btn-default">
-						<a href="./DeleteArticle?articleid=${article.id}"><span
+						<a href="./DeleteArticle.api?articleid=${article.id}"><span
 							class="glyphicon glyphicon-remove"></span></a>
 					</button>
 				</div>

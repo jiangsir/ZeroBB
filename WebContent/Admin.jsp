@@ -84,7 +84,7 @@
 							<td>${article.hitnum}</td>
 							<td><a href="./UpdateArticle?id=${article.id}"><img
 									src="images/edit18.png" border="0" /></a> | <a
-								href="./DeleteArticle?articleid=${article.id}"><img
+								href="./DeleteArticle.api?articleid=${article.id}"><img
 									src="images/delete18.png" border="0" /></a></td>
 						</tr>
 					</c:forEach>
