@@ -53,10 +53,7 @@ public class GetJson extends HttpServlet {
 			case headlines :
 				// http://127.0.0.1:8080/GetJson?a=headlines
 				JSONArray json_articles = new JSONArray();
-				int min = Calendar.getInstance().get(Calendar.MINUTE);
-				if (articles == null || min % 5 == 0) {
-					articles = new ArticleService().getHeadLines();
-				}
+				articles = new ArticleService().getHeadLines();
 				for (Article article : articles) {
 					JSONObject json_article = new JSONObject();
 					try {
