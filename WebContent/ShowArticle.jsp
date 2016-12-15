@@ -3,53 +3,22 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@ taglib prefix="article" uri="/WEB-INF/article.tld"%>
 <%@ page isELIgnored="false"%>
 <!DOCTYPE html>
 <html>
 <head>
 <jsp:include page="CommonHead.jsp" />
+
 <script type="text/javascript">
-	jQuery(document).ready(function() {
-
-		jQuery("#touch").bind('click', function() {
-			// jQuery("#postdate").text(mytime(parseInt(${now.time})));
-
-			jQuery.ajax({
-				type : "GET",
-				url : "./Touch.api",
-				data : "articleid=" + $(this).attr("articleid"),
-				async : false,
-				timeout : 5000,
-				success : function(result) {
-					if (result == "" || result == null) {
-						result = "";
-					}
-					//jQuery("#postdate").text(result);
-					//alert("順序調整成功！ (" + result + ")");
-					BootstrapDialog.alert("順序調整成功！ (" + result + ")");
-				}
-			}); // jQusery ajax
-		});
-
-	});
-
 	function mytime(nowtime) {
 		var nowdate = new Date();
 		nowdate.setTime(nowtime);
 		return formatDate(nowdate, "y-MM-dd HH:mm:ss");
 		//jQuery("#postdate").text( formatDate( nowdate, "y-MM-dd HH:mm:ss") );
 	}
-	function test() {
-		BootstrapDialog.confirm('确认删除当前选中的记录吗?', function(result) {
-			if (result) {
-				BootstrapDialog.alert('I want 删除!');
-			} else {
-				BootstrapDialog.alert('I want 不删除!');
-			}
-		});
-	}
 </script>
+<script type="text/javascript"
+	src="include/div/TouchApi.js?${applicationScope.built }"></script>
 </head>
 <jsp:useBean id="now" class="java.util.Date" />
 
@@ -68,27 +37,7 @@
 				</button>
 			</c:forEach>
 			<br /> <br />
-			<c:if
-				test="${article:isUpdatable(article, sessionScope.currentUser)}">
-
-				<div class="btn-group">
-					<button type="button" class="btn btn-default">
-						<span class="glyphicon glyphicon-hand-up" id="touch"
-							articleid="${article.id}" title="碰一下，將排序在最上方"
-							style="cursor: pointer;"></span>
-					</button>
-					<button type="button" class="btn btn-default">
-						<a href="./UpdateArticle?id=${article.id}"><span
-							class="glyphicon glyphicon-pencil"></span></a>
-					</button>
-					<button type="button" class="btn btn-default">
-						<a href="./DeleteArticle.api?articleid=${article.id}"><span
-							class="glyphicon glyphicon-remove"></span></a>
-					</button>
-				</div>
-				<br />
-                    請注意，請勿使用 IE 瀏覽器。可能會有各種問題。
-			</c:if>
+			<jsp:include page="include/div/ShowArticle_Toolbar.jsp" />
 		</div>
 		<h2>[${article.info.value}] ${article.title}</h2>
 		<div id="text">${article.content}</div>

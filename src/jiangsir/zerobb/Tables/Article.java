@@ -256,10 +256,12 @@ public class Article {
 
 	public boolean isUpdatable(CurrentUser currentUser) throws DataException {
 		if (currentUser == null || currentUser.isNullUser()) {
-			throw new DataException("您可能尚未登入。");
+			// throw new DataException("您可能尚未登入。");
+			return false;
 		}
 		if (this.isNullArticle()) {
-			throw new DataException("找不到這個文章！");
+			// throw new DataException("找不到這個文章！");
+			return false;
 		}
 		if ((currentUser.getRole() == User.ROLE.ADMIN || currentUser.getAccount().equals(getAccount()))) {
 			return true;

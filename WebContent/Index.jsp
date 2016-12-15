@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="article" uri="/WEB-INF/article.tld"%>
 <%@ page isELIgnored="false"%>
 <!DOCTYPE html>
 <html>
@@ -16,6 +17,9 @@
 		});
 	});
 </script>
+<script type="text/javascript"
+    src="include/div/TouchApi.js?${applicationScope.built }"></script>
+
 </head>
 <body>
 	<jsp:include page="Header.jsp" />
@@ -32,12 +36,17 @@
 			<c:forEach var="article" items="${articles}">
 				<tr>
 					<td>${article.id}</td>
-					<td>[${article.info.value}] <a href="./ShowArticle?id=${article.id}">${article.title}&nbsp;</a>
-						<c:forEach var="upfile" items="${article.upfiles}">
+					<td>[${article.info.value}] <a
+						href="./ShowArticle?id=${article.id}">${article.title}&nbsp;</a>
+					<c:forEach var="upfile" items="${article.upfiles}">
 							<a href="./Download?upfileid=${upfile.id}"
 								title="${upfile.filename}"><span
 								class="glyphicon glyphicon-paperclip" aria-hidden="true"></span></a>
-						</c:forEach></td>
+						</c:forEach> 
+						<c:set var="article" value="${article}" scope="request" />
+						<jsp:include page="include/div/ShowArticle_Toolbar.jsp"/>
+							
+					</td>
 					<td>${article.user.division.value}</td>
 					<td><fmt:formatDate value="${article.postdate}"
 							pattern="yyyy-MM-dd HH:mm" /></td>
