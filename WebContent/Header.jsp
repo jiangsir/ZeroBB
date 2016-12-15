@@ -59,9 +59,16 @@
 									class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
 									管理頁</a></li>
 						</c:if>
-						<li><a href="./Logout"><span
-								class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
-								離開</a></li>
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown" role="button" aria-expanded="false">${sessionScope.currentUser.name }
+								<span class="caret"></span>
+						</a>
+							<ul class="dropdown-menu" role="menu">
+								<li><a href="?division=${sessionScope.currentUser.division}" >列出公告</a></li>
+								<li><a href="./Logout"><span
+										class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
+										離開</a></li>
+							</ul></li>
 					</c:if>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
