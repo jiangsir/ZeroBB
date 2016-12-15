@@ -9,19 +9,18 @@
 
 <c:if test="${article.isUpdatable(sessionScope.currentUser)}">
 	<div class="btn-group">
-		<button type="button" class="btn btn-default btn-xs" name="touch"
-			articleid="${article.id}">
+		<div type="button" class="btn btn-default btn-xs">
 			<div class="glyphicon glyphicon-hand-up" title="碰一下，將排序在最上方"
-				style="cursor: pointer;"></div>
-		</button>
-		<button type="button" class="btn btn-default btn-xs">
+				style="cursor: pointer;" name="touch" articleid="${article.id}"></div>
+		</div>
+		<div type="button" class="btn btn-default btn-xs">
 			<a href="./UpdateArticle?id=${article.id}"><span
 				class="glyphicon glyphicon-pencil"></span></a>
-		</button>
-		<button type="button" class="btn btn-default btn-xs">
+		</div>
+		<div type="button" class="btn btn-default btn-xs">
 			<a href="./DeleteArticle.api?articleid=${article.id}"><span
 				class="glyphicon glyphicon-remove"></span></a>
-		</button>
+		</div>
 	</div>
 </c:if>
 
