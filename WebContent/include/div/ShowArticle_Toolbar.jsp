@@ -9,10 +9,10 @@
 
 <c:if test="${article.isUpdatable(sessionScope.currentUser)}">
 	<div class="btn-group">
-		<button type="button" class="btn btn-default btn-xs">
-			<span class="glyphicon glyphicon-hand-up" id="touch"
-				articleid="${article.id}" title="碰一下，將排序在最上方"
-				style="cursor: pointer;"></span>
+		<button type="button" class="btn btn-default btn-xs" name="touch"
+			articleid="${article.id}">
+			<div class="glyphicon glyphicon-hand-up" title="碰一下，將排序在最上方"
+				style="cursor: pointer;"></div>
 		</button>
 		<button type="button" class="btn btn-default btn-xs">
 			<a href="./UpdateArticle?id=${article.id}"><span

@@ -17,7 +17,7 @@
 		//jQuery("#postdate").text( formatDate( nowdate, "y-MM-dd HH:mm:ss") );
 	}
 </script>
-<script type="text/javascript"
+ <script type="text/javascript"
 	src="include/div/TouchApi.js?${applicationScope.built }"></script>
 </head>
 <jsp:useBean id="now" class="java.util.Date" />
@@ -36,8 +36,11 @@
 					<span class="glyphicon glyphicon-tag"></span> ${tag.tagtitle}
 				</button>
 			</c:forEach>
-			<br /> <br />
 			<jsp:include page="include/div/ShowArticle_Toolbar.jsp" />
+
+			<c:if test="${article.isUpdatable(sessionScope.currentUser)}">
+        請勿使用 IE 操作，會有問題。			
+			</c:if>
 		</div>
 		<h2>[${article.info.value}] ${article.title}</h2>
 		<div id="text">${article.content}</div>
