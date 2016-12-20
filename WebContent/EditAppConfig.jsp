@@ -33,6 +33,11 @@
 <body>
 	<jsp:include page="Header.jsp" />
 	<div class="container">
+		<ul class="nav nav-tabs">
+			<li role="presentation" class="active"><a href="#">Home</a></li>
+			<li role="presentation"><a href="#">Profile</a></li>
+			<li role="presentation"><a href="#">Messages</a></li>
+		</ul>
 		<div>
 			<a href="./EditUsers">管理公告人員</a>
 		</div>

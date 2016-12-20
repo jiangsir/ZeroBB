@@ -18,7 +18,7 @@
 	});
 </script>
 <script type="text/javascript"
-    src="include/div/TouchApi.js?${applicationScope.built }"></script>
+    src="include/Blocks/TouchApi.js?${applicationScope.built }"></script>
 
 </head>
 <body>
@@ -44,7 +44,7 @@
 								class="glyphicon glyphicon-paperclip" aria-hidden="true"></span></a>
 						</c:forEach> 
 						<c:set var="article" value="${article}" scope="request" />
-						<jsp:include page="include/div/ShowArticle_Toolbar.jsp"/>
+						<jsp:include page="include/Blocks/ShowArticle_Toolbar.jsp"/>
 							
 					</td>
 					<td>${article.user.division.value}</td>

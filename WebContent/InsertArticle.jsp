@@ -85,11 +85,9 @@
 			</div>
 			<div>
 				內容： <br />
-				<textarea rows="20" name="content">
-                            ${article.content}
-                          </textarea>
+				<textarea rows="20" name="content">${article.content}</textarea>
 			</div>
-			<br /> * 檔案上載上限 ${ maxFileSize} MB <br />
+			<br /> * 檔案上載上限 ${ maxFileSize/1024/1024} MB <br />
 			<c:forEach var="upfile" items="${article.upfiles}">
 				<h3 id="upfiles">
 					<span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span>
@@ -120,9 +118,10 @@
 			<button type="button" class="btn btn-default" id="addupfile">
 				<span class="glyphicon glyphicon-plus"></span> 增加附件
 			</button>
-			<input name="articleid" type="hidden" value="${article.id}" /> <br />
-			<br /> <br /> <input type="submit" value="送出"
-				class="btn btn-success" /> <br />
+			<input type="hidden" name="id" value="${article.id}" /> <br /> <br />
+			<br /> <input name="submit" value="送出" class="btn btn-success" onclick="tinyMCE.triggerSave(true,true);"/> 
+			<!-- submit button 要加上一個 onclick="tinyMCE.triggerSave(true,true) 才會對，否則永遠只會抓到舊 textarea 資料。" -->
+			<br />
 		</form>
 	</div>
 	<jsp:include page="Footer.jsp" />

@@ -147,7 +147,11 @@ public class Article {
 		if (content == null) {
 			return;
 		}
-		this.content = content;
+		if ("".equals(content.trim())) {
+			throw new DataException("「內容」欄位不可以為空！");
+		}
+		System.out.println(content.trim());
+		this.content = content.trim();
 	}
 
 	public Integer getHitnum() {
@@ -293,4 +297,10 @@ public class Article {
 	public List<Tag> getTags() {
 		return new Article_TagDAO().getTags(this.id);
 	}
+
+	@Override
+	public String toString() {
+		return "[" + this.getId() + " ," + this.getAccount() + ", " + this.getTitle() + "]";
+	}
+
 }

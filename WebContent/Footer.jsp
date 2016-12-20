@@ -11,6 +11,7 @@
 		${applicationScope.version} Built${applicationScope.built}</div>
 	<div class="text-right">
 		Designed &amp; <a href="./Admin">管理</a> by <a
-			href="mailto:jiangsir@tea.nknush.kh.edu.tw">jiangsir@高師大附中 
+			href="mailto:jiangsir@tea.nknush.kh.edu.tw">jiangsir@高師大附中</a>
 	</div>
 </div>
+

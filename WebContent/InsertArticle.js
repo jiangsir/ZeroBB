@@ -74,4 +74,38 @@ jQuery(document).ready(
 					}
 				});
 			});
+
+			$("input[name='submit']").bind("click", function() {
+				console.log($("textarea[name=content]").val());
+				console.log($("input[name=title]").val());
+//				var myFormData = new FormData($('#form')[0]);
+//				myFormData
+				jQuery.ajax({
+					type : "POST",
+					url : "UpdateArticle",
+					// data:
+					// $('#form').serialize()+"&picture="+$('input[type="file"]').val(),
+					cache : false,
+					data : new FormData($('#form')[0]),
+					processData : false,
+					contentType : false,
+					async : true,
+					timeout : 5000,
+					success : function(result) {
+						console.log(result);
+					},
+					error : function(jqXHR, textStatus, errorThrown) {
+						if (jqXHR.responseText !== '') {
+							errorjson = jQuery.parseJSON(jqXHR.responseText);
+						} else {
+							errorjson = errorThrown;
+						}
+						console.log(jqXHR.responseText);
+						console.log(errorThrown);
+						console.log(textStatus);
+						BootstrapDialog.alert(errorjson.list);
+					}
+				});
+
+			});
 		});

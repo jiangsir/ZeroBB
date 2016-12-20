@@ -2,6 +2,8 @@ package jiangsir.zerobb.Servlets;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.logging.Logger;
+
 import javax.servlet.*;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -9,6 +11,7 @@ import javax.servlet.http.*;
 
 import jiangsir.zerobb.Exceptions.AccessException;
 import jiangsir.zerobb.Exceptions.DataException;
+import jiangsir.zerobb.Exceptions.JQueryException;
 import jiangsir.zerobb.Interfaces.IAccessFilter;
 import jiangsir.zerobb.Scopes.SessionScope;
 import jiangsir.zerobb.Services.ArticleDAO;
@@ -29,7 +32,7 @@ public class UpdateArticle extends HttpServlet implements IAccessFilter {
 	 * 
 	 */
 	private static final long serialVersionUID = -4970745549105351949L;
-
+	Logger logger = Logger.getAnonymousLogger();
 	@Override
 	public void init() throws ServletException {
 		super.init();
@@ -64,20 +67,24 @@ public class UpdateArticle extends HttpServlet implements IAccessFilter {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
 		HttpSession session = request.getSession(false);
 		CurrentUser currentUser = new SessionScope(session).getCurrentUser();
-		int articleid = Integer.parseInt(request.getParameter("articleid"));
-		Article article = new ArticleDAO().getArticleById(articleid);
-		article.setInfo(request.getParameter("info"));
-		article.setType(request.getParameter("type"));
-		article.setHyperlink(request.getParameter("hyperlink"));
-		article.setTitle(request.getParameter("title"));
-		article.setPostdate(request.getParameter("postdate"));
-		article.setOutdate(request.getParameter("outdate"));
-		article.setContent(request.getParameter("content"));
-		article.setVisible(true);
 
 		try {
+			int articleid = Integer.parseInt(request.getParameter("id"));
+			Article article = new ArticleDAO().getArticleById(articleid);
+			article.setInfo(request.getParameter("info"));
+			article.setType(request.getParameter("type"));
+			article.setHyperlink(request.getParameter("hyperlink"));
+			article.setTitle(request.getParameter("title"));
+			logger.info("request.getParameter(title)=" + request.getParameter("title"));
+			article.setPostdate(request.getParameter("postdate"));
+			article.setOutdate(request.getParameter("outdate"));
+			logger.info("request.getParameter(content)=" + request.getParameter("content"));
+			article.setContent(request.getParameter("content"));
+			article.setVisible(true);
+
 			new ArticleDAO().update(article);
 			String[] tagnames = request.getParameterValues("tagname");
 			Article_TagDAO tagDao = new Article_TagDAO();
@@ -107,11 +114,11 @@ public class UpdateArticle extends HttpServlet implements IAccessFilter {
 					newupfile.setId(upfileid);
 				}
 			}
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			throw new DataException(e);
+			throw new JQueryException(e);
 		}
 
-		response.sendRedirect("./?account=" + currentUser.getAccount());
+		// response.sendRedirect("./?account=" + currentUser.getAccount());
 	}
 }

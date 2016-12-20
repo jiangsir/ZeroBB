@@ -18,8 +18,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.codehaus.jackson.map.ObjectMapper;
+
 import jiangsir.zerobb.Exceptions.Alert;
-import jiangsir.zerobb.Exceptions.DataException;
+import jiangsir.zerobb.Exceptions.JQueryException;
 import jiangsir.zerobb.Scopes.SessionScope;
 
 /**
@@ -63,15 +65,23 @@ public class ExceptionHandlerFilter implements Filter {
 				list.add(rootCause.getClass().getSimpleName() + ": " + rootCause.getLocalizedMessage());
 				rootCause = rootCause.getCause();
 			}
-			try {
-				alert.getUris().put("回前頁", new URI("./" + new SessionScope(session).getPreviousPage()));
-			} catch (URISyntaxException e1) {
-				e1.printStackTrace();
-			}
 
-			request.setAttribute("alert", alert);
-			request.getRequestDispatcher("/Alert.jsp").forward(request, response);
-			return;
+			if (e instanceof JQueryException) {
+				ObjectMapper mapper = new ObjectMapper();
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				response.getWriter().write(mapper.writeValueAsString(alert));
+				response.flushBuffer();
+				return;
+			} else {
+				try {
+					alert.getUris().put("回前頁", new URI("./" + new SessionScope(session).getPreviousPage()));
+				} catch (URISyntaxException e1) {
+					e1.printStackTrace();
+				}
+				request.setAttribute("alert", alert);
+				request.getRequestDispatcher("/Alert.jsp").forward(request, response);
+				return;
+			}
 		}
 	}
 
