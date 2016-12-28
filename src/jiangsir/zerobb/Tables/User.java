@@ -3,7 +3,7 @@ package jiangsir.zerobb.Tables;
 import java.io.Serializable;
 
 import jiangsir.zerobb.Annotations.Persistent;
-import jiangsir.zerobb.Exceptions.DataException;
+import jiangsir.zerobb.Exceptions.AlertException;
 
 /**
  *  - User.java
@@ -115,9 +115,9 @@ public class User implements Serializable {
 		return account;
 	}
 
-	public void setAccount(String account) throws DataException {
+	public void setAccount(String account) throws AlertException {
 		if (account == null || account.equals("")) {
-			throw new DataException("帳號資訊不存在，可能為空。");
+			throw new AlertException("帳號資訊不存在，可能為空。");
 		}
 		this.account = account;
 	}
@@ -229,7 +229,7 @@ public class User implements Serializable {
 		try {
 			this.setRole(ROLE.valueOf(role));
 		} catch (Exception e) {
-			throw new DataException("角色不存在！" + e.getLocalizedMessage());
+			throw new AlertException("角色不存在！" + e.getLocalizedMessage());
 		}
 	}
 

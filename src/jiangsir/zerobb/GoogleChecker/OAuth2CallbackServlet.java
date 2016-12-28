@@ -17,7 +17,7 @@ import org.scribe.model.Verb;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 
-import jiangsir.zerobb.Exceptions.DataException;
+import jiangsir.zerobb.Exceptions.AlertException;
 import jiangsir.zerobb.Scopes.ApplicationScope;
 import jiangsir.zerobb.Scopes.SessionScope;
 import jiangsir.zerobb.Tables.AppConfig;
@@ -68,7 +68,7 @@ public class OAuth2CallbackServlet extends HttpServlet {
 		GoogleUser googleUser = mapper.readValue(_sBody, GoogleUser.class);
 		String domain = googleUser.getEmail().split("@")[1];
 		if (!ApplicationScope.getAppConfig().getAuthdomains().contains(domain)) {
-			throw new DataException(
+			throw new AlertException(
 					"您所登入的 domain(" + googleUser.getEmail() + ") 並非允許的認證網域，請點擊『<a href=\"./Logout\">登出</a>』並重新登入。");
 		}
 		CurrentUser currentUser = new CurrentUser();

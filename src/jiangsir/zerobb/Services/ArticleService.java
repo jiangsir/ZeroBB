@@ -3,7 +3,7 @@ package jiangsir.zerobb.Services;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import jiangsir.zerobb.Exceptions.DataException;
+import jiangsir.zerobb.Exceptions.AlertException;
 import jiangsir.zerobb.Factories.ArticleFactory;
 import jiangsir.zerobb.Tables.Article;
 import jiangsir.zerobb.Tables.CurrentUser;
@@ -80,9 +80,9 @@ public class ArticleService {
 	 * 
 	 * @param articleid
 	 * @return
-	 * @throws DataException
+	 * @throws AlertException
 	 */
-	public Article getArticle(CurrentUser currentUser, int articleid) throws DataException {
+	public Article getArticle(CurrentUser currentUser, int articleid) throws AlertException {
 		Article article = new ArticleDAO().getArticleById(articleid);
 		// String sql = "SELECT * FROM articles WHERE id=" + articleid;
 		//
@@ -93,17 +93,17 @@ public class ArticleService {
 
 		if (currentUser == null) {
 			if (article.getVisible() == false) {
-				throw new DataException("本公告已設定為不顯示！");
+				throw new AlertException("本公告已設定為不顯示！");
 			}
 			if (article.getOutdate().before(Calendar.getInstance().getTime())) {
-				throw new DataException("本公告已經過期，請登入發文者身份才能瀏覽。");
+				throw new AlertException("本公告已經過期，請登入發文者身份才能瀏覽。");
 			}
 			if (article.getPostdate().after(Calendar.getInstance().getTime())) {
-				throw new DataException("本公告尚未發佈。");
+				throw new AlertException("本公告尚未發佈。");
 			}
 		} else if (currentUser.getRole() == User.ROLE.USER) {
 			if (article.getVisible() == false) {
-				throw new DataException("本公告已設定為不顯示！");
+				throw new AlertException("本公告已設定為不顯示！");
 			}
 		}
 		return article;

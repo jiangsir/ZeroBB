@@ -10,7 +10,7 @@ import javax.servlet.http.*;
 
 import jiangsir.zerobb.Annotations.RoleSetting;
 import jiangsir.zerobb.Exceptions.AccessException;
-import jiangsir.zerobb.Exceptions.DataException;
+import jiangsir.zerobb.Exceptions.AlertException;
 import jiangsir.zerobb.Interfaces.IAccessFilter;
 import jiangsir.zerobb.Scopes.ApplicationScope;
 import jiangsir.zerobb.Scopes.SessionScope;
@@ -67,7 +67,7 @@ public class InsertArticle extends HttpServlet implements IAccessFilter {
 			articleid = new ArticleDAO().insert(newarticle);
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new DataException(e.getLocalizedMessage());
+			throw new AlertException(e.getLocalizedMessage());
 		}
 
 		request.setAttribute("article", newarticle);

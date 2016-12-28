@@ -5,7 +5,7 @@ import java.util.Enumeration;
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
-import jiangsir.zerobb.Exceptions.DataException;
+import jiangsir.zerobb.Exceptions.AlertException;
 import jiangsir.zerobb.Tools.ENV;
 
 @WebServlet(urlPatterns = { "/ShowSessions" })
@@ -48,6 +48,6 @@ public class ShowSessionsServlet extends HttpServlet {
 		// alert.setTitle("列出所有的 sessions");
 		// alert.setPlainText(text);
 		// new AlertDispatcher(request, response).forward(alert);
-		throw new DataException(text);
+		throw new AlertException(text);
 	}
 }

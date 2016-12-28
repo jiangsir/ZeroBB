@@ -12,7 +12,7 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-import jiangsir.zerobb.Exceptions.DataException;
+import jiangsir.zerobb.Exceptions.AlertException;
 import jiangsir.zerobb.Scopes.SessionScope;
 import jiangsir.zerobb.Services.LogDAO;
 import jiangsir.zerobb.Services.UpfileDAO;
@@ -21,14 +21,13 @@ import jiangsir.zerobb.Tables.Log;
 import jiangsir.zerobb.Tables.Upfile;
 import jiangsir.zerobb.Tools.ENV;
 
-@WebServlet(urlPatterns = { "/Download" }, name = "Download.do")
+@WebServlet(urlPatterns = {"/Download"}, name = "Download.do")
 public class Download extends HttpServlet {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5665900418349206294L;
-	public static String urlpattern = Download.class.getAnnotation(
-			WebServlet.class).urlPatterns()[0];
+	public static String urlpattern = Download.class.getAnnotation(WebServlet.class).urlPatterns()[0];
 
 	private HttpServletRequest request;
 	private HttpServletResponse response;
@@ -48,8 +47,8 @@ public class Download extends HttpServlet {
 		return true;
 	}
 
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// qx 記錄下誰 Download，增加一個 table downloads
 		this.request = request;
 		this.response = response;
@@ -78,10 +77,8 @@ public class Download extends HttpServlet {
 			out = response.getOutputStream();
 			// response.setContentType("application/octet-stream");
 			response.setContentType(upfile.getFiletype());
-			String filename = new String(upfile.getFilename().getBytes("Big5"),
-					"ISO8859_1");
-			response.setHeader("Content-Disposition", "attachment; filename=\""
-					+ filename + "\"");
+			String filename = new String(upfile.getFilename().getBytes("Big5"), "ISO8859_1");
+			response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
 			// stream = new FileInputStream(file);
 			InputStream is = new UpfileDAO().getUpfileInputStream(upfileid);
 			int bytesRead = 0;
@@ -110,15 +107,14 @@ public class Download extends HttpServlet {
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	private void doOldDownload(int upfileid) throws ServletException,
-			IOException {
+	private void doOldDownload(int upfileid) throws ServletException, IOException {
 		if (!this.isAccessable()) {
-			throw new DataException("您不能下載這個附件！");
+			throw new AlertException("您不能下載這個附件！");
 		}
 		Upfile upfile = new UpfileDAO().getUpfile(upfileid);
 		String filepath = upfile.getFilepath();
-		URL fileurl = new URL("http://127.0.0.1" + ENV.context.getContextPath()
-				+ filepath + "/" + upfile.getFiletmpname());
+		URL fileurl = new URL(
+				"http://127.0.0.1" + ENV.context.getContextPath() + filepath + "/" + upfile.getFiletmpname());
 		InputStream is = null;
 		try {
 			is = fileurl.openStream();
@@ -128,25 +124,13 @@ public class Download extends HttpServlet {
 			LogDAO exceptionDao = new LogDAO();
 			String exception = "upfileid=" + upfileid + "\n";
 			exception += "url=" + fileurl.getPath() + "\n";
-			exceptionDao.insert(new Log(request.getRequestURI(),
-					(String) session.getAttribute("session_accunt"), request
-							.getRemoteAddr(), "URL 有錯，找不到檔案！" + exception, e));
-
-			// request.setAttribute("message", new Message(
-			// Message.MessageType_ALERT, "URL 有錯，找不到檔案！"));
-			// request.getRequestDispatcher("Message.jsp").forward(request,
-			// response);
-			// e.printStackTrace();
-			// return;
-			// new AlertDispatcher(request, response).forward(new AlertBean(e));
-			// return;
-			throw new DataException(e);
+			exceptionDao.insert(new Log(request.getRequestURI(), (String) session.getAttribute("session_accunt"),
+					request.getRemoteAddr(), "URL 有錯，找不到檔案！" + exception, e));
+			throw new AlertException("URL 有錯，找不到檔案！");
 		}
-		String filename = new String(upfile.getFilename().getBytes("Big5"),
-				"ISO8859_1");
+		String filename = new String(upfile.getFilename().getBytes("Big5"), "ISO8859_1");
 		response.setContentType("application/octet-stream");
-		response.setHeader("Content-Disposition", "attachment; filename=\""
-				+ filename + "\"");
+		response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
 		int read = 0;
 		byte[] bytes = new byte[1024];
 		OutputStream os = response.getOutputStream();
@@ -164,24 +148,21 @@ public class Download extends HttpServlet {
 	 * @throws IOException
 	 * @throws ServletException
 	 */
-	private void doLocalDownload(int upfileid) throws ServletException,
-			IOException {
+	private void doLocalDownload(int upfileid) throws ServletException, IOException {
 		Upfile upfile = new UpfileDAO().getUpfile(upfileid);
 		BufferedInputStream in = null;
 		ServletOutputStream out = null;
 		FileInputStream stream = null;
 		// String REAL_PATH = "/home/tomcat6/ZeroBB_OLD_upfiles";
 		String REAL_PATH = ENV.APP_REAL_PATH;
-		File file = new File(REAL_PATH + upfile.getINNER_PATH(),
-				upfile.getINNER_FILENAME());
+		File file = new File(REAL_PATH + upfile.getINNER_PATH(), upfile.getINNER_FILENAME());
 		if (!file.exists()) {
 			HttpSession session = request.getSession(false);
 			LogDAO exceptionDao = new LogDAO();
 			String exception = "upfileid=" + upfileid + "\n";
 			exception += "filepath=" + file.getPath() + "\n";
-			exceptionDao.insert(new Log(request.getRequestURI(),
-					(String) session.getAttribute("session_accunt"), request
-							.getRemoteAddr(), "檔案不存在！" + exception, null));
+			exceptionDao.insert(new Log(request.getRequestURI(), (String) session.getAttribute("session_accunt"),
+					request.getRemoteAddr(), "檔案不存在！" + exception, null));
 			// Message message = new Message();
 			// message.setType(Message.MessageType_ERROR);
 			// message.setPlainTitle("檔案不存在！");
@@ -194,16 +175,14 @@ public class Download extends HttpServlet {
 			// alert.setTitle("檔案不存在！(" + file.getPath() + ")");
 			// new AlertDispatcher(request, response).forward(alert);
 			// return;
-			throw new DataException("檔案不存在！(" + file.getPath() + ")");
+			throw new AlertException("檔案不存在！(" + file.getPath() + ")");
 		}
 		try {
 			out = response.getOutputStream();
 			// response.setContentType("application/octet-stream");
 			response.setContentType(upfile.getFiletype());
-			String filename = new String(upfile.getFilename().getBytes("Big5"),
-					"ISO8859_1");
-			response.setHeader("Content-Disposition", "attachment; filename=\""
-					+ filename + "\"");
+			String filename = new String(upfile.getFilename().getBytes("Big5"), "ISO8859_1");
+			response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
 			System.out.println("filepath=" + file.getPath());
 			stream = new FileInputStream(file);
 
@@ -238,7 +217,7 @@ public class Download extends HttpServlet {
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 	}
 }

@@ -8,41 +8,41 @@ package jiangsir.zerobb.Exceptions;
 import jiangsir.zerobb.Exceptions.Alert.TYPE;
 
 /**
- * @author nknush-001 <br/>
- *         專門轉給前端處理的 Exception
+ * @author nknush-001
  * 
  */
-public class JQueryException extends AlertException {
+public class AlertException extends RuntimeException {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
 	Alert alert = new Alert();
 
-	// public JQueryException() {
+	// public AlertException() {
 	// super();
 	// }
 
-	// public JQueryException(String message, Throwable cause) {
+	// public AlertException(String message, Throwable cause) {
 	// super(message, cause);
+	// alert = new Alert(message, cause);
 	// }
 
-	// public JQueryException(Throwable cause) {
+	// public DataException(Throwable cause) {
 	// super(cause);
 	// }
 
-	public JQueryException(Alert alert) {
+	public AlertException(Alert alert) {
 		super(alert.getTitle(), alert);
 		this.alert = alert;
 	}
 
-	public JQueryException(String message) {
-		super(message, new Alert(TYPE.EXCEPTION, message, "", "", null));
-		this.alert = new Alert(TYPE.EXCEPTION, message, "", "", null);
+	public AlertException(String message) {
+		super(message, new Alert(TYPE.DATAERROR, message, "", "", null));
+		this.alert = new Alert(TYPE.DATAERROR, message, "", "", null);
 	}
-	public JQueryException(String message, Alert alert) {
+
+	public AlertException(String message, Alert alert) {
 		super(message, alert);
 		this.alert = alert;
 	}

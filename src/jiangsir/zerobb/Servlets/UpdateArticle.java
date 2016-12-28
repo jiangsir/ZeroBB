@@ -10,7 +10,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import jiangsir.zerobb.Exceptions.AccessException;
-import jiangsir.zerobb.Exceptions.DataException;
+import jiangsir.zerobb.Exceptions.Alert;
+import jiangsir.zerobb.Exceptions.AlertException;
 import jiangsir.zerobb.Exceptions.JQueryException;
 import jiangsir.zerobb.Interfaces.IAccessFilter;
 import jiangsir.zerobb.Scopes.SessionScope;
@@ -115,8 +116,7 @@ public class UpdateArticle extends HttpServlet implements IAccessFilter {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new JQueryException(e);
+			throw new JQueryException(e.getLocalizedMessage(), new Alert(e));
 		}
 
 		// response.sendRedirect("./?account=" + currentUser.getAccount());

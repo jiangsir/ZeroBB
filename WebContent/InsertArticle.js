@@ -55,27 +55,8 @@ jQuery(document).ready(
 				}
 			});
 
-			$("input[id='Submit']").bind("click", function() { // 事件發生
-				jQuery.ajax({
-					type : "GET",
-					url : "api/CheckInsertArticle.txt",
-					// data:
-					// $('#form').serialize()+"&picture="+$('input[type="file"]').val(),
-					data : $('#form').serialize(),
-					async : false,
-					timeout : 5000,
-					success : function(result) {
-						if (result == "") {
-							$("#form").submit();
-						} else {
-							alert("[" + result + "]");
-						}
-						// checkUser_Exception = result;
-					}
-				});
-			});
-
 			$("input[name='submit']").bind("click", function() {
+				var form = $(this).closest("form");
 				console.log($("textarea[name=content]").val());
 				console.log($("input[name=title]").val());
 //				var myFormData = new FormData($('#form')[0]);
@@ -86,24 +67,40 @@ jQuery(document).ready(
 					// data:
 					// $('#form').serialize()+"&picture="+$('input[type="file"]').val(),
 					cache : false,
-					data : new FormData($('#form')[0]),
+					data : new FormData(form[0]),
 					processData : false,
 					contentType : false,
 					async : true,
 					timeout : 5000,
 					success : function(result) {
 						console.log(result);
+						window.location.href = document.referrer; // 跳轉到前一頁，並 reload
 					},
 					error : function(jqXHR, textStatus, errorThrown) {
-						if (jqXHR.responseText !== '') {
-							errorjson = jQuery.parseJSON(jqXHR.responseText);
-						} else {
-							errorjson = errorThrown;
+						console.log("jqXHR.responseText="+jqXHR.responseText);
+						console.log("errorThrown="+errorThrown);
+						console.log("textStatus="+textStatus);
+						try{
+							alert = jQuery.parseJSON(jqXHR.responseText);
+							//BootstrapDialog.alert(alert.title);
+							  BootstrapDialog.show({
+								    size: BootstrapDialog.SIZE_LARGE,
+						            title: alert.type ,
+						            message: alert.title,
+						            buttons: [{
+						                id: 'btn-ok',   
+						                icon: 'glyphicon glyphicon-check',       
+						                label: 'OK',
+						                cssClass: 'btn-primary', 
+						                autospin: false,
+						                action: function(dialogRef){    
+						                    dialogRef.close();
+						                }
+						            }]
+						        });
+						} catch(err) {
+							BootstrapDialog.alert(errorThrown);
 						}
-						console.log(jqXHR.responseText);
-						console.log(errorThrown);
-						console.log(textStatus);
-						BootstrapDialog.alert(errorjson.list);
 					}
 				});
 

@@ -37,7 +37,7 @@ public class Alert extends Throwable {
 	@Persistent(name = "map")
 	private HashMap<String, String> map = new HashMap<String, String>();
 	@Persistent(name = "stacktrace")
-	private StackTraceElement[] stacktrace = new StackTraceElement[] {};
+	private StackTraceElement[] stacktrace = new StackTraceElement[]{};
 	@Persistent(name = "urls")
 	private HashMap<String, URI> uris = new HashMap<String, URI>();
 	@Persistent(name = "debugs")
@@ -48,13 +48,17 @@ public class Alert extends Throwable {
 	public Alert() {
 	}
 
-	public Alert(TYPE type, String title, String subtitle, String content,
-			HashMap<String, URI> uris) {
+	public Alert(TYPE type, String title, String subtitle, String content, HashMap<String, URI> uris) {
 		this.setType(type);
 		this.setTitle(title);
 		this.setSubtitle(subtitle);
 		this.setContent(content);
 		this.appendUris(uris);
+	}
+
+	public Alert(String title) {
+		this.setType(TYPE.EXCEPTION);
+		this.setTitle(title);
 	}
 
 	public Alert(String title, Throwable throwable) {

@@ -3,35 +3,35 @@ package jiangsir.zerobb.Services;
 import java.sql.SQLException;
 import java.util.TreeMap;
 
-import jiangsir.zerobb.Exceptions.DataException;
+import jiangsir.zerobb.Exceptions.AlertException;
 import jiangsir.zerobb.Tables.AppConfig;
 
 public class AppConfigService {
 
-	public int insert(AppConfig appConfig) throws DataException {
+	public int insert(AppConfig appConfig) throws AlertException {
 		new AppConfigDAO().truncate();
 		try {
 			return new AppConfigDAO().insert(appConfig);
 		} catch (SQLException e) {
-			throw new DataException(e);
+			throw new AlertException(e.getLocalizedMessage());
 		}
 	}
 
-	public void update(AppConfig appConfig) throws DataException {
+	public void update(AppConfig appConfig) throws AlertException {
 		try {
 			new AppConfigDAO().update(appConfig);
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new DataException(e);
+			throw new AlertException(e.getLocalizedMessage());
 		}
 	}
 
-	public void delete(long id) throws DataException {
+	public void delete(long id) throws AlertException {
 		try {
 			new AppConfigDAO().delete(id);
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new DataException(e);
+			throw new AlertException(e.getLocalizedMessage());
 		}
 	}
 

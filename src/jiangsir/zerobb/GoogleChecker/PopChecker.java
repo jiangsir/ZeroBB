@@ -9,7 +9,7 @@ import javax.mail.Session;
 import javax.mail.Store;
 import javax.mail.URLName;
 
-import jiangsir.zerobb.Exceptions.DataException;
+import jiangsir.zerobb.Exceptions.AlertException;
 
 public class PopChecker {
 	/**
@@ -40,16 +40,16 @@ public class PopChecker {
 			e.printStackTrace();
 			System.out.println("email:" + email + ", pass:" + passwd);
 			if (e instanceof AuthenticationFailedException) {
-				throw new DataException("驗證有誤，帳號密碼可能有誤（如果您的學生信箱尚未開通，請登入後即可開通）！" + e.getLocalizedMessage());
+				throw new AlertException("驗證有誤，帳號密碼可能有誤（如果您的學生信箱尚未開通，請登入後即可開通）！" + e.getLocalizedMessage());
 			}
 			if (e.getLocalizedMessage().contains("timed out")) {
-				throw new DataException("連線逾時！");
+				throw new AlertException("連線逾時！");
 			}
 			if (e.getLocalizedMessage().contains("Connect failed")) {
-				throw new DataException("無法與驗證主機連線！");
+				throw new AlertException("無法與驗證主機連線！");
 			}
 
-			throw new DataException(e);
+			throw new AlertException(e.getLocalizedMessage());
 		}
 		return true;
 	}

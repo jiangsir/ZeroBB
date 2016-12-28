@@ -51,7 +51,7 @@ public class ExceptionHandlerFilter implements Filter {
 		try {
 			chain.doFilter(req, resp);
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			logger.log(Level.SEVERE, e.getLocalizedMessage() + " | " + e.getMessage());
 			e.printStackTrace();
 			HttpServletRequest request = (HttpServletRequest) req;
 			HttpServletResponse response = (HttpServletResponse) resp;
@@ -67,6 +67,7 @@ public class ExceptionHandlerFilter implements Filter {
 			}
 
 			if (e instanceof JQueryException) {
+				alert = ((JQueryException) e).getAlert();
 				ObjectMapper mapper = new ObjectMapper();
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 				response.getWriter().write(mapper.writeValueAsString(alert));

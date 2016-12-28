@@ -11,7 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
-import jiangsir.zerobb.Exceptions.DataException;
+import jiangsir.zerobb.Exceptions.AlertException;
 import jiangsir.zerobb.Tables.AppConfig;
 
 /**
@@ -80,7 +80,7 @@ public class AppConfigDAO extends SuperDAO<AppConfig> {
 			return executeQuery(pstmt, AppConfig.class);
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new DataException(e);
+			throw new AlertException(e.getLocalizedMessage());
 		}
 	}
 

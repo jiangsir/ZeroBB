@@ -7,7 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import jiangsir.zerobb.Exceptions.DataException;
+import jiangsir.zerobb.Exceptions.AlertException;
 import jiangsir.zerobb.Tables.Article;
 import jiangsir.zerobb.Tools.ENV;
 
@@ -35,7 +35,7 @@ public class CheckInsertArticleServlet extends HttpServlet {
 			article.setTitle(request.getParameter("title"));
 			article.setPostdate(request.getParameter("postdate"));
 			article.setOutdate(request.getParameter("outdate"));
-		} catch (DataException e) {
+		} catch (AlertException e) {
 			e.printStackTrace();
 			response.getWriter().print(e.getLocalizedMessage());
 			return;

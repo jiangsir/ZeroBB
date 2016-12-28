@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import jiangsir.zerobb.Exceptions.DataException;
+import jiangsir.zerobb.Exceptions.AlertException;
 import jiangsir.zerobb.Tables.Article;
 import jiangsir.zerobb.Tables.CurrentUser;
 import jiangsir.zerobb.Tables.Log;
@@ -171,9 +171,9 @@ public class UpfileDAO extends GeneralDAO<Upfile> {
 	 * 
 	 * @param upfileid
 	 * @return
-	 * @throws DataException
+	 * @throws AlertException
 	 */
-	public Article getArticle(CurrentUser currentUser, int upfileid) throws DataException {
+	public Article getArticle(CurrentUser currentUser, int upfileid) throws AlertException {
 		Upfile upfile = this.getUpfile(upfileid);
 		return new ArticleService().getArticle(currentUser, upfile.getArticleid());
 	}

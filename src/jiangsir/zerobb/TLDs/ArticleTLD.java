@@ -1,7 +1,7 @@
 package jiangsir.zerobb.TLDs;
 
 import jiangsir.zerobb.Exceptions.AccessException;
-import jiangsir.zerobb.Exceptions.DataException;
+import jiangsir.zerobb.Exceptions.AlertException;
 import jiangsir.zerobb.Tables.Article;
 import jiangsir.zerobb.Tables.CurrentUser;
 
@@ -15,7 +15,7 @@ public class ArticleTLD {
 	public static boolean isUpdatable(Article article, CurrentUser currentUser) {
 		try {
 			return article.isUpdatable(currentUser);
-		} catch (DataException e) {
+		} catch (AlertException e) {
 			return false;
 		}
 	}

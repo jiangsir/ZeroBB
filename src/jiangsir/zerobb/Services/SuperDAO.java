@@ -21,7 +21,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import jiangsir.zerobb.Annotations.Persistent;
-import jiangsir.zerobb.Exceptions.DataException;
+import jiangsir.zerobb.Exceptions.AlertException;
 
 abstract public class SuperDAO<T> {
 	private static Connection conn = null;
@@ -51,10 +51,10 @@ abstract public class SuperDAO<T> {
 			}
 		} catch (NamingException e) {
 			e.printStackTrace();
-			throw new DataException("資料庫名稱設定有誤！");
+			throw new AlertException("資料庫名稱設定有誤！");
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new DataException("無法連接資料庫，請通知管理員！");
+			throw new AlertException("無法連接資料庫，請通知管理員！");
 		}
 		return conn;
 	}

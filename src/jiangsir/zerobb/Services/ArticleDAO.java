@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TreeSet;
-import jiangsir.zerobb.Exceptions.DataException;
+import jiangsir.zerobb.Exceptions.AlertException;
 import jiangsir.zerobb.Factories.ArticleFactory;
 import jiangsir.zerobb.Tables.Article;
 import jiangsir.zerobb.Tables.CurrentUser;

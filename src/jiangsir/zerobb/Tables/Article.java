@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import jiangsir.zerobb.Exceptions.DataException;
+import jiangsir.zerobb.Exceptions.AlertException;
 import jiangsir.zerobb.Services.Article_TagDAO;
 import jiangsir.zerobb.Services.UpfileDAO;
 import jiangsir.zerobb.Services.UserDAO;
@@ -92,9 +92,9 @@ public class Article {
 		return title;
 	}
 
-	public void setTitle(String title) throws DataException {
+	public void setTitle(String title) throws AlertException {
 		if (title == null || "".equals(title.trim())) {
-			throw new DataException("標題必須填寫，不可空白。");
+			throw new AlertException("標題必須填寫，不可空白。");
 		}
 		this.title = title.trim();
 	}
@@ -148,9 +148,8 @@ public class Article {
 			return;
 		}
 		if ("".equals(content.trim())) {
-			throw new DataException("「內容」欄位不可以為空！");
+			throw new AlertException("「內容」欄位不可以為空！");
 		}
-		System.out.println(content.trim());
 		this.content = content.trim();
 	}
 
@@ -166,12 +165,12 @@ public class Article {
 		return postdate;
 	}
 
-	public void setPostdate(String postdate) throws DataException {
+	public void setPostdate(String postdate) throws AlertException {
 		try {
 			this.setPostdate(Timestamp.valueOf(postdate));
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
-			throw new DataException(e.getLocalizedMessage());
+			throw new AlertException(e.getLocalizedMessage());
 		}
 	}
 
@@ -183,11 +182,11 @@ public class Article {
 		return outdate;
 	}
 
-	public void setOutdate(String outdate) throws DataException {
+	public void setOutdate(String outdate) throws AlertException {
 		try {
 			this.setOutdate(Timestamp.valueOf(outdate));
 		} catch (IllegalArgumentException e) {
-			throw new DataException(e.getLocalizedMessage());
+			throw new AlertException(e.getLocalizedMessage());
 		}
 	}
 
@@ -258,7 +257,7 @@ public class Article {
 		return false;
 	}
 
-	public boolean isUpdatable(CurrentUser currentUser) throws DataException {
+	public boolean isUpdatable(CurrentUser currentUser) throws AlertException {
 		if (currentUser == null || currentUser.isNullUser()) {
 			// throw new DataException("您可能尚未登入。");
 			return false;

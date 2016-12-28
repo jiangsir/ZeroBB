@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
-import jiangsir.zerobb.Exceptions.DataException;
+import jiangsir.zerobb.Exceptions.AlertException;
 import jiangsir.zerobb.Scopes.SessionScope;
 import jiangsir.zerobb.Services.ArticleDAO;
 import jiangsir.zerobb.Services.ArticleService;
@@ -39,12 +39,8 @@ public class ShowArticle extends HttpServlet {
 			new ArticleDAO().update(article);
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new DataException(e);
+			throw new AlertException(e.getLocalizedMessage());
 		}
-		// request.setAttribute("article_tags",
-		// new Article_TagDAO().getArticle_TagNames(articleid));
-		// request.setAttribute("tags", new
-		// Article_TagDAO().getTags(articleid));
 		request.getRequestDispatcher("ShowArticle.jsp").forward(request, response);
 	}
 

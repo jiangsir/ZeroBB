@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-import jiangsir.zerobb.Exceptions.DataException;
+import jiangsir.zerobb.Exceptions.AlertException;
 import jiangsir.zerobb.Factories.UserFactory;
 import jiangsir.zerobb.Tables.User;
 import jiangsir.zerobb.Tables.User.DIVISION;
@@ -29,8 +29,7 @@ public class UserDAO extends SuperDAO<User> {
 	public ArrayList<User> getUsers() {
 		String sql = "SELECT * FROM users WHERE visible=true";
 		try {
-			PreparedStatement pstmt = this.getConnection()
-					.prepareStatement(sql);
+			PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 			return this.executeQuery(pstmt, User.class);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -41,8 +40,7 @@ public class UserDAO extends SuperDAO<User> {
 	public User getUserById(int userid) {
 		String sql = "SELECT * FROM users WHERE id=?";
 		try {
-			PreparedStatement pstmt = this.getConnection()
-					.prepareStatement(sql);
+			PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 			pstmt.setInt(1, userid);
 			for (User user : this.executeQuery(pstmt, User.class)) {
 				return user;
@@ -59,8 +57,7 @@ public class UserDAO extends SuperDAO<User> {
 		}
 		String sql = "SELECT * FROM users WHERE account=?";
 		try {
-			PreparedStatement pstmt = this.getConnection()
-					.prepareStatement(sql);
+			PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 			pstmt.setString(1, account);
 			for (User user : this.executeQuery(pstmt, User.class)) {
 				return user;
@@ -81,8 +78,7 @@ public class UserDAO extends SuperDAO<User> {
 	public User getUserByAccountPasswd(String account, String passwd) {
 		String sql = "SELECT * FROM users WHERE account=? AND passwd=?";
 		try {
-			PreparedStatement pstmt = this.getConnection()
-					.prepareStatement(sql);
+			PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
 			pstmt.setString(1, account);
 			pstmt.setString(2, passwd);
 			for (User user : this.executeQuery(pstmt, User.class)) {
@@ -107,7 +103,7 @@ public class UserDAO extends SuperDAO<User> {
 			return this.executeQuery(pstmt, User.class);
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new DataException(e);
+			throw new AlertException(e.getLocalizedMessage());
 		}
 	}
 
