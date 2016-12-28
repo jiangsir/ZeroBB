@@ -10,6 +10,8 @@ import java.util.TreeSet;
 
 import jiangsir.zerobb.Annotations.Persistent;
 import jiangsir.zerobb.Annotations.Property;
+import jiangsir.zerobb.Exceptions.Alert;
+import jiangsir.zerobb.Exceptions.AlertException;
 import jiangsir.zerobb.Services.TagDAO;
 import jiangsir.zerobb.Tools.IpAddress;
 import jiangsir.zerobb.Tools.StringTool;
@@ -21,19 +23,19 @@ import jiangsir.zerobb.Tools.StringTool;
 public class AppConfig {
 	@Persistent(name = "id")
 	private Long id = 0L;
-	@Property(key = "Title")
+	@Property(key = "title")
 	@Persistent(name = "title")
-	private String Title = "A Title for Your Site";
-	@Property(key = "Header")
+	private String title = "A Title for Your Site";
+	@Property(key = "header")
 	@Persistent(name = "header")
-	private String Header = "Header";
-	@Property(key = "PageSize")
+	private String header = "Header";
+	@Property(key = "pagesize")
 	@Persistent(name = "pagesize")
 	private int pagesize = 20;
-	@Property(key = "DefaultLogin")
+	@Property(key = "defaultlogin")
 	@Persistent(name = "defaultlogin")
 	private String defaultlogin = "Login";
-	@Property(key = "AuthDomains")
+	@Property(key = "authdomains")
 	@Persistent(name = "authdomains")
 	private TreeSet<String> authdomains = new TreeSet<String>();
 	@Property(key = "client_id")
@@ -75,19 +77,31 @@ public class AppConfig {
 	}
 
 	public String getTitle() {
-		return Title;
+		return title;
 	}
 
 	public void setTitle(String title) {
-		Title = title;
+		if (title == null) {
+			return;
+		}
+		if ("".equals(title.trim())) {
+			throw new AlertException("「站名」欄位不能為空字串！");
+		}
+		this.title = title.trim();
 	}
 
 	public String getHeader() {
-		return Header;
+		return header;
 	}
 
 	public void setHeader(String header) {
-		Header = header;
+		if (header == null) {
+			return;
+		}
+		if ("".equals(header.trim())) {
+			throw new AlertException("「Header」欄位不能為空字串！");
+		}
+		this.header = header.trim();
 	}
 
 	public int getPagesize() {
@@ -95,11 +109,15 @@ public class AppConfig {
 	}
 
 	public void setPagesize(Integer pageSize) {
-		pagesize = pageSize;
+		this.pagesize = pageSize;
 	}
 
 	public void setPagesize(String pageSize) {
-		this.setPagesize(Integer.parseInt(pageSize));
+		try {
+			this.setPagesize(Integer.parseInt(pageSize));
+		} catch (NumberFormatException e) {
+			throw new AlertException(new Alert(e));
+		}
 	}
 
 	public String getDefaultlogin() {
@@ -107,7 +125,13 @@ public class AppConfig {
 	}
 
 	public void setDefaultlogin(String defaultLogin) {
-		defaultlogin = defaultLogin;
+		if (defaultLogin == null) {
+			return;
+		}
+		if ("".equals(defaultLogin.trim())) {
+			throw new AlertException("defaultLogin 不可為空字串！");
+		}
+		this.defaultlogin = defaultLogin.trim();
 	}
 
 	public TreeSet<String> getAuthdomains() {
@@ -115,7 +139,7 @@ public class AppConfig {
 	}
 
 	public void setAuthdomains(TreeSet<String> authDomains) {
-		authdomains = authDomains;
+		this.authdomains = authDomains;
 	}
 
 	public void setAuthdomains(String authDomains) {
@@ -130,6 +154,9 @@ public class AppConfig {
 	}
 
 	public void setClient_id(String client_id) {
+		if (client_id == null) {
+			return;
+		}
 		this.client_id = client_id;
 	}
 

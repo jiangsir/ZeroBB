@@ -9,10 +9,7 @@
 <html>
 <head>
 <jsp:include page="CommonHead.jsp" />
-<script type="text/javascript"
-	src="EditAppConfig.js?${applicationScope.built}"></script>
 <script src="jscripts/tinymce_4.3.13/js/tinymce/tinymce.min.js"></script>
-<!-- 使用 TinyMCE  -->
 <script type="text/javascript">
 	tinymce
 			.init({
@@ -21,13 +18,15 @@
 				plugins : [
 						'advlist autolink lists link image charmap print preview anchor',
 						'searchreplace visualblocks code fullscreen',
-						'insertdatetime media table contextmenu paste code' ],
-				toolbar : 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+						'insertdatetime media table contextmenu paste code textcolor colorpicker' ],
+				toolbar : 'insertfile undo redo | styleselect | forecolor backcolor | fontsizeselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
 				content_css : [
 						'//fast.fonts.net/cssapi/e6dc9b99-64fe-4292-ad98-6974f93cd2a2.css',
 						'//www.tinymce.com/css/codepen.min.css' ]
 			});
 </script>
+<script type="text/javascript"
+	src="EditAppConfig.js?${applicationScope.built}"></script>
 
 </head>
 <body>
@@ -41,27 +40,28 @@
 		<div>
 			<a href="./EditUsers">管理公告人員</a>
 		</div>
-		<form id="form1" name="form1" method="post" action="">
+		<form id="form1" name="form1" method="post" action=""
+			enctype="multipart/form-data">
 			<div id="tabs-1">
-				<table align="center" style="margin: 10px;">
+				<table style="margin: 10px;">
 					<tr style="padding: 10px;">
 						<th>站名</th>
-						<td style="padding: 10px;"><input name="Title" type="text"
-							id="Title" value="${appConfig.title}" size="50" maxlength="50" /></td>
+						<td style="padding: 10px;"><input name="title" type="text"
+							value="${appConfig.title}" size="50" maxlength="50" /></td>
 					</tr>
 					<tr style="padding: 10px;">
 						<th>Header</th>
-						<td style="padding: 10px;"><input name="Header" type="text"
+						<td style="padding: 10px;"><input name="header" type="text"
 							value="${appConfig.header}" size="50" maxlength="50" /></td>
 					</tr>
 					<tr style="padding: 10px;">
 						<th>Page Size</th>
-						<td style="padding: 10px;"><input name="Pagesize" type="text"
+						<td style="padding: 10px;"><input name="pagesize" type="text"
 							value="${appConfig.pagesize}" size="50" maxlength="50" /></td>
 					</tr>
 					<tr style="padding: 10px;">
 						<th>預設 Login 的路徑</th>
-						<td style="padding: 10px;"><input name="Defaultlogin"
+						<td style="padding: 10px;"><input name="defaultlogin"
 							type="text" value="${appConfig.defaultlogin}" size="50"
 							maxlength="50" /></td>
 					</tr>
@@ -105,10 +105,9 @@
 							maxlength="50" /></td>
 					</tr>
 					<tr style="padding: 10px;">
-						<th>首頁說明</th>
+						<th>首頁公告</th>
 						<td style="padding: 10px;"><textarea
-								style="width: 80%; height: 20em;" name="announcement"
-								class="mceSimple">${appConfig.announcement}</textarea></td>
+								style="width: 80%; height: 20em;" name="announcement">${appConfig.announcement}</textarea></td>
 					</tr>
 					<tr style="padding: 10px;">
 						<th>管理分類項目</th>
@@ -119,7 +118,7 @@
 					</tr>
 				</table>
 			</div>
-			<input type="submit" value="送出" class="btn btn-success" />
+			<button type="submit" class="btn btn-success">儲存</button>
 		</form>
 	</div>
 	<jsp:include page="Footer.jsp" />

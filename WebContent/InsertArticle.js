@@ -55,12 +55,13 @@ jQuery(document).ready(
 				}
 			});
 
-			$("input[name='submit']").bind("click", function() {
+			$("button[type='submit']").bind("click", function(e) {
+				e.preventDefault();
 				var form = $(this).closest("form");
 				console.log($("textarea[name=content]").val());
 				console.log($("input[name=title]").val());
-//				var myFormData = new FormData($('#form')[0]);
-//				myFormData
+				// 有其他 formdata 無 <form> 寫法。
+				// http://www.jianshu.com/p/46e6e03a0d53 
 				jQuery.ajax({
 					type : "POST",
 					url : "UpdateArticle",
@@ -84,7 +85,6 @@ jQuery(document).ready(
 							alert = jQuery.parseJSON(jqXHR.responseText);
 							//BootstrapDialog.alert(alert.title);
 							  BootstrapDialog.show({
-								    size: BootstrapDialog.SIZE_LARGE,
 						            title: alert.type ,
 						            message: alert.title,
 						            buttons: [{

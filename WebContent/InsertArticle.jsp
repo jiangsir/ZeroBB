@@ -32,7 +32,8 @@
 <link href="jscripts/datetimepicker/jquery-ui-timepicker-addon.css"
 	rel="stylesheet" />
 <script src="jscripts/datetimepicker/jquery-ui-timepicker-addon.js"></script>
-<script type="text/javascript" src="InsertArticle.js"></script>
+<script type="text/javascript"
+	src="InsertArticle.js?${applicationScope.built}"></script>
 
 </head>
 
@@ -119,9 +120,11 @@
 				<span class="glyphicon glyphicon-plus"></span> 增加附件
 			</button>
 			<input type="hidden" name="id" value="${article.id}" /> <br /> <br />
-			<br /> <input name="submit" value="送出" class="btn btn-success" onclick="tinyMCE.triggerSave(true,true);"/> 
-			<!-- submit button 要加上一個 onclick="tinyMCE.triggerSave(true,true) 才會對，否則永遠只會抓到舊 textarea 資料。" -->
 			<br />
+			<button type="submit" class="btn btn-success"
+				onclick="tinyMCE.triggerSave(true,true);">送出</button>
+			<br />
+			<!-- submit button 要加上一個 onclick="tinyMCE.triggerSave(true,true) 才會對，否則永遠只會抓到舊 textarea 資料。" -->
 		</form>
 	</div>
 	<jsp:include page="Footer.jsp" />

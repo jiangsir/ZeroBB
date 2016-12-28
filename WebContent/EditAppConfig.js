@@ -34,6 +34,53 @@ jQuery(document).ready(function() {
 		$("#SYSTEM_CLOSE").attr("checked", true);
 	});
 
+	$("button[type='submit']").bind("click", function(e) {
+		e.preventDefault();
+		var form = $(this).closest("form");
+		jQuery.ajax({
+			type : "POST",
+			url : "EditAppConfig",
+			// data: form.serialize(),
+			// data : form.serializeArray(),
+			data : new FormData(form[0]),
+			cache : false,
+			processData : false,
+			contentType : false,
+			async : true,
+			timeout : 5000,
+			success : function(result) {
+				console.log(result);
+				// window.location.href = document.referrer; // 跳轉到前一頁，並 reload
+				location.reload(); // 本頁重讀。
+			},
+			error : function(jqXHR, textStatus, errorThrown) {
+				console.log("jqXHR.responseText=" + jqXHR.responseText);
+				console.log("errorThrown=" + errorThrown);
+				console.log("textStatus=" + textStatus);
+				try {
+					alert = jQuery.parseJSON(jqXHR.responseText);
+					// BootstrapDialog.alert(alert.title);
+					BootstrapDialog.show({
+						title : alert.type,
+						message : alert.title,
+						buttons : [ {
+							id : 'btn-ok',
+							icon : 'glyphicon glyphicon-check',
+							label : 'OK',
+							cssClass : 'btn-primary',
+							autospin : false,
+							action : function(dialogRef) {
+								dialogRef.close();
+							}
+						} ]
+					});
+				} catch (err) {
+					BootstrapDialog.alert(errorThrown);
+				}
+			}
+		});
+	});
+
 });
 
 function UploadImage() {
@@ -46,7 +93,8 @@ function UploadImage() {
 		success : function(result) {
 			// alert(result);
 			var json = JSON.parse(result);
-			jQuery("#Testjudge_dialog3 #Testjudge_htmlstatus").text(json.htmlstatus);
+			jQuery("#Testjudge_dialog3 #Testjudge_htmlstatus").text(
+					json.htmlstatus);
 			jQuery("#Testjudge_dialog3 #Testjudge_result").text(json.result);
 			var $dialog3 = $("#Testjudge_dialog3").dialog({
 				autoOpen : true,

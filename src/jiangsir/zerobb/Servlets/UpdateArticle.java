@@ -1,17 +1,15 @@
 package jiangsir.zerobb.Servlets;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.logging.Logger;
-
 import javax.servlet.*;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
+import jiangsir.zerobb.Annotations.RoleSetting;
 import jiangsir.zerobb.Exceptions.AccessException;
 import jiangsir.zerobb.Exceptions.Alert;
-import jiangsir.zerobb.Exceptions.AlertException;
 import jiangsir.zerobb.Exceptions.JQueryException;
 import jiangsir.zerobb.Interfaces.IAccessFilter;
 import jiangsir.zerobb.Scopes.SessionScope;
@@ -24,10 +22,12 @@ import jiangsir.zerobb.Tables.Article;
 import jiangsir.zerobb.Tables.Article_Tag;
 import jiangsir.zerobb.Tables.CurrentUser;
 import jiangsir.zerobb.Tables.Upfile;
+import jiangsir.zerobb.Tables.User;
 import jiangsir.zerobb.Tools.ENV;
 
 @MultipartConfig(maxFileSize = 20 * 1024 * 1024, maxRequestSize = 50 * 1024 * 1024)
 @WebServlet(urlPatterns = {"/UpdateArticle"}, name = "UpdateArticle.do")
+@RoleSetting(allowHigherThen = User.ROLE.USER)
 public class UpdateArticle extends HttpServlet implements IAccessFilter {
 	/**
 	 * 
@@ -69,8 +69,8 @@ public class UpdateArticle extends HttpServlet implements IAccessFilter {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		HttpSession session = request.getSession(false);
-		CurrentUser currentUser = new SessionScope(session).getCurrentUser();
+		// HttpSession session = request.getSession(false);
+		// CurrentUser currentUser = new SessionScope(session).getCurrentUser();
 
 		try {
 			int articleid = Integer.parseInt(request.getParameter("id"));
