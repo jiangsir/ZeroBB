@@ -37,10 +37,6 @@
 				</button>
 			</c:forEach>
 			<jsp:include page="include/Blocks/ShowArticle_Toolbar.jsp" />
-
-			<c:if test="${article.isUpdatable(sessionScope.currentUser)}">
-        請勿使用 IE 操作，會有問題。			
-			</c:if>
 		</div>
 		<h2>[${article.info.value}] ${article.title}</h2>
 		<div id="text">${article.content}</div>
