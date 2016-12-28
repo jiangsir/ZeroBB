@@ -77,7 +77,7 @@
 							<span class="caret"></span>
 					</a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="?division=${sessionScope.currentUser.division}">列出公告</a></li>
+							<li><a href="${pageContext.servletContext.contextPath}?division=${sessionScope.currentUser.division}">列出公告</a></li>
 							<li><a href="./Logout"><span
 									class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
 									離開</a></li>
@@ -92,7 +92,7 @@
 				</a>
 					<ul class="dropdown-menu" role="menu">
 						<c:forEach var="tag" items="${applicationScope.tags}">
-							<li><a href="?tagname=${tag.tagname}"
+							<li><a href="${pageContext.servletContext.contextPath}?tagname=${tag.tagname}"
 								title="${tag.descript}">${tag.tagtitle }</a></li>
 						</c:forEach>
 					</ul></li>
