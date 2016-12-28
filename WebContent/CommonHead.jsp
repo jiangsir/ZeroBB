@@ -12,21 +12,26 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 <!-- 選擇性佈景主題 -->
- <link rel="stylesheet"
+<!-- <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
-<link href="jscripts/bootstrap-flat-3.3.4-dist/bootstrap-flat.min.css" rel="stylesheet">
-<link href="jscripts/bootstrap-flat-3.3.4-dist/bootstrap-flat-extras.min.css" rel="stylesheet">
-<link href="jscripts/bootstrap-flat-3.3.4-dist/docs.min.css" rel="stylesheet">
-<link href="jscripts/bootstrap-flat-3.3.4-dist/docs-flat.css" rel="stylesheet">
-
+ -->
+ <link href="jscripts/bootstrap-flat-3.3.4-dist/bootstrap-flat.min.css"
+	rel="stylesheet">
+<link
+	href="jscripts/bootstrap-flat-3.3.4-dist/bootstrap-flat-extras.min.css"
+	rel="stylesheet">
+ <link href="jscripts/bootstrap-flat-3.3.4-dist/docs.min.css"
+	rel="stylesheet">
+<link href="jscripts/bootstrap-flat-3.3.4-dist/docs-flat.css"
+	rel="stylesheet">
 
 <script
 	src=https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js></script>
 
 <!-- 最新編譯和最佳化的 JavaScript -->
-<link rel="stylesheet"
+<!-- <link rel="stylesheet"
 	href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
- <script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+ --><script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 
@@ -41,28 +46,16 @@
 <script type="text/javascript">
 	jQuery(document).ready(function() {
 		$("input:first").focus();
-		/*$("input[type=submit], [type='button']").button();*/
-		/*
-		$("button").button().click(function(event) {
-			event.preventDefault(); // 讓預設的動作失效！
-		});
-		 */
-		/* 		$(".closethick").button({
-		 icons : {
-		 primary : "ui-icon-closethick"
-		 },
-		 text : false
-		 });
 
-		 $("#menu").menu({
-		 position : {
-		 at : "left bottom"
-		 }
-		 });
-		 jQuery("#tabs").tabs({
-		 collapsible : false
-		 });
-		 */});
+	});
+	jQuery(document).ajaxError(function(event, jqxhr, settings, thrownError) {
+		//BootstrapDialog.alert(thrownError);
+		console.log(".ajaxError 進行全域捕捉 error:");
+		console.log("event="+event);
+        console.log("jqxhr.responseText="+jqxhr.responseText);
+        console.log("settings.url="+settings.url);
+        console.log("thrownError="+thrownError);
+	});
 </script>
 
 <meta charset="UTF-8">
