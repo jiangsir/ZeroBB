@@ -266,7 +266,9 @@ public class Article {
 			// throw new DataException("找不到這個文章！");
 			return false;
 		}
-		if ((currentUser.getRole() == User.ROLE.ADMIN || currentUser.getAccount().equals(getAccount()))) {
+		if ((currentUser.getRole() == User.ROLE.ADMIN || currentUser.getAccount().equals(getAccount())
+				|| (currentUser.getRole() == User.ROLE.DIVISION_LEADER
+						&& this.getUser().getDivision() == currentUser.getDivision()))) {
 			return true;
 		}
 		return false;

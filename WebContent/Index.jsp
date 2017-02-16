@@ -47,7 +47,7 @@
 						<jsp:include page="include/Blocks/ShowArticle_Toolbar.jsp"/>
 							
 					</td>
-					<td>${article.user.division.value}</td>
+					<td>${article.user.division.value} | ${article.user.name}</td>
 					<td><fmt:formatDate value="${article.postdate}"
 							pattern="yyyy-MM-dd HH:mm" /></td>
 					<td><c:if test="${article.outdate.time<now.time}">

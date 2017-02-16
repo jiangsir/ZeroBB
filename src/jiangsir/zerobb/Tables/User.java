@@ -24,6 +24,7 @@ public class User implements Serializable {
 	public enum ROLE {
 		ADMIN, // 管理權限
 		MANAGER, // 一般管理員
+		DIVISION_LEADER, // 部門管理者、處室主任
 		USER, // 一般使用者
 		GUEST; // 訪客，或未登入者
 	}
@@ -38,18 +39,18 @@ public class User implements Serializable {
 		renshi("人事室"), //
 		kuaiji("會計室"), //
 		lib("圖資中心"), //
-		zhucezu("註冊組"), //
-		shebei("設備組"), //
-		jiankang("健康中心"), //
-		documentation("公文公告區"), //
-		zixun("資訊組"), //
-		jiaoxue("教學組"), //
-		weisheng("學務處衛保組"), //
+		// zhucezu("註冊組"), //
+		// shebei("設備組"), //
+		// jiankang("健康中心"), //
+		// documentation("公文公告區"), //
+		// zixun("資訊組"), //
+		// jiaoxue("教學組"), //
+		// weisheng("學務處衛保組"), //
 		teachers("教師研習"), //
-		xuewuhonor("學務處榮譽榜"), //
+		// xuewuhonor("學務處榮譽榜"), //
 		principal("校長室"), //
-		schoolnews("校園新聞"), //
-		honoredlist("榮譽榜"), //
+		// schoolnews("校園新聞"), //
+		// honoredlist("榮譽榜"), //
 		alumni("校友會");//
 
 		private String value;
