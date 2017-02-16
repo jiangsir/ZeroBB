@@ -22,11 +22,11 @@ public class User implements Serializable {
 	private static final long serialVersionUID = -363437329708413101L;
 
 	public enum ROLE {
-		ADMIN, // 管理權限
-		MANAGER, // 一般管理員
-		DIVISION_LEADER, // 部門管理者、處室主任
+		GUEST, // 訪客，或未登入者
 		USER, // 一般使用者
-		GUEST; // 訪客，或未登入者
+		DIVISION_LEADER, // 部門管理者、處室主任
+		MANAGER, // 一般管理員
+		ADMIN; // 管理權限
 	}
 
 	public enum DIVISION {
