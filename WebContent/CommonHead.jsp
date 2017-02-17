@@ -41,13 +41,14 @@
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js"></script>
 
+<script type="text/javascript"
+	src="include/Modals/Modal_EditUser.js?${applicationScope.built }"></script>
 
 <link href="css/navbar.css" rel=stylesheet>
 
 <script type="text/javascript">
 	jQuery(document).ready(function() {
 		$("input:first").focus();
-
 	});
 	jQuery(document).ajaxError(function(event, jqxhr, settings, thrownError) {
 		//BootstrapDialog.alert(thrownError);

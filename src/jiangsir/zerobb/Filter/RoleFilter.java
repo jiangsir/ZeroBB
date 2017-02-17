@@ -74,7 +74,7 @@ public class RoleFilter implements Filter {
 		}
 		// CurrentUser currentUser = new SessionScope(session).getCurrentUser();
 		if (!this.isUserInRoles(currentUser, httpServlet.getClass().getAnnotation(RoleSetting.class))) {
-			throw new RoleException("您沒有權限瀏覽這個頁面。");
+			throw new RoleException("您(" + currentUser + ")沒有權限瀏覽這個頁面(" + httpServlet + ")。");
 		}
 		chain.doFilter(request, response);
 	}
@@ -87,7 +87,7 @@ public class RoleFilter implements Filter {
 
 		// 加入 高於指定的 role
 		for (User.ROLE role : User.ROLE.values()) {
-			if (servletRole.allowHigherThen().ordinal() >= role.ordinal()) {
+			if (servletRole.allowHigherThen().ordinal() <= role.ordinal()) {
 				roleSet.add(role);
 			}
 		}
@@ -101,7 +101,7 @@ public class RoleFilter implements Filter {
 
 		// 移除 低於指定的 role
 		for (User.ROLE role : User.ROLE.values()) {
-			if (servletRole.denyLowerThen().ordinal() <= role.ordinal()) {
+			if (servletRole.denyLowerThen().ordinal() >= role.ordinal()) {
 				roleSet.remove(role);
 			}
 		}
