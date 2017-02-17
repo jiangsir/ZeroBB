@@ -37,7 +37,7 @@ public class User implements Serializable {
 		zongwu("總務處"), //
 		fudao("輔導室"), //
 		renshi("人事室"), //
-		kuaiji("會計室"), //
+		kuaiji("主計室"), //
 		lib("圖資中心"), //
 		// zhucezu("註冊組"), //
 		// shebei("設備組"), //
