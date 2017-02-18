@@ -44,6 +44,17 @@
 <script type="text/javascript"
 	src="include/Modals/Modal_EditUser.js?${applicationScope.built }"></script>
 
+<!-- 引入 bootstrap-datetimepicker {-->
+<script type="text/javascript" src="jscripts/moment/moment.js"></script>
+<!-- <script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/locale/zh-tw.js"></script>
+ -->
+<script type="text/javascript"
+	src="jscripts/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+<link rel="stylesheet"
+	href="jscripts/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+<!-- 引入 bootstrap-datetimepicker }-->
+
 <link href="css/navbar.css" rel=stylesheet>
 
 <script type="text/javascript">

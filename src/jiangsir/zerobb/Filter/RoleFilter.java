@@ -101,7 +101,7 @@ public class RoleFilter implements Filter {
 
 		// 移除 低於指定的 role
 		for (User.ROLE role : User.ROLE.values()) {
-			if (servletRole.denyLowerThen().ordinal() >= role.ordinal()) {
+			if (servletRole.denyLowerThen().ordinal() > role.ordinal()) {
 				roleSet.remove(role);
 			}
 		}

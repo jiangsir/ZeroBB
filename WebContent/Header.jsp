@@ -84,7 +84,7 @@
 							<li><a href="#" data-toggle="modal"
 								data-target="#Modal_EditUser" data-action="EditUser">修改密碼 </a></li>
 							<li><a
-								href="${pageContext.servletContext.contextPath}?division=${sessionScope.currentUser.division}">列出公告</a></li>
+								href="${pageContext.servletContext.contextPath}?account=${sessionScope.currentUser.account}">列出使用者公告</a></li>
 							<li><a href="./Logout"><span
 									class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
 									離開</a></li>

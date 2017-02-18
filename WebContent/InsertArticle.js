@@ -1,13 +1,13 @@
 jQuery(document).ready(
 		function() {
-			$("input[name='postdate']").datetimepicker({
-				dateFormat : 'yy-mm-dd',
-				timeFormat : 'HH:mm:ss'
-			});
-			$("input[name='outdate']").datetimepicker({
-				dateFormat : 'yy-mm-dd',
-				timeFormat : 'HH:mm:ss'
-			});
+//			$("input[name='postdate']").datetimepicker({
+//				dateFormat : 'yy-mm-dd',
+//				timeFormat : 'HH:mm:ss'
+//			});
+//			$("input[name='outdate']").datetimepicker({
+//				dateFormat : 'yy-mm-dd',
+//				timeFormat : 'HH:mm:ss'
+//			});
 
 			// jQuery("input[name=postdate]").val(
 			// jQuery.trim(jQuery("input[name=postdate]").val()));
