@@ -153,7 +153,7 @@ INSERT INTO `users` VALUES(5, 'xuewu', '學務處', 'xuewu', 'USER', 'off2', '',
 INSERT INTO `users` VALUES(6, 'zongwu', '總務處', 'zongwu', 'USER', 'off3', '', 'homepage', 'describe', 0, 1);
 INSERT INTO `users` VALUES(7, 'fudao', '輔導室', 'fudao', 'USER', 'off4', '', 'homepage', 'describe', 0, 1);
 INSERT INTO `users` VALUES(8, 'lib', '圖資中心', 'lib', 'USER', 'lib', '', 'homepage', 'describe', 0, 1);
-INSERT INTO `users` VALUES(9, 'kuaiji', '會計室', 'kuaiji', 'USER', '7717735', '', 'homepage', 'describe', 0, 1);
+INSERT INTO `users` VALUES(9, 'kuaiji', '主計室', 'kuaiji', 'USER', '7717735', '', 'homepage', 'describe', 0, 1);
 INSERT INTO `users` VALUES(10, 'renshi', '人事室', 'renshi', 'USER', '309340', '', 'homepage', 'describe', 0, 1);
 INSERT INTO `users` VALUES(21, 'weisheng', '學務處衛生保健組', 'weisheng', 'USER', '528', '', '', '', 0, 1);
 INSERT INTO `users` VALUES(12, 'zixun', '資訊組', 'zixun', 'USER', 'j04xu3', '', 'homepage', 'describe', 0, 1);
@@ -171,6 +171,6 @@ INSERT INTO `users` VALUES(28, 'xuewuwuzhuren', '學務主任', 'xuewu', 'USER',
 INSERT INTO `users` VALUES(29, 'zongwuzhuren', '總務主任', 'zongwu', 'USER', '5300', '', '', '', 1, 1);
 INSERT INTO `users` VALUES(30, 'fudaozhuren', '輔導主任', 'fudao', 'USER', '5600', '', '', '', 1, 1);
 INSERT INTO `users` VALUES(31, 'renshizhuren', '人事主任', 'renshi', 'USER', '5700', '', '', '', 1, 1);
-INSERT INTO `users` VALUES(32, 'kuaijizhuren', '會計主任', 'kuaiji', 'USER', '5800', '', '', '', 1, 1);
+INSERT INTO `users` VALUES(32, 'kuaijizhuren', '主計主任', 'kuaiji', 'USER', '5800', '', '', '', 1, 1);
 INSERT INTO `users` VALUES(33, 'libzhuren', '圖書主任', 'lib', 'USER', '5500', '', '', '', 1, 1);
 INSERT INTO `users` VALUES(34, '501', '秘書', 'principal', 'USER', '5010', '', '', '', 1, 1);

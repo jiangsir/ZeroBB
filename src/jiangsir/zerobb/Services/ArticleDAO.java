@@ -320,6 +320,19 @@ public class ArticleDAO extends SuperDAO<Article> {
 		return ArticleFactory.getNullArticle();
 	}
 
+	public ArrayList<Article> getArticlesByAccount(String account, int page) {
+		String sql = "SELECT * FROM articles WHERE account=? ORDER BY sortable DESC LIMIT "
+				+ (page - 1) * ENV.getPAGESIZE() + "," + ENV.getPAGESIZE();
+		try {
+			PreparedStatement pstmt = this.getConnection().prepareStatement(sql);
+			pstmt.setString(1, account);
+			return executeQuery(pstmt, Article.class);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return new ArrayList<Article>();
+	}
+
 	@Override
 	public synchronized int insert(Article article) throws SQLException {
 		String sql = "INSERT INTO articles (account, title, " + "info, type, hyperlink, content, hitnum, "

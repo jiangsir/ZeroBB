@@ -35,6 +35,7 @@ public class Index extends HttpServlet {
 		// String[] param_infos = (String[]) request.getParameterValues("info");
 		String param_division = request.getParameter("division");
 		String tagname = request.getParameter("tagname");
+		String account = request.getParameter("account");
 		if (param_division != null) {
 			User.DIVISION division;
 			try {
@@ -52,6 +53,9 @@ public class Index extends HttpServlet {
 		} else if (tagname != null) {
 			request.setAttribute("articles",
 					new ArticleService().getArticlesByTabnames(null, new String[]{tagname}, page, ENV.getPAGESIZE()));
+		} else if (account != null) {
+			request.setAttribute("articles",
+					new ArticleService().getArticlesByAccount(account, page, ENV.getPAGESIZE()));
 		} else {
 			request.setAttribute("articles", new ArticleService().getArticles(page, ENV.getPAGESIZE()));
 		}

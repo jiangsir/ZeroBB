@@ -71,7 +71,7 @@ include
 	href="http://apps.nknush.kh.edu.tw/ZeroBB/?account=zongwu">總務處 </a> | <a
 	href="http://apps.nknush.kh.edu.tw/ZeroBB/?account=fudao">輔導中心</a> | <a
 	href="http://apps.nknush.kh.edu.tw/ZeroBB/?account=renshi">人事室 </a> | <a
-	href="http://apps.nknush.kh.edu.tw/ZeroBB/?account=kuaiji">會計室 </a> | <a
+	href="http://apps.nknush.kh.edu.tw/ZeroBB/?account=kuaiji">主計室 </a> | <a
 	href="http://apps.nknush.kh.edu.tw/ZeroBB/?account=lib">圖資中心</a> | <a
 	href="http://apps.nknush.kh.edu.tw/ZeroBB/?account=Documentation">公文公告區 </a>
 | <a href="http://apps.nknush.kh.edu.tw/ZeroBB/?account=zhucezu">教務處註冊組 </a>

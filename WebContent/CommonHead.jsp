@@ -41,13 +41,25 @@
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js"></script>
 
+<script type="text/javascript"
+	src="include/Modals/Modal_EditUser.js?${applicationScope.built }"></script>
+
+<!-- 引入 bootstrap-datetimepicker {-->
+<script type="text/javascript" src="jscripts/moment/moment.js"></script>
+<!-- <script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/locale/zh-tw.js"></script>
+ -->
+<script type="text/javascript"
+	src="jscripts/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+<link rel="stylesheet"
+	href="jscripts/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+<!-- 引入 bootstrap-datetimepicker }-->
 
 <link href="css/navbar.css" rel=stylesheet>
 
 <script type="text/javascript">
 	jQuery(document).ready(function() {
 		$("input:first").focus();
-
 	});
 	jQuery(document).ajaxError(function(event, jqxhr, settings, thrownError) {
 		//BootstrapDialog.alert(thrownError);

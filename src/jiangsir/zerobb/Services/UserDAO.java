@@ -127,9 +127,14 @@ public class UserDAO extends SuperDAO<User> {
 	}
 
 	@Override
-	public int update(User t) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int update(User user) throws SQLException {
+		String SQL = "UPDATE users SET passwd=? WHERE id=?";
+		int result = -1;
+		PreparedStatement pstmt = getConnection().prepareStatement(SQL);
+		pstmt.setString(1, user.getPasswd());
+		pstmt.setInt(2, user.getId());
+		result = this.executeUpdate(pstmt);
+		return result;
 	}
 
 	@Override

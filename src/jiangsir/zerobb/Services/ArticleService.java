@@ -59,6 +59,16 @@ public class ArticleService {
 		return new ArticleDAO().getArticles(null, division, page, pagesize);
 	}
 
+	public ArrayList<Article> getArticlesByAccount(String account, int page, int pagesize) {
+		if (page <= 0) {
+			page = 1;
+		}
+		if (pagesize <= 0) {
+			page = ENV.getPAGESIZE();
+		}
+		return new ArticleDAO().getArticlesByAccount(account, page);
+	}
+
 	public ArrayList<Article> getArticles(int page, int pagesize) {
 		if (page <= 0) {
 			page = 1;

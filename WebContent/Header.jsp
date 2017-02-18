@@ -65,6 +65,9 @@
 					</span>
 				</div>
 			</form>
+			<jsp:include page="include/Modals/Modal_EditUser.jsp">
+				<jsp:param name="action" value="changePasswd" />
+			</jsp:include>
 			<ul class="nav navbar-nav navbar-right">
 				<c:if test="${!user:isNullUser(sessionScope.currentUser)}">
 					<c:if test="${user:isAdmin(sessionScope.currentUser)}">
@@ -72,12 +75,16 @@
 								class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
 								管理頁</a></li>
 					</c:if>
+
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown" role="button" aria-expanded="false">${sessionScope.currentUser.name }
 							<span class="caret"></span>
 					</a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="${pageContext.servletContext.contextPath}?division=${sessionScope.currentUser.division}">列出公告</a></li>
+							<li><a href="#" data-toggle="modal"
+								data-target="#Modal_EditUser" data-action="EditUser">修改密碼 </a></li>
+							<li><a
+								href="${pageContext.servletContext.contextPath}?account=${sessionScope.currentUser.account}">列出使用者公告</a></li>
 							<li><a href="./Logout"><span
 									class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
 									離開</a></li>
@@ -92,7 +99,8 @@
 				</a>
 					<ul class="dropdown-menu" role="menu">
 						<c:forEach var="tag" items="${applicationScope.tags}">
-							<li><a href="${pageContext.servletContext.contextPath}?tagname=${tag.tagname}"
+							<li><a
+								href="${pageContext.servletContext.contextPath}?tagname=${tag.tagname}"
 								title="${tag.descript}">${tag.tagtitle }</a></li>
 						</c:forEach>
 					</ul></li>

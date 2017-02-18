@@ -29,12 +29,12 @@
 			});
 </script>
 
-<link href="jscripts/datetimepicker/jquery-ui-timepicker-addon.css"
+<!-- <link href="jscripts/datetimepicker/jquery-ui-timepicker-addon.css"
 	rel="stylesheet" />
 <script src="jscripts/datetimepicker/jquery-ui-timepicker-addon.js"></script>
+ -->
 <script type="text/javascript"
 	src="InsertArticle.js?${applicationScope.built}"></script>
-
 </head>
 
 <body>
@@ -80,9 +80,48 @@
 					size="80" />
 			</div>
 			<div>
-				有效日期： 從 <input name="postdate" type="text" id="postdate"
+				<%-- 				有效日期： 從 <input name="postdate" type="text" id="postdate"
 					value="${article.postdate}" /> 到 <input name="outdate" type="text"
 					id="outdate" value="${article.outdate}" />
+
+ --%>
+
+				有效日期：
+				<div class="row">
+					<div class='col-sm-6'>
+						<div class="form-group">
+							<div class='input-group date' id='datetimepicker1'>
+								<span class="input-group-addon" id="sizing-addon1">從</span> <input
+									type='text' class="form-control" name="postdate"
+									value="${article.postdate}" /> <span class="input-group-addon">
+									<span class="glyphicon glyphicon-calendar"></span>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class='col-sm-6'>
+						<div class="form-group">
+							<div class='input-group date' id='datetimepicker2'>
+								<span class="input-group-addon" id="sizing-addon1">到</span> <input
+									type='text' class="form-control" name="outdate"
+									value="${article.outdate}" /> <span class="input-group-addon">
+									<span class="glyphicon glyphicon-calendar"></span>
+								</span>
+							</div>
+						</div>
+					</div>
+					<script type="text/javascript">
+						$(function() {
+							$('#datetimepicker1').datetimepicker({
+								format : 'YYYY-MM-DD HH:mm:ss'
+							});
+							$('#datetimepicker2').datetimepicker({
+								format : 'YYYY-MM-DD HH:mm:ss'
+							});
+						});
+					</script>
+				</div>
+
 			</div>
 			<div>
 				內容： <br />
